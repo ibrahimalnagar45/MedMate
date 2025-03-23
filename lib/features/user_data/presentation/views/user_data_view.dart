@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'widgets/auth_view_body.dart';
+import '../../../../utils/app_colors.dart';
+import 'widgets/user_data_view_body.dart';
 
 class UserDataView extends StatelessWidget {
   const UserDataView({super.key});
@@ -7,7 +8,8 @@ class UserDataView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      // backgroundColor: AppColors.grey,
+      // color: AppColors.blue,
+      backgroundColor: AppColors.blue,
       body: SafeArea(child: UserDataViewBody()),
     );
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'app_colors.dart'; 
+import 'app_colors.dart';
+
 class TextStyles {
   TextStyles._();
 
@@ -9,7 +10,6 @@ class TextStyles {
     fontWeight: FontWeight.w800,
     fontSize: 20,
   );
-  
 
   static const TextStyle regGreyTextStyle = TextStyle(
     // fontFamily: AppFonts.primaryFont,
@@ -24,12 +24,12 @@ class TextStyles {
     fontSize: 15,
     color: Colors.black,
   );
-  // static const TextStyle regBlackTextStyle = TextStyle(
-  //   // fontFamily: AppFonts.primaryFont,
-  //   fontWeight: FontWeight.w700,
-  //   fontSize: 15,
-  //   color: Colors.black,
-  // );
+  static const TextStyle regWhtieTextStyle = TextStyle(
+    // fontFamily: AppFonts.primaryFont,
+    fontWeight: FontWeight.w700,
+    fontSize: 15,
+    color: Colors.white,
+  );
 
   static const TextStyle onBoardingTextStyle = TextStyle(
     fontSize: 20,

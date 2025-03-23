@@ -4,6 +4,9 @@ extension Context on BuildContext {
   double height() {
     return MediaQuery.sizeOf(this).height;
   }
+  double width() {
+    return MediaQuery.sizeOf(this).width;
+  }
 
   goTo(Widget widget) {
     Navigator.of(this).push(MaterialPageRoute(builder: (context) => widget));
