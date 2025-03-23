@@ -25,7 +25,7 @@ class _HomeViewState extends State<HomeView> {
 
   @override
   Widget build(BuildContext context) {
-    log(meds.toString());
+   
     return Scaffold(
       floatingActionButton: IconButton(
         icon: Icon(Icons.add),
