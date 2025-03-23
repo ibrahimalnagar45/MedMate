@@ -4,7 +4,7 @@ import 'package:midmate/utils/models/med_model.dart';
 
 part 'meds_state.dart';
 
-class MedsCubit extends Cubit<GetMedsState> {
+class MedsCubit extends Cubit<MedsState> {
   MedsCubit() : super(MedsInitial());
 
   final Crud db = Crud.instance;
