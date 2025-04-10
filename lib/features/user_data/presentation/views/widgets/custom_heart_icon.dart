@@ -14,7 +14,10 @@ class CustomHeartIcon extends StatelessWidget {
       ),
       width: 80,
       height: 80,
-      child: SvgPicture.asset(ImageController.heartIcon),
+      child: SvgPicture.asset(
+        ImageController.heartIcon,
+        alignment: Alignment.center,
+      ),
     );
   }
 }

@@ -1,19 +1,15 @@
 import 'dart:async';
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/utils/constants.dart';
 import 'package:midmate/utils/extension_fun.dart';
+import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
-import 'package:midmate/utils/text_styles.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../utils/app_colors.dart';
-import '../../../../utils/image_controller.dart';
 import '../../../../utils/models/shared_prefrence_db.dart';
 import '../../../user_data/presentation/views/user_data_view.dart';
-import '../../../home/presentation/views/home_view.dart';
-import '../../data/models/onboarding_model.dart';
 import 'widgets/custom_skip_icon.dart';
 import 'widgets/onboarding_widget.dart';
 import 'widgets/page_indecator.dart';
@@ -30,6 +26,7 @@ class _OnboardingViewState extends State<OnboardingView>
   late PageController _pageController;
   late Timer timer;
   int currentIndex = 0;
+  SharedPreferences prefs = getIt<SharedPreferences>();
 
   @override
   void initState() {
@@ -43,7 +40,9 @@ class _OnboardingViewState extends State<OnboardingView>
   void dispose() {
     timer.cancel();
     _pageController.dispose();
-
+    log(
+      'from onboardingview the value SharedPrefrenceDb.onBoardingVisited is ${prefs.getBool(SharedPrefrenceDb.onBoardingVisited)}',
+    );
     super.dispose();
   }
 
@@ -89,8 +88,14 @@ class _OnboardingViewState extends State<OnboardingView>
         SharedPrefrenceDb.onBoardingVisited,
         true,
       );
-
-      context.goTo(UserDataView());
+      debugPrint(
+        'from onboardingview the value SharedPrefrenceDb.onBoardingVisited is ${prefs.getBool(SharedPrefrenceDb.onBoardingVisited)}',
+      );
+      if (getIt<UserModel>().getUser().name == '') {
+        context.replaceWith(UserDataView());
+      } else {
+        context.replaceWith(HomeView());
+      }
       timer.cancel();
       _pageController.dispose();
     } else {

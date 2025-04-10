@@ -1,11 +1,15 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:midmate/features/user_data/presentation/views/user_data_view.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/shared_prefrence_db.dart';
+import 'package:midmate/utils/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/service_locator.dart';
 import '../../../../../utils/text_styles.dart';
+import '../../../../home/presentation/views/home_view.dart';
 
 class CustomSkipIcon extends StatelessWidget {
   const CustomSkipIcon({super.key});
@@ -25,7 +29,14 @@ class CustomSkipIcon extends StatelessWidget {
               SharedPrefrenceDb.onBoardingVisited,
               true,
             );
-            context.goTo(UserDataView());
+            debugPrint(
+              'from custom icon the value SharedPrefrenceDb.onBoardingVisited is ${getIt<SharedPreferences>().getBool(SharedPrefrenceDb.onBoardingVisited)}',
+            );
+            if (getIt<UserModel>().getUser().name == '') {
+              context.replaceWith(UserDataView());
+            } else {
+              context.replaceWith(HomeView());
+            }
           },
           child: Text(
             'تخطي',

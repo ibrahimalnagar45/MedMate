@@ -1,21 +1,22 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:midmate/features/user_data/presentation/views/user_data_view.dart';
 import 'package:midmate/utils/models/shared_prefrence_db.dart';
 import 'package:midmate/utils/service_locator.dart';
-import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import 'features/splash/presentation/views/splash_view.dart';
 import 'utils/app_fonts.dart';
-import 'package:sqflite/sqflite.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setup();
   SharedPreferences prefs = getIt<SharedPreferences>();
   prefs.setBool(SharedPrefrenceDb.onBoardingVisited, false);
+  log(
+    'from main the value SharedPrefrenceDb.onBoardingVisited is ${prefs.getBool(SharedPrefrenceDb.onBoardingVisited)}',
+  );
 
   SqHelper();
 
@@ -34,7 +35,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(fontFamily: AppFonts.primaryFont),
       // home: HomeView()
       // home: AuthView(),
-      home: UserDataView(),
+      home: SplashView(),
     );
   }
 }

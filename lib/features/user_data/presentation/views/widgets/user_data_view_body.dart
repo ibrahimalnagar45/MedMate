@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
- import 'package:midmate/features/home/presentation/views/home_view.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_heart_icon.dart';
 import 'package:midmate/utils/extension_fun.dart';
+import 'package:midmate/utils/service_locator.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/models/user_model.dart';
 import '../../../../../utils/text_styles.dart';
@@ -31,10 +33,10 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
             // crossAxisAlignment: CrossAxisAlignment.center,
             // mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              // SvgPicture.asset('assets/images/image 1.svg',),
-              // UpperImage(),
+              // SvgPicture.asset('assets/images/image 1.svg'),
+              UpperImage(),
               Positioned(
-                bottom: 15,
+                bottom: 40,
                 left: 0,
                 right: 0,
                 child: Column(
@@ -67,12 +69,10 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
 
                             CustomLabel(title: 'الاسم'),
                             CustomTextFormFeild(
-                              // hintText: 'ادخل الاسم',
                               validator: (vlaue) {
                                 if (vlaue!.isEmpty || vlaue.trim().isEmpty) {
                                   return 'يجب ان تدخل اسمك';
                                 }
-
                                 return null;
                               },
                               onSubmitted: (value) {
@@ -88,7 +88,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                             AgeDropDownMenu(
                               onSelected: (value) {
                                 if (_formKey.currentState!.validate()) {
-                                  UserModel.instance.editUser(
+                                  getIt<UserModel>().editUser(
                                     Person(age: value, name: userName),
                                   );
 
@@ -118,7 +118,6 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
   }
 }
 
- 
 class UpperImage extends StatelessWidget {
   const UpperImage({super.key});
 

@@ -18,16 +18,15 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView> {
   bool _initialized = false;
-  bool _toHome = false;
+  // bool _toHome = false;
+  bool toHome =
+      getIt<SharedPreferences>().getBool(SharedPrefrenceDb.onBoardingVisited) ==
+      true;
 
   @override
   void initState() {
     super.initState();
-    _toHome =
-        getIt<SharedPreferences>().getBool(
-          SharedPrefrenceDb.onBoardingVisited,
-        ) ??
-        false;
+
     ensureInitialized();
     // Wait for Flutter to fully initialize
   }
@@ -35,7 +34,7 @@ class _SplashViewState extends State<SplashView> {
   @override
   Widget build(BuildContext context) {
     if (_initialized) {
-      if (_toHome) {
+      if (toHome) {
         return HomeView();
       } else {
         return OnboardingView();

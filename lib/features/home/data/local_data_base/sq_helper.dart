@@ -1,8 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:midmate/utils/models/med_model.dart';
-import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
+ import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -15,6 +14,7 @@ class SqHelper {
   }
 
   Future<String> _getDbPath() async {
+    databaseFactory = databaseFactorySqflitePlugin;
     String dbPath = await getDatabasesPath();
     return join(dbPath, DbConstants.tableName);
   }
