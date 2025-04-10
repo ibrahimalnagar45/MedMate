@@ -6,9 +6,9 @@ import 'package:midmate/utils/constants.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
+import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../utils/app_colors.dart';
-import '../../../../utils/models/shared_prefrence_db.dart';
 import '../../../user_data/presentation/views/user_data_view.dart';
 import 'widgets/custom_skip_icon.dart';
 import 'widgets/onboarding_widget.dart';
@@ -91,13 +91,13 @@ class _OnboardingViewState extends State<OnboardingView>
       debugPrint(
         'from onboardingview the value SharedPrefrenceDb.onBoardingVisited is ${prefs.getBool(SharedPrefrenceDb.onBoardingVisited)}',
       );
-      if (getIt<UserModel>().getUser().name == '') {
+      if (getIt<UserModel>().getUser().name == null) {
         context.replaceWith(UserDataView());
       } else {
         context.replaceWith(HomeView());
       }
       timer.cancel();
-      _pageController.dispose();
+      // _pageController.dispose();
     } else {
       currentIndex--;
     }

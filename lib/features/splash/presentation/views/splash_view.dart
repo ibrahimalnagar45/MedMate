@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/onboarding/presentation/views/onboarding_view.dart';
-import 'package:midmate/utils/models/shared_prefrence_db.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,8 +19,8 @@ class _SplashViewState extends State<SplashView> {
   bool _initialized = false;
   // bool _toHome = false;
   bool toHome =
-      getIt<SharedPreferences>().getBool(SharedPrefrenceDb.onBoardingVisited) ==
-      true;
+      getIt<SharedPreferences>().getBool(SharedPrefrenceDb.onBoardingVisited) ??
+      false;
 
   @override
   void initState() {

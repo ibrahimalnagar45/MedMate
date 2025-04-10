@@ -1,3 +1,4 @@
+ import 'package:midmate/utils/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../service_locator.dart';
@@ -11,4 +12,16 @@ class SharedPrefrenceService {
   Future<void> init() async {
     prefs = await SharedPreferences.getInstance();
   }
+}
+
+class SharedPrefrenceInstances {
+  SharedPrefrenceInstances._();
+ 
+
+  static UserModel userModel = getIt<UserModel>();
+}
+
+class SharedPrefrenceDb {
+  static const String onBoardingVisited = 'onBoardingVisited';
+  static const String user = 'User';
 }

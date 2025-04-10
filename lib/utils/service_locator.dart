@@ -8,7 +8,9 @@ final getIt = GetIt.instance;
 
 Future<void> setup() async {
   final prefsService = SharedPrefrenceService.instance;
+
   await prefsService.init();
   getIt.registerSingleton<SharedPreferences>(prefsService.prefs);
   getIt.registerSingleton<UserModel>(UserModel.instance);
+   
 }
