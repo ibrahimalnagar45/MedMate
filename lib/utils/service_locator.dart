@@ -11,6 +11,5 @@ Future<void> setup() async {
 
   await prefsService.init();
   getIt.registerSingleton<SharedPreferences>(prefsService.prefs);
-  getIt.registerSingleton<UserModel>(UserModel.instance);
-   
+  
 }

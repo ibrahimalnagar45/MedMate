@@ -9,10 +9,11 @@ class UserModel extends Person {
   UserModel._();
   static UserModel instance = UserModel._();
 
-  void editUser(Person user) {
-    instance.name = user.name;
-    instance.age = user.age;
-  }
+  // void editUser(Person user) {
+  //   instance.name = user.name;
+  //   instance.age = user.age;
+    
+  // }
 
   Person getUser() => Person(name: instance.name, age: instance.age);
 

@@ -4,6 +4,8 @@ import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_heart_icon.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/service_locator.dart';
+import 'package:midmate/utils/services/shared_prefrence_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/models/user_model.dart';
 import '../../../../../utils/text_styles.dart';
@@ -88,8 +90,19 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                             AgeDropDownMenu(
                               onSelected: (value) {
                                 if (_formKey.currentState!.validate()) {
-                                  getIt<UserModel>().editUser(
-                                    Person(age: value, name: userName),
+                                  // UserModel.instance.editUser(
+                                  //   Person(age: value, name: userName),
+                                  // );
+                                  // SharedPrefrenceInstances.userModel =
+                                  //     UserModel.instance;
+
+                                  getIt<SharedPreferences>().setString(
+                                    SharedPrefrenceDb.username,
+                                    userName!,
+                                  );
+                                  getIt<SharedPreferences>().setString(
+                                    SharedPrefrenceDb.userAge,
+                                    value!,
                                   );
 
                                   Navigator.of(context).push(

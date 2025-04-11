@@ -1,4 +1,4 @@
- import 'package:midmate/utils/models/user_model.dart';
+import 'package:midmate/utils/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../service_locator.dart';
@@ -14,14 +14,14 @@ class SharedPrefrenceService {
   }
 }
 
-class SharedPrefrenceInstances {
-  SharedPrefrenceInstances._();
- 
+// class SharedPrefrenceInstances {
+//   SharedPrefrenceInstances._();
 
-  static UserModel userModel = getIt<UserModel>();
-}
+//   static UserModel userModel = getIt<UserModel>();
+// }
 
 class SharedPrefrenceDb {
   static const String onBoardingVisited = 'onBoardingVisited';
-  static const String user = 'User';
+  static const String username = 'User';
+  static const String userAge = 'userAge';
 }
