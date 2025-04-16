@@ -1,16 +1,20 @@
+import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
+
 class MedModel {
-  final String name;
-  final String description;
-  final MedType type;
-  final double amount;
-  final int frequency;
-  final DateTime startDate;
+  // 6 params
+  String? name;
+  String? description;
+  MedType? type;
+  double? donse;
+  int? frequency;
+  DateTime? startDate;
   static int id = 0;
+  MedModel.newMed();
   MedModel({
     required this.name,
     required this.description,
     required this.type,
-    required this.amount,
+    required this.donse,
     required this.frequency,
     required this.startDate,
   }) {
@@ -22,51 +26,111 @@ class MedModel {
       'name': name,
       'description': description,
       'type': type.toString(),
-      'amount': amount.toString(),
+      'amount': donse.toString(),
       'frequency': frequency.toString(),
-      'startDate': startDate.toIso8601String(),
+      'startDate': startDate == null ? startDate : startDate!.toIso8601String(),
     };
   }
 
   factory MedModel.fromMap(Map<String, dynamic> map) {
     return MedModel(
-      name: map['name'],
-      description: map['description'],
-      type: getType(map['type']),
-      amount: map['amount'],
-      frequency: map['frequency'],
-      startDate: DateTime.parse(map['startDate']),
+      name: map[DbConstants.columnName],
+      description: map[DbConstants.columnDescription],
+      type: getType(map[DbConstants.columnType]),
+      donse: map[DbConstants.columnAmount],
+      frequency: map[DbConstants.columnFrequency],
+      startDate: DateTime.parse(map[DbConstants.columnStartDate]),
     );
   }
 
-
+  @override
+  String toString() {
+    return 'name:$name, description:$description,  type:$type, donse:$donse, frequency:$frequency, startDate:$startDate';
+  }
 }
 
-  MedType getType(String type) {
-    switch (type) {
-      case 'pill':
-        return MedType.pill;
-      case 'powder':
-        return MedType.powder;
-      case 'syrup':
-        return MedType.syrup;
-      case 'drop':
-        return MedType.drop;
-      case 'solution':
-        return MedType.solution;
-      case 'cream':
-        return MedType.cream;
-      case 'injection':
-        return MedType.injection;
-      case 'inhaler':
-        return MedType.inhaler;
-      default:
-        return MedType.pill;
-    }
+MedType getType(String type) {
+  if (type == 'MedType.pill') {
+    return MedType.pill;
+  } else if (type == 'MedType.powder') {
+    return MedType.powder;
+  } else if (type == 'MedType.syrup') {
+    return MedType.syrup;
+  } else if (type == 'MedType.drop') {
+    return MedType.drop;
+  } else if (type == 'MedType.cream') {
+    return MedType.cream;
+  } else if (type == 'MedType.injection') {
+    return MedType.injection;
+  } else if (type == 'MedType.inhaler') {
+    return MedType.inhaler;
+  } else {
+    return MedType.pill;
   }
+}
 
-enum MedType { pill, powder, syrup, drop, solution, cream, injection, inhaler,
+String getArabicMedType(MedType type) {
+  switch (type) {
+    case MedType.powder:
+      return 'مسحوق';
+    case MedType.pill:
+      return 'قرص';
+    case MedType.syrup:
+      return 'شراب';
+    case MedType.drop:
+      return 'قطرة';
+    case MedType.cream:
+      return 'كريم';
+    case MedType.injection:
+      return 'حقنة';
+    case MedType.inhaler:
+      return 'بخاخ';
+  }
+}
 
- 
+enum MedType { pill, powder, syrup, drop, cream, injection, inhaler }
 
- }
+// dose amounts for each type of med
+/**
+ Pill / Tablet / Capsule
+
+Dose: tablet, pill, capsule
+
+Arabic: قرص، حبة، كبسولة
+
+Syrup / Liquid
+
+Dose: ml, teaspoon, tablespoon
+
+Arabic: مل، ملعقة صغيرة، ملعقة كبيرة
+
+Inhaler
+
+Dose: puff
+
+Arabic: بخة
+
+Injection
+
+Dose: ml, dose, units (IU/mg/etc.)
+
+Arabic: مل، جرعة، وحدة
+
+Drop (e.g., eye/ear)
+
+Dose: drop
+
+Arabic: قطرة
+
+Cream / Ointment / Gel
+
+Dose: thin layer, pea-sized amount, cm
+
+Arabic: طبقة رقيقة، كمية بحجم حبة البازلاء، سنتيمتر
+
+Powder
+
+Dose: sachet, scoop, gram
+
+Arabic: كيس، مكيال، غرام
+ */

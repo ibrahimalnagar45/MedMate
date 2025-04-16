@@ -9,7 +9,15 @@ class ImageController {
       'assets/images/c0418015-26cd-4b0a-9d85-f5cb942950ba.webp';
   static const String onBoardingImage3 =
       'assets/images/b0db577d-d58a-4339-86f1-e24d6803f5b3.webp';
-      static const String splashLottieImage='assets/images/splash_screen.json';
-//assets/images/2323217.jpg
-  // assets/images/image 1.svg
+  static const String splashLottieImage = 'assets/images/splash_screen.json';
+
+  // med type icons
+
+  static const String pill = 'assets/icons/med_types/pill.png';
+  static const String powder = 'assets/icons/med_types/powder.png';
+  static const String syrup = 'assets/icons/med_types/syrup.png';
+  static const String drop = 'assets/icons/med_types/drop.png';
+  static const String cream = 'assets/icons/med_types/cream.png';
+  static const String injection = 'assets/icons/med_types/injection.png';
+  static const String inhaler = 'assets/icons/med_types/inhaler.png';
 }

@@ -3,9 +3,15 @@ import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/text_styles.dart';
 
 class CustomTextFormFeild extends StatelessWidget {
-  const CustomTextFormFeild({super.key, this.onSubmitted, this.validator});
+  const CustomTextFormFeild({
+    super.key,
+    this.onSubmitted,
+    this.validator,
+    this.hintText,
+  });
   final void Function(String?)? onSubmitted;
   final String? Function(String?)? validator;
+  final String? hintText;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
@@ -14,7 +20,12 @@ class CustomTextFormFeild extends StatelessWidget {
       onChanged: onSubmitted,
       onSaved: onSubmitted,
       textDirection: TextDirection.rtl,
+
+      style: TextStyles.hintTextStyle,
+      cursorColor: AppColors.blue,
       decoration: InputDecoration(
+        hintText: hintText,
+
         filled: true,
         errorStyle: TextStyle(color: Colors.amber),
         fillColor: AppColors.grey,
@@ -25,7 +36,7 @@ class CustomTextFormFeild extends StatelessWidget {
         ),
 
         // hintText: _hintText,
-        hintStyle: TextStyles.regBlackTextStyle,
+        hintStyle: TextStyles.hintTextStyle,
         hintTextDirection: TextDirection.rtl,
       ),
     );

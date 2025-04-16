@@ -37,4 +37,9 @@ class TextStyles {
     color: AppColors.blue,
     fontStyle: FontStyle.italic,
   );
+  static const TextStyle hintTextStyle = TextStyle(
+    color: AppColors.blue,
+    fontWeight: FontWeight.normal,
+    fontStyle: FontStyle.italic,
+  );
 }

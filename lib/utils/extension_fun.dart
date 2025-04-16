@@ -19,7 +19,23 @@ extension Context on BuildContext {
     ).pushReplacement(MaterialPageRoute(builder: (context) => widget));
   }
 
+  pop() {
+    Navigator.of(this).pop();
+  }
 
+  // showSnackBar(String message) {
+  //   ScaffoldMessenger.of(this).showSnackBar(SnackBar(
+  //     content: Text(message),
+  //     duration: const Duration(seconds: 2),
+  //   ));
+  // }
 
-  
+  // showErrorSnackBar(String message) {
+  //   ScaffoldMessenger.of(this).showSnackBar(SnackBar(
+  //     content: Text(message),
+  //     duration: const Duration(seconds: 2),
+  //     backgroundColor: Colors.red,
+  //   ));
 }
+
+// }

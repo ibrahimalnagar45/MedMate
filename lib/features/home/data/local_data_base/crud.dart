@@ -11,6 +11,7 @@ class Crud {
   static const Crud instance = Crud._();
 
   Future<MedModel> insert(MedModel med) async {
+
     Database db = await SqHelper().getDbInstance();
 
     MedModel.id = await db.insert(DbConstants.tableName, med.toMap());
@@ -18,8 +19,7 @@ class Crud {
   }
 
   Future<List<MedModel>> getAllMeds() async {
-    Database db = await SqHelper().getDbInstance();
-    // log('from getAllMeds  :  ${dbLocal == null}');
+    Database db = await SqHelper().getDbInstance(); 
     List<Map<String, dynamic>> maps = await db.query(DbConstants.tableName);
     return List.generate(maps.length, (i) {
       return MedModel.fromMap(maps[i]);

@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:midmate/utils/services/shared_prefrence_service.dart';
@@ -13,7 +14,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await setup();
   // getIt<SharedPreferences>().clear();
-  
+
   SqHelper();
 
   runApp(const MyApp());
@@ -28,7 +29,12 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Remind Me',
-      theme: ThemeData(fontFamily: AppFonts.primaryFont),
+      theme: ThemeData(
+        fontFamily: AppFonts.primaryFont,
+        primaryColor: AppColors.blue,
+        iconTheme: const IconThemeData(color: AppColors.blue, ),
+      
+      ),
       // home: HomeView()
       // home: AuthView(),
       home: SplashView(),
