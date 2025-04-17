@@ -17,6 +17,7 @@ class CustomTextFormFeild extends StatelessWidget {
     return TextFormField(
       validator: validator,
 
+
       onChanged: onSubmitted,
       onSaved: onSubmitted,
       textDirection: TextDirection.rtl,

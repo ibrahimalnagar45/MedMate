@@ -1,6 +1,4 @@
 import 'dart:developer';
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/cusotm_label.dart';
@@ -9,8 +7,6 @@ import 'package:midmate/features/user_data/presentation/views/widgets/custom_tex
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/med_model.dart';
-import 'package:midmate/utils/extension_fun.dart';
-
 import '../../manager/cubit/meds_cubit.dart';
 import 'custom_drop_down_menu.dart';
 
@@ -28,6 +24,7 @@ class AddMedModalBottomSheet extends StatefulWidget {
 
 class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
   MedModel medModel = MedModel.newMed();
+  String? errorMessage;
   late List<DropdownMenuEntry> doseEntries;
 
   @override
@@ -56,6 +53,11 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
               CustomLabel(title: 'اسم الدواء', color: AppColors.blue),
               CustomTextFormFeild(
                 hintText: 'مثال: الميتفورمين',
+                // validator: (value) {
+                //   if (value!.isEmpty) {
+                //     return 'يرجى ادخال اسم الدواء';
+                //   }
+                // },
                 onSubmitted: (vale) {
                   setState(() {
                     medModel.name = vale;
@@ -92,7 +94,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                   log(value.runtimeType.toString());
                   log(value.toString());
                   setState(() {
-                    medModel.donse = double.tryParse(value.toString());
+                    medModel.dose = double.tryParse(value.toString());
                     medModel.description = 'non';
                     medModel.startDate = DateTime.now();
                   });
@@ -105,11 +107,28 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                 hintText: 'مثال: كل 6, 8, 12 ساعات, كل يوم',
                 onSelected: (value) {
                   setState(() {
-                    medModel.frequency = value ;
+                    medModel.frequency = value;
                   });
                 },
               ),
+
+              CustomLabel(title: 'تاريخ البدء', color: AppColors.blue),
+              CustomDropDownMenu(
+                entries: [],
+                hintText: 'مثال: الان, بعد 6, 8,12 ساعة',
+              ),
+              CustomLabel(
+                title: ' وصف او ملاحظات',
+                color: AppColors.blue,
+                isImporant: false,
+              ),
+
+              CustomTextFormFeild(hintText: 'مثال: يرج قبل الاستخدام'),
               SizedBox(height: 20),
+              errorMessage != null
+                  ? Text(errorMessage!, style: TextStyle(color: AppColors.red))
+                  : const SizedBox(),
+
               SizedBox(
                 width: 150,
                 child: CustomButton(
@@ -117,9 +136,21 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                   title: 'اضافة',
                   strColor: AppColors.white,
                   onPressed: () {
-                    log(medModel.toString());
-                    BlocProvider.of<MedsCubit>(context).insert(medModel);
-                    context.pop();
+                    if (widget._formKey.currentState!.validate()) {
+                      if (medModel.type == null ||
+                          medModel.name == null ||
+                          medModel.dose == null ||
+                          medModel.startDate == null ||
+                          medModel.frequency == null) {
+                        errorMessage = 'يرجى تعبئة جميع الحقول المطلوبة';
+                        setState(() {});
+                        log('empty fields');
+                        return;
+                      }
+                      log(medModel.toString());
+                      BlocProvider.of<MedsCubit>(context).insert(medModel);
+                      context.pop();
+                    }
                   },
                 ),
               ),

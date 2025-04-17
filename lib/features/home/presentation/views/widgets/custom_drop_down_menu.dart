@@ -27,6 +27,7 @@ class CustomDropDownMenu<T> extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: DropdownMenu<T>(
+        
         textAlign: TextAlign.right,
         inputDecorationTheme: InputDecorationTheme(
           border: InputBorder.none,

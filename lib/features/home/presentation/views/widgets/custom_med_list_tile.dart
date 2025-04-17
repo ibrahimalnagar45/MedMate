@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:midmate/features/home/presentation/views/widgets/custom_med_type_icon.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/image_controller.dart';
@@ -10,6 +11,10 @@ class CustomMedListTile extends StatelessWidget {
   final MedModel medModel;
   @override
   Widget build(BuildContext context) {
+    // DateTime date = medModel.startDate!.add(
+    //   Duration(hours: medModel.frequency!),
+    // );
+    // String formattedDate = DateFormat('hh:mm a').format(date);
     return Container(
       decoration: BoxDecoration(
         color: AppColors.blue,
@@ -17,13 +22,43 @@ class CustomMedListTile extends StatelessWidget {
       ),
       margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
+        
         iconColor: AppColors.blue,
         leading: _getIcon(medModel.type!),
-        title: Text(medModel.name!, style: TextStyles.regWhtieTextStyle),
-
-        subtitle: Text(
-          getArabicMedType(medModel.type!),
+        title: Text(
+          medModel.name == null ? 'unknown' : medModel.name!,
           style: TextStyles.regWhtieTextStyle,
+        ),
+
+        trailing: Text(
+          medModel.startDate == null
+              ? ''
+              : " الموعد القادم ${medModel.getFormattedNextTime()}",
+          style: TextStyles.regWhtieTextStyle,
+        ),
+        subtitle: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          mainAxisSize: MainAxisSize.max,
+          children: [
+            Text(
+              medModel.dose == null ? '' : medModel.dose!.toInt().toString(),
+
+              style: TextStyles.regWhtieTextStyle,
+            ),
+
+            Text(
+              getArabicMedType(medModel.type!),
+              style: TextStyles.regWhtieTextStyle,
+            ),
+            Text(
+              medModel.frequency == null
+                  ? ''
+                  : "كل${medModel.frequency!} ساعات",
+              style: TextStyles.regWhtieTextStyle,
+            ),
+
+            // dose   next_time
+          ],
         ),
       ),
     );

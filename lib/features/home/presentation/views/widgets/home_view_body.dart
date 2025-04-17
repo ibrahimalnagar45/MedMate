@@ -3,6 +3,8 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
+import 'package:midmate/utils/extension_fun.dart';
+import 'package:midmate/utils/text_styles.dart';
 
 import '../../../../../utils/app_colors.dart';
 import 'add_med_modal_bottom_sheet.dart';
@@ -16,25 +18,31 @@ class HomeViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: buildAppBar(),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.blue,
-        foregroundColor: AppColors.white,
-        // shape: CircleBorder(),
-        onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) {
-              return BlocProvider(
-                create: (context) => MedsCubit(),
-                child: AddMedModalBottomSheet(formKey: _formKey),
-              );
+      floatingActionButton: Align(
+        alignment: Alignment.bottomRight,
+        child: Padding(
+          padding: const EdgeInsets.only(right: 30.0, bottom: 10),
+          child: FloatingActionButton(
+            backgroundColor: AppColors.blue,
+            foregroundColor: AppColors.white,
+
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) {
+                  return BlocProvider(
+                    create: (context) => MedsCubit(),
+                    child: AddMedModalBottomSheet(formKey: _formKey),
+                  );
+                },
+              ).then((_) {
+                BlocProvider.of<MedsCubit>(context).getAllMed();
+              });
             },
-          ).then((_) {
-            BlocProvider.of<MedsCubit>(context).getAllMed();
-          });
-        },
-        child: const Icon(Icons.add),
+            child: const Icon(Icons.add),
+          ),
+        ),
       ),
       backgroundColor: AppColors.grey,
 
@@ -49,7 +57,9 @@ class HomeViewBody extends StatelessWidget {
             } else if (state is GetMedsFaluire) {
               return Center(child: Text(state.erMessage));
             } else {
-              return const Center(child: Text('No Meds Yet'));
+              return const Center(
+                child: Text('No Meds Yet', style: TextStyles.hintTextStyle),
+              );
             }
           },
         ),

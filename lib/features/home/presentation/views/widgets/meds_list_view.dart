@@ -14,11 +14,13 @@ class MedsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     log(meds.toString());
-    return ListView.builder(
-      itemCount: meds.length,
-      itemBuilder: (context, index) {
-        return CustomMedListTile(medModel: meds[index]);
-      },
-    );
+    return meds.isEmpty
+        ? const Center(child: Text('لا يوجد اي ادوية حتي لان '))
+        : ListView.builder(
+          itemCount: meds.length,
+          itemBuilder: (context, index) {
+            return CustomMedListTile(medModel: meds[index]);
+          },
+        );
   }
 }

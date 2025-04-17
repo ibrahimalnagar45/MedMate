@@ -7,14 +7,14 @@ class CustomMedTypeIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return CircleAvatar(
-      radius: 15,
-
+      radius: 13,
       backgroundColor: Colors.transparent,
       child: Image.asset(
         icon,
         fit: BoxFit.cover,
         color: AppColors.white,
-        width: 35,
+        
+        // width: 35,
       ),
     );
   }

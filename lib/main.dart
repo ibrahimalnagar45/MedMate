@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
@@ -29,15 +30,18 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       title: 'Remind Me',
+
       theme: ThemeData(
         fontFamily: AppFonts.primaryFont,
         primaryColor: AppColors.blue,
-        iconTheme: const IconThemeData(color: AppColors.blue, ),
-      
+        iconTheme: const IconThemeData(color: AppColors.blue),
       ),
       // home: HomeView()
       // home: AuthView(),
-      home: SplashView(),
+      home: Directionality(
+        textDirection: TextDirection.rtl,
+        child: SplashView(),
+      ),
     );
   }
 }

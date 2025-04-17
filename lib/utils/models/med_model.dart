@@ -1,3 +1,4 @@
+import 'package:intl/intl.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 
 class MedModel {
@@ -5,20 +6,28 @@ class MedModel {
   String? name;
   String? description;
   MedType? type;
-  double? donse;
+  double? dose;
   int? frequency;
   DateTime? startDate;
+  DateTime? nextTime;
   static int id = 0;
   MedModel.newMed();
   MedModel({
     required this.name,
     required this.description,
     required this.type,
-    required this.donse,
+    required this.dose,
     required this.frequency,
     required this.startDate,
   }) {
     id++;
+  }
+
+  String getFormattedNextTime() {
+    nextTime = startDate!.add(Duration(hours: frequency!));
+    return DateFormat(
+      'hh:mm a',
+    ).format(startDate!.add(Duration(hours: frequency!)));
   }
 
   Map<String, dynamic> toMap() {
@@ -26,7 +35,7 @@ class MedModel {
       'name': name,
       'description': description,
       'type': type.toString(),
-      'amount': donse.toString(),
+      'amount': dose.toString(),
       'frequency': frequency.toString(),
       'startDate': startDate == null ? startDate : startDate!.toIso8601String(),
     };
@@ -37,7 +46,7 @@ class MedModel {
       name: map[DbConstants.columnName],
       description: map[DbConstants.columnDescription],
       type: getType(map[DbConstants.columnType]),
-      donse: map[DbConstants.columnAmount],
+      dose: map[DbConstants.columnAmount],
       frequency: map[DbConstants.columnFrequency],
       startDate: DateTime.parse(map[DbConstants.columnStartDate]),
     );
@@ -45,7 +54,7 @@ class MedModel {
 
   @override
   String toString() {
-    return 'name:$name, description:$description,  type:$type, donse:$donse, frequency:$frequency, startDate:$startDate';
+    return 'name:$name, description:$description,  type:$type, donse:$dose, frequency:$frequency, startDate:$startDate';
   }
 }
 
