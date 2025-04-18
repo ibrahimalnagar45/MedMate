@@ -10,11 +10,7 @@ class CustomMedListTile extends StatelessWidget {
   const CustomMedListTile({super.key, required this.medModel});
   final MedModel medModel;
   @override
-  Widget build(BuildContext context) {
-    // DateTime date = medModel.startDate!.add(
-    //   Duration(hours: medModel.frequency!),
-    // );
-    // String formattedDate = DateFormat('hh:mm a').format(date);
+  Widget build(BuildContext context) { 
     return Container(
       decoration: BoxDecoration(
         color: AppColors.blue,
@@ -82,3 +78,10 @@ class CustomMedListTile extends StatelessWidget {
     }
   }
 }
+
+/**
+-custom sound  
+ schedule notification
+Full-screen intent notifications
+
+ */
