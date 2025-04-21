@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
@@ -27,19 +28,26 @@ class HomeViewBody extends StatelessWidget {
             foregroundColor: AppColors.white,
 
             onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (context) {
-                  return BlocProvider(
-                    create: (context) => MedsCubit(),
-                    child: AddMedModalBottomSheet(formKey: _formKey),
-                  );
-                },
-              ).then((_) {
-                BlocProvider.of<MedsCubit>(context).getAllMed();
-              });
+              LocalNotification().showSceduledNotification(
+                date: DateTime.now().add(const Duration(seconds: 5)),
+                title: 'Hello',
+                body: 'this is an exaple of notification with action  ',
+              );
             },
+            // onPressed: () {
+            //   showModalBottomSheet(
+            //     context: context,
+            //     isScrollControlled: true,
+            //     builder: (context) {
+            //       return BlocProvider(
+            //         create: (context) => MedsCubit(),
+            //         child: AddMedModalBottomSheet(formKey: _formKey),
+            //       );
+            //     },
+            //   ).then((_) {
+            //     BlocProvider.of<MedsCubit>(context).getAllMed();
+            //   });
+            // },
             child: const Icon(Icons.add),
           ),
         ),

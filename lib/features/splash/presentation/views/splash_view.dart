@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:midmate/features/user_data/presentation/views/user_data_view.dart';
@@ -26,6 +27,15 @@ class _SplashViewState extends State<SplashView> {
   String? userName = getIt<SharedPreferences>().getString(
     SharedPrefrenceDb.username,
   );
+
+  
+  @override
+  void dispose()async {
+  await LocalNotification().initializeDefaultNotificationSetting();
+  await LocalNotification().requestNotificationPermission();
+  
+    super.dispose();
+  }
   @override
   void initState() {
     super.initState();

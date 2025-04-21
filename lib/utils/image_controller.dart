@@ -11,6 +11,8 @@ class ImageController {
       'assets/images/b0db577d-d58a-4339-86f1-e24d6803f5b3.webp';
   static const String splashLottieImage = 'assets/images/splash_screen.json';
 
+  static const String notiIcon = 'ic_notification';
+
   // med type icons
 
   static const String pill = 'assets/icons/med_types/pill.png';
