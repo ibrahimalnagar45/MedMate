@@ -27,30 +27,33 @@ class HomeViewBody extends StatelessWidget {
             backgroundColor: AppColors.blue,
             foregroundColor: AppColors.white,
 
-            onPressed: () {
-              LocalNotification(
-                navigatorKey: navigatorKey,
-              ).showSceduledAlarmNotification(
-                date: 10,
-                title: 'Hello',
-                body:
-                    'this is an exaple of scheduled notification with action  ',
-              );
-            },
             // onPressed: () {
-            //   showModalBottomSheet(
-            //     context: context,
-            //     isScrollControlled: true,
-            //     builder: (context) {
-            //       return BlocProvider(
-            //         create: (context) => MedsCubit(),
-            //         child: AddMedModalBottomSheet(formKey: _formKey),
-            //       );
-            //     },
-            //   ).then((_) {
-            //     BlocProvider.of<MedsCubit>(context).getAllMed();
-            //   });
+            //   // LocalNotification(
+            //   //   navigatorKey: navigatorKey,
+            //   // ).showScheduledRepeatedNotification(
+            //   //   title: 'this is the time to take ur medicine medModel.name}',
+            //   //   body: 'this is the time to take ur medicine medModel.name}',
+            //   //   date: DateTime(0, 0, 0, 0, 1, 4, 0, 0),
+            //   //   // id: medModel.id,
+            //   // );
+            //   LocalNotification(
+            //     navigatorKey: navigatorKey,
+            //   ).cancleAllNotifications();
             // },
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) {
+                  return BlocProvider(
+                    create: (context) => MedsCubit(),
+                    child: AddMedModalBottomSheet(formKey: _formKey),
+                  );
+                },
+              ).then((_) {
+                BlocProvider.of<MedsCubit>(context).getAllMed();
+              });
+            },
             child: const Icon(Icons.add),
           ),
         ),

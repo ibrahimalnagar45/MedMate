@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:intl/intl.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 
@@ -24,10 +26,15 @@ class MedModel {
   }
 
   String getFormattedNextTime() {
-    nextTime = startDate!.add(Duration(hours: frequency!));
+    // String d= DateFormat('hh:mm a').format(startDate!);
+    nextTime = DateTime.now().add(
+      Duration(hours: frequency! + startDate!.hour),
+    );
+    // log(nextTime.toString());
+
     return DateFormat(
       'hh:mm a',
-    ).format(startDate!.add(Duration(hours: frequency!)));
+    ).format(DateTime.now().add(Duration(hours: frequency! + startDate!.hour)));
   }
 
   Map<String, dynamic> toMap() {

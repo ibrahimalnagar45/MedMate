@@ -141,6 +141,7 @@ class LocalNotification {
     );
   }
 
+
   showSceduledNotification({String? title, String? body, int? date}) async {
     final NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
@@ -191,12 +192,55 @@ class LocalNotification {
     );
   }
 
+  showScheduledRepeatedNotification({
+    String? title,
+    String? body,
+    // int? date,
+    required DateTime date,
+  }) async {
+    log('scheduled alarm notification called');
+    // log(date!.s)
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          'repeated_scheduled_alarm_channel_id',
+          'Alarm Notifications',
+          channelDescription: 'Channel for alarm notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+          fullScreenIntent: true,
+          visibility: NotificationVisibility.public,
+          playSound: true,
+          enableVibration: true,
+          sound: RawResourceAndroidNotificationSound('alram_sound'),
+          icon: 'ic_notification', // your custom icon
+          // ticker: 'ticker',
+        );
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
+      id,
+      title,
+      body,
+      Duration(
+        // days: date.day,
+        hours: date.hour,
+        minutes: date.minute,
+        seconds: date.second,
+      ),
+      platformChannelSpecifics,
+    );
+  }
+
   showSceduledAlarmNotification({
     String? title,
     String? body,
     int? date,
   }) async {
     log('scheduled alarm notification called');
+    // log(date!.s)
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
           'scheduled_alarm_channel_id',
@@ -217,16 +261,22 @@ class LocalNotification {
       android: androidPlatformChannelSpecifics,
     );
 
+    // await flutterLocalNotificationsPlugin.s
     await flutterLocalNotificationsPlugin.zonedSchedule(
       id++,
       title,
       body,
-      tz.TZDateTime.now(tz.local).add(Duration(seconds: date ??= 0)),
+      tz.TZDateTime.now(tz.local).add(Duration(seconds: date!)),
       platformChannelSpecifics,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
 
       payload: 'alarm_screen',
     );
+  }
+
+
+  cancleAllNotifications() async {
+    await flutterLocalNotificationsPlugin.cancelAll();
   }
 
   // permission for android 13 and above

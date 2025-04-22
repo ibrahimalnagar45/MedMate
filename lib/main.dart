@@ -1,15 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:midmate/core/services/local_notification.dart';
+import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'utils/app_fonts.dart';
 
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
- 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
@@ -19,7 +20,9 @@ void main() async {
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
 
   // tz.setLocalLocation(tz.getLocation(timeZoneName));
-  // // getIt<SharedPreferences>().clear();
+  // getIt<SharedPreferences>().clear();
+
+  // Crud.instance.deleteAll();
   // await LocalNotification().requestNotificationPermission();
   // await LocalNotification().requestExactAlarmsPermission();
 
@@ -69,4 +72,3 @@ class MyApp extends StatelessWidget {
 showsUserInterface  to get ontaped notification to open the app
 
  */
- 

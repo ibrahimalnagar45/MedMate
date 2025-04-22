@@ -91,7 +91,7 @@ class _OnboardingViewState extends State<OnboardingView>
       debugPrint(
         'from onboardingview the value SharedPrefrenceDb.onBoardingVisited is ${prefs.getBool(SharedPrefrenceDb.onBoardingVisited)}',
       );
-      if (getIt<UserModel>().getUser().name == null) {
+      if (UserModel.instance.name == null) {
         context.replaceWith(UserDataView());
       } else {
         context.replaceWith(HomeView());

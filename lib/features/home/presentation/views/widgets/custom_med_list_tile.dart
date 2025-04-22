@@ -10,7 +10,71 @@ class CustomMedListTile extends StatelessWidget {
   const CustomMedListTile({super.key, required this.medModel});
   final MedModel medModel;
   @override
-  Widget build(BuildContext context) { 
+  Widget build(BuildContext context) {
+    return Container(
+      height: 60,
+      decoration: BoxDecoration(
+        color: AppColors.blue,
+        borderRadius: BorderRadius.circular(10),
+      ),
+      margin: const EdgeInsets.only(bottom: 10),
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: Row(
+        children: [
+          _medIcon(medModel.type!),
+          SizedBox(width: 15),
+          Column(
+           mainAxisAlignment:  MainAxisAlignment.center ,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+              Text(
+                medModel.name.toString(),
+                style: TextStyles.regWhtieTextStyle,
+              ),
+
+              Text.rich(
+                TextSpan(
+                  children: [
+                    TextSpan(
+                      text: medModel.dose!.toInt().toString(),
+                      style: TextStyles.regGreyTextStyle,
+                    ),
+                    TextSpan(text: ' '),
+
+                    TextSpan(
+                      text:
+                          getArabicMedType(medModel.type!) == 'مسحوق' ||
+                                  getArabicMedType(medModel.type!) == 'شراب' ||
+                                  getArabicMedType(medModel.type!) == 'بخاخ' ||
+                                  getArabicMedType(medModel.type!) == 'كريم'
+                              ? "ملي"
+                              : getArabicMedType(medModel.type!),
+                      style: TextStyles.regGreyTextStyle,
+                    ),
+                    TextSpan(
+                      text:
+                          medModel.frequency!.toInt() == 24
+                              ? " كل يوم "
+                              : " كل ${medModel.frequency!} ساعات",
+                      style: TextStyles.regGreyTextStyle,
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          Spacer(),
+          Text(
+            medModel.startDate == null
+                ? ''
+                : " الموعد القادم ${medModel.getFormattedNextTime()}",
+            style: TextStyles.regWhtieTextStyle,
+          ),
+          // SizedBox(width: 8),
+        ],
+      ),
+    );
+
     return Container(
       decoration: BoxDecoration(
         color: AppColors.blue,
@@ -18,9 +82,8 @@ class CustomMedListTile extends StatelessWidget {
       ),
       margin: const EdgeInsets.only(bottom: 10),
       child: ListTile(
-        
         iconColor: AppColors.blue,
-        leading: _getIcon(medModel.type!),
+        leading: _medIcon(medModel.type!),
         title: Text(
           medModel.name == null ? 'unknown' : medModel.name!,
           style: TextStyles.regWhtieTextStyle,
@@ -60,7 +123,7 @@ class CustomMedListTile extends StatelessWidget {
     );
   }
 
-  _getIcon(MedType medType) {
+  _medIcon(MedType medType) {
     if (medType == MedType.pill) {
       return CustomMedTypeIcon(icon: ImageController.pill);
     } else if (medType == MedType.injection) {
