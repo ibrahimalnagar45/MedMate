@@ -4,7 +4,7 @@ import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:midmate/features/user_data/presentation/views/user_data_view.dart';
- import 'package:midmate/utils/service_locator.dart';
+import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -12,7 +12,7 @@ import '../../../../utils/image_controller.dart';
 
 class SplashView extends StatefulWidget {
   const SplashView({super.key});
-//
+  //
   @override
   State<SplashView> createState() => _SplashViewState();
 }
@@ -28,14 +28,14 @@ class _SplashViewState extends State<SplashView> {
     SharedPrefrenceDb.username,
   );
 
-  
-  @override
-  void dispose()async {
-  await LocalNotification().initializeDefaultNotificationSetting();
-  await LocalNotification().requestNotificationPermission();
-  
-    super.dispose();
-  }
+  // @override
+  // void dispose()async {
+  // await LocalNotification().initializeDefaultNotificationSetting();
+
+  // await LocalNotification().requestNotificationPermission();
+
+  //   super.dispose();
+  // }
   @override
   void initState() {
     super.initState();

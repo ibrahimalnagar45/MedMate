@@ -1,7 +1,10 @@
 import 'dart:developer';
 
+import 'package:android_intent_plus/android_intent.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
+import 'package:midmate/features/notification/presentation/views/alaram_view.dart';
+import 'package:midmate/features/notification/presentation/views/notification_view.dart';
 import 'package:timezone/timezone.dart' as tz;
 // import 'package:android_intent_plus/android_intent.dart';
 
@@ -9,7 +12,11 @@ class LocalNotification {
   FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
       FlutterLocalNotificationsPlugin();
 
+  final GlobalKey<NavigatorState> navigatorKey;
+
   static int id = 0;
+
+  LocalNotification({required this.navigatorKey});
 
   initializeDefaultNotificationSetting() async {
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
@@ -44,35 +51,47 @@ class LocalNotification {
       initializationSettings,
       onDidReceiveNotificationResponse: onDidReceiveNotificationResponse,
     );
+
+    await requestExactAlarmsPermission();
+    await requestNotificationPermission();
+    await requestFullScreenIntent();
   }
 
   void onDidReceiveNotificationResponse(
     NotificationResponse notificationResponse,
-    //  BuildContext context,
-
-    // Function(String? payload) secondScreen,
   ) async {
     final String? payload = notificationResponse.payload;
     if (notificationResponse.payload != null) {
       debugPrint('notification payload: $payload');
     }
 
-    // uncomment this to navigate to the second screen when the notification is tapped
+    if (notificationResponse.payload == 'alarm_screen') {
+      await Navigator.push(
+        navigatorKey.currentContext!,
+        MaterialPageRoute<void>(
+          builder: (context) => AlaramView(payload: payload),
+        ),
+      );
+      return;
+    }
 
-    // await Navigator.push(
-    //   context,
-    //   MaterialPageRoute<void>(builder: (context) => secondScreen(payload)),
-    // );
+    await Navigator.push(
+      navigatorKey.currentContext!,
+      MaterialPageRoute<void>(
+        builder: (context) => NotificationView(payload: payload),
+      ),
+    );
   }
 
   showNotification({String? title, String? body}) async {
     const AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
-          'your channel id',
+          'notification_channel_id',
           'your channel name',
           channelDescription: 'your channel description',
           importance: Importance.max,
           priority: Priority.high,
+
           ticker: 'ticker',
           icon: 'ic_notification',
         );
@@ -89,28 +108,124 @@ class LocalNotification {
     );
   }
 
-  showSceduledNotification({
-    String? title,
-    String? body,
-    DateTime? date,
+  Future<void> showNotificationWithActions({
+    required String title,
+    required String body,
   }) async {
-    date!.second;
+    const AndroidNotificationDetails androidNotificationDetails =
+        AndroidNotificationDetails(
+          '...',
+          '...',
+          actions: <AndroidNotificationAction>[
+            AndroidNotificationAction(
+              'id_1',
+              'Action 1',
+              //  showsUserInterface: true,
+            ),
+            AndroidNotificationAction(
+              'id_2',
+              'Action 2',
+              // allowGeneratedReplies: true,
+            ),
+            AndroidNotificationAction('id_3', 'Action 3'),
+          ],
+        );
+    const NotificationDetails notificationDetails = NotificationDetails(
+      android: androidNotificationDetails,
+    );
+    await flutterLocalNotificationsPlugin.show(
+      id++,
+      title,
+      body,
+      notificationDetails,
+    );
+  }
+
+  showSceduledNotification({String? title, String? body, int? date}) async {
+    final NotificationDetails notificationDetails = NotificationDetails(
+      android: AndroidNotificationDetails(
+        'your channel id',
+        'your channel name',
+        channelDescription: 'your channel description',
+      ),
+    );
+
     await flutterLocalNotificationsPlugin.zonedSchedule(
       0,
       title,
       body,
-      tz.TZDateTime.now(
-        tz.local,
-      ).add(Duration(days: date.day, hours: date.hour, seconds: date.second)),
+      tz.TZDateTime.now(tz.local).add(Duration(seconds: date ??= 0)),
 
-      const NotificationDetails(
-        android: AndroidNotificationDetails(
-          'your channel id',
-          'your channel name',
-          channelDescription: 'your channel description',
-        ),
-      ),
+      notificationDetails,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+    );
+  }
+
+  showAlarmNotification({String? title, String? body}) async {
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          'alarm_channel_id',
+          'Alarm Notifications',
+          channelDescription: 'Channel for alarm notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+          fullScreenIntent: true,
+          visibility: NotificationVisibility.public,
+          playSound: true,
+          enableVibration: true,
+          sound: RawResourceAndroidNotificationSound('alram_sound'),
+          icon: 'ic_notification', // your custom icon
+          // ticker: 'ticker',
+        );
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.show(
+      id++, // fixed ID so you don't spam
+      title,
+      body,
+      platformChannelSpecifics,
+      payload: 'alarm_screen',
+    );
+  }
+
+  showSceduledAlarmNotification({
+    String? title,
+    String? body,
+    int? date,
+  }) async {
+    log('scheduled alarm notification called');
+    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+        AndroidNotificationDetails(
+          'scheduled_alarm_channel_id',
+          'Alarm Notifications',
+          channelDescription: 'Channel for alarm notifications',
+          importance: Importance.max,
+          priority: Priority.high,
+          fullScreenIntent: true,
+          visibility: NotificationVisibility.public,
+          playSound: true,
+          enableVibration: true,
+          sound: RawResourceAndroidNotificationSound('alram_sound'),
+          icon: 'ic_notification', // your custom icon
+          // ticker: 'ticker',
+        );
+
+    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+      android: androidPlatformChannelSpecifics,
+    );
+
+    await flutterLocalNotificationsPlugin.zonedSchedule(
+      id++,
+      title,
+      body,
+      tz.TZDateTime.now(tz.local).add(Duration(seconds: date ??= 0)),
+      platformChannelSpecifics,
+      androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
+
+      payload: 'alarm_screen',
     );
   }
 
@@ -130,6 +245,8 @@ class LocalNotification {
           >()!
           .requestNotificationsPermission();
     }
+
+    log('Notification permission granted: $permission');
   }
 
   requestExactAlarmsPermission() async {
@@ -140,64 +257,41 @@ class LocalNotification {
             >()!
             .requestExactAlarmsPermission();
 
+    // final intent = AndroidIntent(
+    //   action: 'android.settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS',
+    // );
+    // intent.launch();
     while (!permission!) {
-      await flutterLocalNotificationsPlugin
-          .resolvePlatformSpecificImplementation<
-            AndroidFlutterLocalNotificationsPlugin
-          >()!
-          .requestExactAlarmsPermission();
+      // await flutterLocalNotificationsPlugin
+      //     .resolvePlatformSpecificImplementation<
+      //       AndroidFlutterLocalNotificationsPlugin
+      //     >()!
+      //     .requestExactAlarmsPermission();
+
+      final intent = AndroidIntent(
+        action: 'android.settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS',
+      );
+      intent.launch();
     }
-    // if (!permission!) {
-    //   await flutterLocalNotificationsPlugin
-    //       .resolvePlatformSpecificImplementation<
-    //         AndroidFlutterLocalNotificationsPlugin
-    //       >()!
-    //       .requestExactAlarmsPermission();
-    //   // const intent = AndroidIntent(
-    //   //   action: 'android.settings.REQUEST_SCHEDULE_EXACT_ALARM',
-    //   // );
-    //   // intent.launch();
-    // }
 
     log('Exact alarms permission granted: $permission');
   }
 
-  Future<void> showNotificationWithActions({
-    required String title,
-    required String body,
-  }) async {
-    const AndroidNotificationDetails
-    androidNotificationDetails = AndroidNotificationDetails(
-      '...',
-      '...',
-      actions: <AndroidNotificationAction>[
-        AndroidNotificationAction(
-          'id_1',
-          'Action 1',
-          //  showsUserInterface: true,
-        ),
-        AndroidNotificationAction(
-          'id_2',
-          'Action 2',
-          // allowGeneratedReplies: true,
-        ),
-        AndroidNotificationAction(
-          'id_3',
-          'Action 3',
-          // inputs: [
-          //   AndroidNotificationActionInput(choices: ['Choice 1', 'Choice 2']),
-          // ],
-        ),
-      ],
-    );
-    const NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-    );
-    await flutterLocalNotificationsPlugin.show(
-      id++,
-      title,
-      body,
-      notificationDetails,
-    );
+  requestFullScreenIntent() async {
+    final bool? permission =
+        await flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin
+            >()!
+            .requestFullScreenIntentPermission();
+
+    if (!permission!) {
+      await flutterLocalNotificationsPlugin
+          .resolvePlatformSpecificImplementation<
+            AndroidFlutterLocalNotificationsPlugin
+          >()!
+          .requestFullScreenIntentPermission();
+    }
+    log('Full screen intent permission granted: $permission');
   }
 }

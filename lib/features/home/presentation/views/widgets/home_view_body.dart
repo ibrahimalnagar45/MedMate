@@ -4,7 +4,7 @@ import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
-import 'package:midmate/utils/extension_fun.dart';
+import 'package:midmate/main.dart';
 import 'package:midmate/utils/text_styles.dart';
 
 import '../../../../../utils/app_colors.dart';
@@ -28,10 +28,13 @@ class HomeViewBody extends StatelessWidget {
             foregroundColor: AppColors.white,
 
             onPressed: () {
-              LocalNotification().showSceduledNotification(
-                date: DateTime.now().add(const Duration(seconds: 5)),
+              LocalNotification(
+                navigatorKey: navigatorKey,
+              ).showSceduledAlarmNotification(
+                date: 10,
                 title: 'Hello',
-                body: 'this is an exaple of notification with action  ',
+                body:
+                    'this is an exaple of scheduled notification with action  ',
               );
             },
             // onPressed: () {
