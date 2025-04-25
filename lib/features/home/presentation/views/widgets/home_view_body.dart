@@ -8,8 +8,7 @@ import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
 import 'package:midmate/main.dart';
 import 'package:midmate/utils/image_controller.dart';
-import 'package:midmate/utils/text_styles.dart';
-
+ 
 import '../../../../../utils/app_colors.dart';
 import 'add_med_modal_bottom_sheet.dart';
 
@@ -30,23 +29,6 @@ class HomeViewBody extends StatelessWidget {
             backgroundColor: AppColors.blue,
             foregroundColor: AppColors.white,
 
-            // onPressed: () async {
-            //   // LocalNotification(
-            //   //   navigatorKey: navigatorKey,
-            //   // ).showScheduledRepeatedNotification(
-            //   //   title: 'this is the time to take ur medicine medModel.name}',
-            //   //   body: 'this is the time to take ur medicine medModel.name}',
-            //   //   date: DateTime(0, 0, 0, 0, 1, 4, 0, 0),
-            //   //   // id: medModel.id,
-            //   // );
-            //   log('pressed');
-            //   LocalNotification(
-            //     navigatorKey: navigatorKey,
-            //   ).showSceduledAlarmNotification(date: 3);
-            //   await LocalNotification(
-            //     navigatorKey: navigatorKey,
-            //   ).getAllNotification();
-            // },
             onPressed: () {
               showModalBottomSheet(
                 context: context,

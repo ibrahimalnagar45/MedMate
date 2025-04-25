@@ -34,4 +34,16 @@ class MedsCubit extends Cubit<MedsState> {
       emit(InsertMedsFaluire(erMessage: e.toString()));
     }
   }
+
+  deleteAMed(int id) async {
+    emit(MedsLoading());
+    try {
+      await db.delete(id);
+      meds.removeWhere((med) => med.id == id);
+      emit(DeleteMedSuccess());
+      // emit(DeleteMedSuccess());
+    } catch (e) {
+      emit(DeleteMedFaluire(erMessage: e.toString()));
+    }
+  }
 }

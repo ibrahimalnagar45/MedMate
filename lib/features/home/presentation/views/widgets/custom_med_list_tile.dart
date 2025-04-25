@@ -1,4 +1,9 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/details_view.dart';
 import 'package:midmate/features/home/presentation/views/widgets/custom_med_type_icon.dart';
 import 'package:midmate/utils/app_colors.dart';
@@ -12,72 +17,90 @@ class CustomMedListTile extends StatelessWidget {
   final MedModel medModel;
   @override
   Widget build(BuildContext context) {
-    if (medModel.nextTime!.isAfter(DateTime.now())) {
+    if (medModel.getNextTime()!.isAfter(DateTime.now())) {
       medModel.setNextTime();
-      
     }
-    return GestureDetector(
-      onTap: () {
-        context.goTo(DetailsView(med: medModel));
+    return Dismissible(
+      secondaryBackground: Container(
+        alignment: Alignment.centerLeft,
+        padding: const EdgeInsets.only(left: 20),
+        child: const Icon(Icons.delete, color: AppColors.red),
+      ),
+      background: Container(
+        // color: AppColors.red,
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.only(right: 20),
+        child: const Icon(Icons.delete, color: AppColors.red),
+      ),
+      key: Key(medModel.id.toString()),
+      direction: DismissDirection.endToStart,
+      onDismissed: (direction) {
+        BlocProvider.of<MedsCubit>(context).deleteAMed(medModel.id!);
+        BlocProvider.of<MedsCubit>(context).getAllMed();
       },
-      child: Container(
-        height: 60,
-        decoration: BoxDecoration(
-          color: AppColors.blue,
-          borderRadius: BorderRadius.circular(10),
-        ),
-        margin: const EdgeInsets.only(bottom: 10),
-        padding: const EdgeInsets.symmetric(horizontal: 8),
-        child: Row(
-          children: [
-            _medIcon(medModel.type!),
-            SizedBox(width: 15),
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                Text(
-                  medModel.name.toString(),
-                  style: TextStyles.regWhtieTextStyle,
-                ),
-                Text.rich(
-                  TextSpan(
-                    children: [
-                      TextSpan(
-                        text: medModel.dose!.toInt().toString(),
-                        style: TextStyles.regGreyTextStyle,
-                      ),
-                      TextSpan(text: ' '),
-                      TextSpan(
-                        text:
-                            medModel.getArabicMedType() == 'مسحوق' ||
-                                    medModel.getArabicMedType() == 'شراب' ||
-                                    medModel.getArabicMedType() == 'بخاخ' ||
-                                    medModel.getArabicMedType() == 'كريم'
-                                ? "ملي"
-                                : medModel.getArabicMedType(),
-                        style: TextStyles.regGreyTextStyle,
-                      ),
-                      TextSpan(
-                        text:
-                            medModel.frequency!.toInt() == 24
-                                ? " كل يوم "
-                                : " كل ${medModel.frequency!} ساعات",
-                        style: TextStyles.regGreyTextStyle,
-                      ),
-                    ],
+      child: GestureDetector(
+        onTap: () {
+          context.goTo(DetailsView(med: medModel));
+        },
+        child: Container(
+          height: 60,
+          decoration: BoxDecoration(
+            color: AppColors.blue,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          margin: const EdgeInsets.only(bottom: 10),
+          padding: const EdgeInsets.symmetric(horizontal: 8),
+          child: Row(
+            children: [
+              _medIcon(medModel.type!),
+              SizedBox(width: 15),
+              Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    medModel.name.toString(),
+                    style: TextStyles.regWhtieTextStyle,
                   ),
-                ),
-              ],
-            ),
-            Spacer(),
-            Text(
-              medModel.startDate == null
-                  ? ''
-                  : " الموعد القادم  ${medModel.getFormattedNextTime()}",
-              style: TextStyles.regWhtieTextStyle,
-            ),
-          ],
+                  Text.rich(
+                    TextSpan(
+                      children: [
+                        TextSpan(
+                          text: medModel.dose!.toInt().toString(),
+                          style: TextStyles.regGreyTextStyle,
+                        ),
+                        TextSpan(text: ' '),
+                        TextSpan(
+                          text:
+                              medModel.getArabicMedType() == 'مسحوق' ||
+                                      medModel.getArabicMedType() == 'شراب' ||
+                                      medModel.getArabicMedType() == 'بخاخ' ||
+                                      medModel.getArabicMedType() == 'كريم'
+                                  ? "ملي"
+                                  : medModel.getArabicMedType(),
+                          style: TextStyles.regGreyTextStyle,
+                        ),
+                        TextSpan(
+                          text:
+                              medModel.frequency!.toInt() == 24
+                                  ? " كل يوم "
+                                  : " كل ${medModel.frequency!} ساعات",
+                          style: TextStyles.regGreyTextStyle,
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+              Spacer(),
+              Text(
+                medModel.startDate == null
+                    ? ''
+                    : " الموعد القادم  ${medModel.getFormattedNextTime()}",
+                style: TextStyles.regWhtieTextStyle,
+              ),
+            ],
+          ),
         ),
       ),
     );
