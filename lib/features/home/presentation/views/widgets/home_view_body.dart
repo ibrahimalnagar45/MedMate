@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/services/local_notification.dart';
@@ -5,6 +7,7 @@ import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart
 import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
 import 'package:midmate/main.dart';
+import 'package:midmate/utils/image_controller.dart';
 import 'package:midmate/utils/text_styles.dart';
 
 import '../../../../../utils/app_colors.dart';
@@ -27,7 +30,7 @@ class HomeViewBody extends StatelessWidget {
             backgroundColor: AppColors.blue,
             foregroundColor: AppColors.white,
 
-            // onPressed: () {
+            // onPressed: () async {
             //   // LocalNotification(
             //   //   navigatorKey: navigatorKey,
             //   // ).showScheduledRepeatedNotification(
@@ -36,9 +39,13 @@ class HomeViewBody extends StatelessWidget {
             //   //   date: DateTime(0, 0, 0, 0, 1, 4, 0, 0),
             //   //   // id: medModel.id,
             //   // );
+            //   log('pressed');
             //   LocalNotification(
             //     navigatorKey: navigatorKey,
-            //   ).cancleAllNotifications();
+            //   ).showSceduledAlarmNotification(date: 3);
+            //   await LocalNotification(
+            //     navigatorKey: navigatorKey,
+            //   ).getAllNotification();
             // },
             onPressed: () {
               showModalBottomSheet(
@@ -71,8 +78,8 @@ class HomeViewBody extends StatelessWidget {
             } else if (state is GetMedsFaluire) {
               return Center(child: Text(state.erMessage));
             } else {
-              return const Center(
-                child: Text('No Meds Yet', style: TextStyles.hintTextStyle),
+              return Center(
+                child: Image.asset(ImageController.noMedAddedImage, width: 250),
               );
             }
           },

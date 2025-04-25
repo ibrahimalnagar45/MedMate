@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:intl/intl.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 
@@ -12,29 +10,46 @@ class MedModel {
   int? frequency;
   DateTime? startDate;
   DateTime? nextTime;
+  DateTime? createdAt;
   static int id = 0;
-  MedModel.newMed();
+  MedModel.newMed() {
+    // createdAt = DateTime.now();
+  }
   MedModel({
     required this.name,
     required this.description,
     required this.type,
     required this.dose,
+    this.createdAt,
     required this.frequency,
     required this.startDate,
   }) {
     id++;
+    // createdAt = DateTime.now();
   }
 
   String getFormattedNextTime() {
-    // String d= DateFormat('hh:mm a').format(startDate!);
-    nextTime = DateTime.now().add(
-      Duration(hours: frequency! + startDate!.hour),
-    );
-    // log(nextTime.toString());
+    if (nextTime == null) {
+      setNextTime();
+    }
+    return DateFormat('dd/MM-hh:mm a').format(nextTime!);
+  }
 
-    return DateFormat(
-      'hh:mm a',
-    ).format(DateTime.now().add(Duration(hours: frequency! + startDate!.hour)));
+  void setNextTime() {
+    nextTime = createdAt!.add(
+      Duration(
+        hours: frequency! + startDate!.hour,
+
+        // days: startDate!.day == DateTime.now().day ? startDate!.day : 0,
+      ),
+    );
+  }
+
+  getNextTime() {
+    if (nextTime == null) {
+      setNextTime();
+    }
+    return nextTime;
   }
 
   Map<String, dynamic> toMap() {
@@ -52,7 +67,7 @@ class MedModel {
     return MedModel(
       name: map[DbConstants.columnName],
       description: map[DbConstants.columnDescription],
-      type: getType(map[DbConstants.columnType]),
+      type: MedModel.newMed().getType(map[DbConstants.columnType]),
       dose: map[DbConstants.columnAmount],
       frequency: map[DbConstants.columnFrequency],
       startDate: DateTime.parse(map[DbConstants.columnStartDate]),
@@ -61,31 +76,52 @@ class MedModel {
 
   @override
   String toString() {
-    return 'name:$name, description:$description,  type:$type, donse:$dose, frequency:$frequency, startDate:$startDate';
+    return 'id:$id name:$name, description:$description,  type:$type, donse:$dose, frequency:$frequency, startDate:$startDate  , nextTime:$nextTime, createdAt:$createdAt';
+  }
+
+  MedType getType([String? type]) {
+    if (type == 'MedType.pill') {
+      return MedType.pill;
+    } else if (type == 'MedType.powder') {
+      return MedType.powder;
+    } else if (type == 'MedType.syrup') {
+      return MedType.syrup;
+    } else if (type == 'MedType.drop') {
+      return MedType.drop;
+    } else if (type == 'MedType.cream') {
+      return MedType.cream;
+    } else if (type == 'MedType.injection') {
+      return MedType.injection;
+    } else if (type == 'MedType.inhaler') {
+      return MedType.inhaler;
+    } else {
+      return MedType.pill;
+    }
+  }
+
+  String? getArabicMedType() {
+    if (type != null) {
+      switch (type!) {
+        case MedType.powder:
+          return 'مسحوق';
+        case MedType.pill:
+          return 'قرص';
+        case MedType.syrup:
+          return 'شراب';
+        case MedType.drop:
+          return 'قطرة';
+        case MedType.cream:
+          return 'كريم';
+        case MedType.injection:
+          return 'حقنة';
+        case MedType.inhaler:
+          return 'بخاخ';
+      }
+    }
   }
 }
 
-MedType getType(String type) {
-  if (type == 'MedType.pill') {
-    return MedType.pill;
-  } else if (type == 'MedType.powder') {
-    return MedType.powder;
-  } else if (type == 'MedType.syrup') {
-    return MedType.syrup;
-  } else if (type == 'MedType.drop') {
-    return MedType.drop;
-  } else if (type == 'MedType.cream') {
-    return MedType.cream;
-  } else if (type == 'MedType.injection') {
-    return MedType.injection;
-  } else if (type == 'MedType.inhaler') {
-    return MedType.inhaler;
-  } else {
-    return MedType.pill;
-  }
-}
-
-String getArabicMedType(MedType type) {
+String? getArabicMedType(MedType type) {
   switch (type) {
     case MedType.powder:
       return 'مسحوق';

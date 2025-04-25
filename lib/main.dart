@@ -22,7 +22,7 @@ void main() async {
   // tz.setLocalLocation(tz.getLocation(timeZoneName));
   // getIt<SharedPreferences>().clear();
 
-  // Crud.instance.deleteAll();
+  Crud.instance.deleteAll();
   // await LocalNotification().requestNotificationPermission();
   // await LocalNotification().requestExactAlarmsPermission();
 
@@ -38,8 +38,6 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
-
   @override
   Widget build(BuildContext context) {
     // final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -54,8 +52,7 @@ class MyApp extends StatelessWidget {
         primaryColor: AppColors.blue,
         iconTheme: const IconThemeData(color: AppColors.blue),
       ),
-      // home: HomeView()
-      // home: AuthView(),
+
       home: Directionality(
         textDirection: TextDirection.rtl,
         child: SplashView(),

@@ -15,7 +15,9 @@ class MedsListView extends StatelessWidget {
   Widget build(BuildContext context) {
     // log(meds.toString());
     return meds.isEmpty
-        ? const Center(child: Text('لا يوجد اي ادوية حتي لان '))
+        ? Center(
+          child: Image.asset(ImageController.noMedAddedImage, width: 250),
+        )
         : ListView.builder(
           itemCount: meds.length,
           itemBuilder: (context, index) {

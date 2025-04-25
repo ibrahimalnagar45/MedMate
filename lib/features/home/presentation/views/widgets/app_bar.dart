@@ -10,8 +10,10 @@ AppBar buildAppBar() {
     backgroundColor: AppColors.grey,
     title: Text('Home'),
     centerTitle: true,
-    actions: [
-      CircleAvatar(
+
+    leading: Padding(
+      padding: const EdgeInsets.symmetric(vertical: 5.0),
+      child: CircleAvatar(
         backgroundColor: AppColors.blue,
         child: Text(
           getIt<SharedPreferences>()
@@ -20,7 +22,8 @@ AppBar buildAppBar() {
           style: TextStyle(color: AppColors.white),
         ),
       ),
-    ],
+    ),
+
     actionsPadding: const EdgeInsets.only(right: 10),
   );
 }

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/utils/models/med_model.dart';
@@ -14,6 +16,9 @@ class MedsCubit extends Cubit<MedsState> {
     try {
       meds = await db.getAllMeds();
       emit(GetMedsSuccess(meds: meds));
+      for (var med in meds) {
+        log(med.toString());
+      }
     } catch (e) {
       emit(GetMedsFaluire(erMessage: e.toString()));
     }

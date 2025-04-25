@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:midmate/features/notification/presentation/views/alaram_view.dart';
 import 'package:midmate/features/notification/presentation/views/notification_view.dart';
+import 'package:midmate/utils/models/med_model.dart';
 import 'package:timezone/timezone.dart' as tz;
 // import 'package:android_intent_plus/android_intent.dart';
 
@@ -83,30 +84,28 @@ class LocalNotification {
     );
   }
 
-  showNotification({String? title, String? body}) async {
-    const AndroidNotificationDetails androidNotificationDetails =
-        AndroidNotificationDetails(
-          'notification_channel_id',
-          'your channel name',
-          channelDescription: 'your channel description',
-          importance: Importance.max,
-          priority: Priority.high,
-
-          ticker: 'ticker',
-          icon: 'ic_notification',
-        );
-    const NotificationDetails notificationDetails = NotificationDetails(
-      android: androidNotificationDetails,
-    );
-    await flutterLocalNotificationsPlugin.show(
-      id++,
-      title,
-      body,
-      notificationDetails,
-
-      payload: 'item x',
-    );
-  }
+  // showNotification({String? title, String? body}) async {
+  //   const AndroidNotificationDetails androidNotificationDetails =
+  //       AndroidNotificationDetails(
+  //         'notification_channel_id',
+  //         'your channel name',
+  //         channelDescription: 'your channel description',
+  //         importance: Importance.max,
+  //         priority: Priority.high,
+  //         ticker: 'ticker',
+  //         icon: 'ic_notification',
+  //       );
+  //   const NotificationDetails notificationDetails = NotificationDetails(
+  //     android: androidNotificationDetails,
+  //   );
+  //   await flutterLocalNotificationsPlugin.show(
+  //     id++,
+  //     title,
+  //     body,
+  //     notificationDetails,
+  //     payload: 'item x',
+  //   );
+  // }
 
   Future<void> showNotificationWithActions({
     required String title,
@@ -140,7 +139,6 @@ class LocalNotification {
       notificationDetails,
     );
   }
-
 
   showSceduledNotification({String? title, String? body, int? date}) async {
     final NotificationDetails notificationDetails = NotificationDetails(
@@ -196,6 +194,7 @@ class LocalNotification {
     String? title,
     String? body,
     // int? date,
+    // required MedModel med,
     required DateTime date,
   }) async {
     log('scheduled alarm notification called');
@@ -231,13 +230,14 @@ class LocalNotification {
         seconds: date.second,
       ),
       platformChannelSpecifics,
+      payload: 'time_to_take_medicine',
     );
   }
 
   showSceduledAlarmNotification({
     String? title,
     String? body,
-    int? date,
+    required int date,
   }) async {
     log('scheduled alarm notification called');
     // log(date!.s)
@@ -266,7 +266,7 @@ class LocalNotification {
       id++,
       title,
       body,
-      tz.TZDateTime.now(tz.local).add(Duration(seconds: date!)),
+      tz.TZDateTime.now(tz.local).add(Duration(seconds: date)),
       platformChannelSpecifics,
       androidScheduleMode: AndroidScheduleMode.exactAllowWhileIdle,
 
@@ -274,9 +274,20 @@ class LocalNotification {
     );
   }
 
-
   cancleAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+  getAllNotification() async {
+    final List<ActiveNotification> pendingNotificationRequests =
+        await flutterLocalNotificationsPlugin.getActiveNotifications();
+    log('active  notifications: $pendingNotificationRequests');
+  }
+
+  getAllScheduledNotification() async {
+    final List<PendingNotificationRequest> pendingNotificationRequests =
+        await flutterLocalNotificationsPlugin.pendingNotificationRequests();
+    log('sheduled notifications: $pendingNotificationRequests');
   }
 
   // permission for android 13 and above

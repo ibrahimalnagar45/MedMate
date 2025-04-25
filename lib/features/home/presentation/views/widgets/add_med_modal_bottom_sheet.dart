@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/cusotm_label.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_button.dart';
@@ -26,13 +25,20 @@ class AddMedModalBottomSheet extends StatefulWidget {
 }
 
 class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
-  MedModel medModel = MedModel.newMed();
+  // late MedModel medModel;
   String? errorMessage;
   late List<DropdownMenuEntry> doseEntries;
-
+  String? medName;
+  MedType? medType;
+  double? medDose;
+  int? medFrequency;
+  DateTime? medStartDate;
+  DateTime? medCreatedAt;
   @override
   void initState() {
     doseEntries = [];
+    medCreatedAt = DateTime.now();
+    // medModel = MedModel.newMed();
     super.initState();
   }
 
@@ -56,32 +62,28 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
               CustomLabel(title: 'اسم الدواء', color: AppColors.blue),
               CustomTextFormFeild(
                 hintText: 'مثال: الميتفورمين',
-                // validator: (value) {
-                //   if (value!.isEmpty) {
-                //     return 'يرجى ادخال اسم الدواء';
-                //   }
-                // },
+
                 onSubmitted: (vale) {
                   setState(() {
-                    medModel.name = vale;
+                    medName = vale;
                   });
                 },
               ),
 
               CustomLabel(title: 'نوع الدواء', color: AppColors.blue),
               CustomDropDownMenu(
-                // medModel: medModel,
+               
                 hintText: ' مثال: اقراص ,دواء, حقن',
                 entries: List.generate(MedType.values.length, (index) {
                   return DropdownMenuEntry(
-                    label: getArabicMedType(MedType.values[index]),
+                    label: getArabicMedType(MedType.values[index])!,
                     value: MedType.values[index],
                   );
                 }),
                 onSelected: (value) {
                   log(value.toString());
                   setState(() {
-                    medModel.type = value;
+                    medType = value;
                     doseEntries = getMedDoseEntries(value);
                   });
                 },
@@ -93,9 +95,9 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                 entries: doseEntries,
                 onSelected: (value) {
                   log(value.runtimeType.toString());
-                  log(value.toString());
+                  log("$value");
                   setState(() {
-                    medModel.dose = double.tryParse(value.toString());
+                    medDose = double.tryParse("$value");
                   });
                 },
               ),
@@ -105,7 +107,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                 hintText: 'مثال: كل 6, 8, 12 ساعات, كل يوم',
                 onSelected: (value) {
                   setState(() {
-                    medModel.frequency = value;
+                    medFrequency = value;
                   });
                 },
               ),
@@ -115,7 +117,11 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                 entries: getStartDateEntries(),
                 hintText: 'مثال: الان, 6, 8, 12  بعد ساعة',
                 onSelected: (value) {
-                  medModel.startDate = DateTime(0, 0, 0, value, 0, 1, 0, 0);
+                  // final DateTime currentDate = DateTime.now();
+
+                  medStartDate = DateTime.now().copyWith(hour: value);
+
+                  // medModel.startDate = currentDate.copyWith(hour: value);
                 },
               ),
               CustomLabel(
@@ -137,34 +143,43 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                   title: 'اضافة',
                   strColor: AppColors.white,
                   onPressed: () {
-                    medModel.getFormattedNextTime();
+                    // log(medModel.toString());
+
+                    // medModel.getFormattedNextTime();
                     if (widget._formKey.currentState!.validate()) {
-                      if (medModel.type == null ||
-                          medModel.name == null ||
-                          medModel.dose == null ||
-                          medModel.startDate == null ||
-                          medModel.frequency == null) {
+                      if (medType == null ||
+                          medName == null ||
+                          medDose == null ||
+                          medStartDate == null ||
+                          medFrequency == null) {
                         errorMessage = 'يرجى تعبئة جميع الحقول المطلوبة';
-                        medModel.description = 'non';
                         setState(() {});
                         log('empty fields');
                         return;
                       }
-
-                      log(medModel.toString());
+                      MedModel med = MedModel(
+                        name: medName,
+                        description: 'no description',
+                        type: medType,
+                        dose: medDose,
+                        frequency: medFrequency,
+                        startDate: medStartDate,
+                        createdAt:  medCreatedAt
+                      );
+                      log(med.toString());
                       LocalNotification(
                         navigatorKey: navigatorKey,
                       ).showScheduledRepeatedNotification(
                         title:
-                            'this is the time to take ur medicine ${medModel.name}',
+                            'this is the time to take ur medicine ${med.name}',
                         body:
-                            'this is the time to take ur medicine ${medModel.name}',
-                        date: medModel.nextTime!,
+                            'this is the time to take ur medicine ${med.name}',
+                        date: med.getNextTime(),
 
                         // id: medModel.id,
                       );
 
-                      BlocProvider.of<MedsCubit>(context).insert(medModel);
+                      BlocProvider.of<MedsCubit>(context).insert(med);
                       context.pop();
                     }
                   },
@@ -223,7 +238,7 @@ getMedDoseEntries(MedType? medType) {
     });
   } else if (medType == MedType.inhaler) {
     return List.generate(4, (index) {
-      return DropdownMenuEntry(label: '${index + 1} بخه', value: {index + 1});
+      return DropdownMenuEntry(label: '${index + 1} بخه', value: index + 1);
     });
   } else {
     return [];
