@@ -1,9 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:midmate/features/home/presentation/views/widgets/custom_med_list_tile.dart';
-import 'package:midmate/features/home/presentation/views/widgets/custom_med_type_icon.dart';
-import 'package:midmate/utils/app_colors.dart';
+import 'package:midmate/features/home/presentation/views/widgets/custom_med_list_tile.dart'; 
 import 'package:midmate/utils/image_controller.dart';
 import 'package:midmate/utils/models/med_model.dart';
 
@@ -13,7 +9,9 @@ class MedsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // log(meds.toString());
+
+// if(me){}
+
     return meds.isEmpty
         ? Center(
           child: Image.asset(ImageController.noMedAddedImage, width: 250),

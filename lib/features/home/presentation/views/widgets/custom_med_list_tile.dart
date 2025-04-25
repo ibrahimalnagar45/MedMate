@@ -10,10 +10,12 @@ import 'package:midmate/utils/text_styles.dart';
 class CustomMedListTile extends StatelessWidget {
   const CustomMedListTile({super.key, required this.medModel});
   final MedModel medModel;
-
-
   @override
   Widget build(BuildContext context) {
+    if (medModel.nextTime!.isAfter(DateTime.now())) {
+      medModel.setNextTime();
+      
+    }
     return GestureDetector(
       onTap: () {
         context.goTo(DetailsView(med: medModel));
@@ -38,7 +40,6 @@ class CustomMedListTile extends StatelessWidget {
                   medModel.name.toString(),
                   style: TextStyles.regWhtieTextStyle,
                 ),
-
                 Text.rich(
                   TextSpan(
                     children: [
@@ -47,7 +48,6 @@ class CustomMedListTile extends StatelessWidget {
                         style: TextStyles.regGreyTextStyle,
                       ),
                       TextSpan(text: ' '),
-
                       TextSpan(
                         text:
                             medModel.getArabicMedType() == 'مسحوق' ||
@@ -77,7 +77,6 @@ class CustomMedListTile extends StatelessWidget {
                   : " الموعد القادم  ${medModel.getFormattedNextTime()}",
               style: TextStyles.regWhtieTextStyle,
             ),
-            // SizedBox(width: 8),
           ],
         ),
       ),
@@ -102,5 +101,3 @@ class CustomMedListTile extends StatelessWidget {
     }
   }
 }
-
- 
