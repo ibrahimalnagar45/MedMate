@@ -1,7 +1,7 @@
 import 'package:intl/intl.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 
-// int _id = 0;
+ 
 
 class MedModel {
   // 6 params

@@ -3,9 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/details_view.dart';
 import 'package:midmate/features/home/presentation/views/widgets/custom_med_type_icon.dart';
+import 'package:midmate/main.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/image_controller.dart';
@@ -37,6 +39,9 @@ class CustomMedListTile extends StatelessWidget {
       onDismissed: (direction) {
         BlocProvider.of<MedsCubit>(context).deleteAMed(medModel.id!);
         BlocProvider.of<MedsCubit>(context).getAllMed();
+        LocalNotification(
+          navigatorKey: navigatorKey,
+        ).cancleNotification(id: medModel.id!);
       },
       child: GestureDetector(
         onTap: () {

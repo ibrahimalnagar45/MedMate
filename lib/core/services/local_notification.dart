@@ -15,8 +15,6 @@ class LocalNotification {
 
   final GlobalKey<NavigatorState> navigatorKey;
 
-  static int id = 0;
-
   LocalNotification({required this.navigatorKey});
 
   initializeDefaultNotificationSetting() async {
@@ -133,7 +131,7 @@ class LocalNotification {
       android: androidNotificationDetails,
     );
     await flutterLocalNotificationsPlugin.show(
-      id++,
+      8,
       title,
       body,
       notificationDetails,
@@ -182,7 +180,7 @@ class LocalNotification {
     );
 
     await flutterLocalNotificationsPlugin.show(
-      id++, // fixed ID so you don't spam
+      2, // fixed ID so you don't spam
       title,
       body,
       platformChannelSpecifics,
@@ -193,7 +191,9 @@ class LocalNotification {
   showScheduledRepeatedNotification({
     String? title,
     String? body,
+    required int id,
     // int? date,
+
     // required MedModel med,
     required DateTime date,
   }) async {
@@ -263,7 +263,7 @@ class LocalNotification {
 
     // await flutterLocalNotificationsPlugin.s
     await flutterLocalNotificationsPlugin.zonedSchedule(
-      id++,
+      1,
       title,
       body,
       tz.TZDateTime.now(tz.local).add(Duration(seconds: date)),
@@ -276,6 +276,10 @@ class LocalNotification {
 
   cancleAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
+  }
+
+  cancleNotification({required int id}) async {
+    await flutterLocalNotificationsPlugin.cancel(id);
   }
 
   getAllNotification() async {

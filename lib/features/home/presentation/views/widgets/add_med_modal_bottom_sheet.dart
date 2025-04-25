@@ -11,7 +11,7 @@ import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/med_model.dart';
 import '../../manager/cubit/meds_cubit.dart';
 import 'custom_drop_down_menu.dart';
-
+int _notificationId=0;
 class AddMedModalBottomSheet extends StatefulWidget {
   const AddMedModalBottomSheet({
     super.key,
@@ -165,6 +165,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                       await LocalNotification(
                         navigatorKey: navigatorKey,
                       ).showScheduledRepeatedNotification(
+                        id: _notificationId++,
                         title:
                             'this is the time to take ur medicine ${med.name}',
                         body:
