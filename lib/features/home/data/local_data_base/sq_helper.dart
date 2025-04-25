@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
- import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
+import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path/path.dart';
 
@@ -23,6 +23,8 @@ class SqHelper {
   Future<Database> getDbInstance() async {
     String path = await _getDbPath();
     try {
+      // await deleteDatabase(path);
+
       db = await openDatabase(
         path,
         version: 1,
@@ -34,8 +36,9 @@ create table ${DbConstants.tableName} (
   ${DbConstants.columnDescription} text ,
   ${DbConstants.columnType} text ,
   ${DbConstants.columnAmount} double,
-  ${DbConstants.columnFrequency} inetger,
-  ${DbConstants.columnStartDate} text )
+  ${DbConstants.columnFrequency} integer,
+  ${DbConstants.columnStartDate} text ,
+  ${DbConstants.columnCreatedAt} text )
 ''');
         },
         onOpen: _onOpen,
@@ -46,7 +49,7 @@ create table ${DbConstants.tableName} (
     } catch (e) {
       log(e.toString());
     }
- 
+
     log('from onCreate  :  ${db == null}');
 
     return db!;
@@ -86,5 +89,4 @@ create table ${DbConstants.tableName} (
   //       },
   //     );
   //   }
-
 }

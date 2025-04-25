@@ -13,7 +13,7 @@ class Crud {
   Future<MedModel> insert(MedModel med) async {
     Database db = await SqHelper().getDbInstance();
 
-    MedModel.id = await db.insert(DbConstants.tableName, med.toMap());
+    await db.insert(DbConstants.tableName, med.toMap());
     return med;
   }
 
@@ -34,6 +34,11 @@ class Crud {
         DbConstants.columnId,
         DbConstants.columnName,
         DbConstants.columnDescription,
+        DbConstants.columnType,
+        DbConstants.columnAmount,
+        DbConstants.columnFrequency,
+        DbConstants.columnStartDate,
+        DbConstants.columnCreatedAt,
       ],
       where: '${DbConstants.columnId} = ?',
       whereArgs: [id],
@@ -61,7 +66,7 @@ class Crud {
       DbConstants.tableName,
       todo.toMap(),
       where: '${DbConstants.columnId} = ?',
-      whereArgs: [MedModel.id],
+      whereArgs: [MedModel.newMed().id],
     );
   }
 

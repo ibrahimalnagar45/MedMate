@@ -72,7 +72,6 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
 
               CustomLabel(title: 'نوع الدواء', color: AppColors.blue),
               CustomDropDownMenu(
-               
                 hintText: ' مثال: اقراص ,دواء, حقن',
                 entries: List.generate(MedType.values.length, (index) {
                   return DropdownMenuEntry(
@@ -117,11 +116,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                 entries: getStartDateEntries(),
                 hintText: 'مثال: الان, 6, 8, 12  بعد ساعة',
                 onSelected: (value) {
-                  // final DateTime currentDate = DateTime.now();
-
                   medStartDate = DateTime.now().copyWith(hour: value);
-
-                  // medModel.startDate = currentDate.copyWith(hour: value);
                 },
               ),
               CustomLabel(
@@ -142,10 +137,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                   bgColor: AppColors.blue,
                   title: 'اضافة',
                   strColor: AppColors.white,
-                  onPressed: () {
-                    // log(medModel.toString());
-
-                    // medModel.getFormattedNextTime();
+                  onPressed: () async {
                     if (widget._formKey.currentState!.validate()) {
                       if (medType == null ||
                           medName == null ||
@@ -164,10 +156,13 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                         dose: medDose,
                         frequency: medFrequency,
                         startDate: medStartDate,
-                        createdAt:  medCreatedAt
+                        createdAt: medCreatedAt,
                       );
+
+                      Future.delayed(Duration(seconds: 3));
+
                       log(med.toString());
-                      LocalNotification(
+                      await LocalNotification(
                         navigatorKey: navigatorKey,
                       ).showScheduledRepeatedNotification(
                         title:

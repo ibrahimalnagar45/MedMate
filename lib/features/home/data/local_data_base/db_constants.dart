@@ -16,5 +16,8 @@ static const String dbPath = 'meds.db';
   static const String columnAmount = 'amount';
   static const String columnFrequency = 'frequency';
   static const String columnStartDate = 'startDate';
+  // static const String columnStartDate = 'startDate';
+  static const String columnCreatedAt = 'createdAt';
+
 
 }

@@ -1,23 +1,3 @@
-// import 'package:flutter/material.dart';
-// import 'package:midmate/utils/models/med_model.dart';
-
-// class DetailsViewBody extends StatelessWidget {
-//   const DetailsViewBody({super.key, required this.med});
-//   final MedModel med;
-//   @override
-//   Widget build(BuildContext context) {
-//     return SingleChildScrollView(
-//       child: Column(
-//         children: [
-//           Text(med.name!),
-//           Text(med.getType().toString()),
-//           Text(med.dose!.toInt().toString()),
-//         ],
-//       ),
-//     );
-//   }
-// }
-
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:midmate/utils/models/med_model.dart';
@@ -26,7 +6,6 @@ class DetailsViewBody extends StatelessWidget {
   final MedModel med;
 
   const DetailsViewBody({super.key, required this.med});
-  
 
   String _formatDate(DateTime? date) {
     if (date == null) return 'غير محدد';
@@ -55,13 +34,25 @@ class DetailsViewBody extends StatelessWidget {
               Icons.category,
             ),
             _infoTile('الجرعة', '${med.dose ?? 0}', Icons.local_pharmacy),
-            _infoTile('عدد المرات/يوم', '${med.frequency ?? 0}', Icons.repeat),
+            _infoTile(
+              'كل',
+              med.frequency == 24
+                  ? 'يوم'
+                  : med.frequency != 12
+                  ? '${med.frequency ?? 0} ساعات'
+                  : '${med.frequency ?? 0} ساعة',
+              Icons.repeat,
+            ),
             _infoTile(
               'تاريخ البدء',
               _formatDate(med.startDate),
               Icons.date_range,
             ),
-            _infoTile(' الجرعة القادمة الساعة', med.getFormattedNextTime(), Icons.alarm),
+            _infoTile(
+              ' الجرعة القادمة الساعة',
+              med.getFormattedNextTime(),
+              Icons.alarm,
+            ),
           ],
         ),
       ),

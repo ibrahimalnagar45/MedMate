@@ -11,10 +11,9 @@ class CustomMedListTile extends StatelessWidget {
   const CustomMedListTile({super.key, required this.medModel});
   final MedModel medModel;
 
+
   @override
   Widget build(BuildContext context) {
-    final String nextTime = medModel.getFormattedNextTime();
-
     return GestureDetector(
       onTap: () {
         context.goTo(DetailsView(med: medModel));
@@ -73,7 +72,9 @@ class CustomMedListTile extends StatelessWidget {
             ),
             Spacer(),
             Text(
-              medModel.startDate == null ? '' : " الموعد القادم  $nextTime",
+              medModel.startDate == null
+                  ? ''
+                  : " الموعد القادم  ${medModel.getFormattedNextTime()}",
               style: TextStyles.regWhtieTextStyle,
             ),
             // SizedBox(width: 8),
@@ -102,9 +103,4 @@ class CustomMedListTile extends StatelessWidget {
   }
 }
 
-/**
--custom sound  
- schedule notification
-Full-screen intent notifications
-
- */
+ 

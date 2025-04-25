@@ -1,6 +1,8 @@
 import 'package:intl/intl.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 
+// int _id = 0;
+
 class MedModel {
   // 6 params
   String? name;
@@ -11,21 +13,22 @@ class MedModel {
   DateTime? startDate;
   DateTime? nextTime;
   DateTime? createdAt;
-  static int id = 0;
+  int? id;
+  List<DateTime> logs = [];
   MedModel.newMed() {
-    // createdAt = DateTime.now();
+    // id++;
   }
   MedModel({
     required this.name,
     required this.description,
     required this.type,
     required this.dose,
-    this.createdAt,
+    required this.createdAt,
     required this.frequency,
     required this.startDate,
+    this.id,
   }) {
-    id++;
-    // createdAt = DateTime.now();
+    // id++;
   }
 
   String getFormattedNextTime() {
@@ -53,24 +56,32 @@ class MedModel {
   }
 
   Map<String, dynamic> toMap() {
-    return {
+    final map = {
       'name': name,
       'description': description,
       'type': type.toString(),
       'amount': dose.toString(),
       'frequency': frequency.toString(),
       'startDate': startDate == null ? startDate : startDate!.toIso8601String(),
+      'createdAt': createdAt == null ? createdAt : createdAt!.toIso8601String(),
     };
+
+    if (id != null) {
+      map['id'] = id;
+    }
+    return map;
   }
 
   factory MedModel.fromMap(Map<String, dynamic> map) {
     return MedModel(
+      id: map[DbConstants.columnId],
       name: map[DbConstants.columnName],
       description: map[DbConstants.columnDescription],
       type: MedModel.newMed().getType(map[DbConstants.columnType]),
       dose: map[DbConstants.columnAmount],
       frequency: map[DbConstants.columnFrequency],
       startDate: DateTime.parse(map[DbConstants.columnStartDate]),
+      createdAt: DateTime.parse(map[DbConstants.columnCreatedAt]),
     );
   }
 

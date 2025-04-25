@@ -21,8 +21,10 @@ void main() async {
 
   // tz.setLocalLocation(tz.getLocation(timeZoneName));
   // getIt<SharedPreferences>().clear();
+  // await deleteDatabase(path);
+  
 
-  Crud.instance.deleteAll();
+  // Crud.instance.deleteAll();
   // await LocalNotification().requestNotificationPermission();
   // await LocalNotification().requestExactAlarmsPermission();
 

@@ -11,8 +11,13 @@ class DetailsView extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: AppColors.white),
         centerTitle: true,
-        title: const Text('تفاصيل الدواء'),
+        title: const Text(
+          'تفاصيل الدواء',
+          style: TextStyle(color: AppColors.white),
+        ),
+
         backgroundColor: AppColors.blue,
       ),
       body: SafeArea(child: DetailsViewBody(med: med)),
