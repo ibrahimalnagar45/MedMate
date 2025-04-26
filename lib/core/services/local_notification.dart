@@ -5,8 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:midmate/features/notification/presentation/views/alaram_view.dart';
 import 'package:midmate/features/notification/presentation/views/notification_view.dart';
-import 'package:midmate/utils/models/med_model.dart';
-import 'package:timezone/timezone.dart' as tz;
+ import 'package:timezone/timezone.dart' as tz;
 // import 'package:android_intent_plus/android_intent.dart';
 
 class LocalNotification {

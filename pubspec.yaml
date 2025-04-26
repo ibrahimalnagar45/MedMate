@@ -33,6 +33,7 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_bloc: ^9.1.0
+  flutter_localizations:
   flutter_local_notifications: ^19.1.0
   flutter_native_splash: ^2.4.5
   flutter_slidable: ^4.0.0
@@ -53,6 +54,8 @@ dev_dependencies:
 # following page: https://dart.dev/tools/pub/pubspec
 # The following section is specific to Flutter packages.
 flutter:
+  generate: true  
+
 
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in

@@ -1,5 +1,4 @@
-import 'dart:developer';
-
+ 
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:midmate/utils/models/med_model.dart';
 import 'package:sqflite/sqflite.dart';
