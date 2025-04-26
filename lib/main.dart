@@ -10,6 +10,7 @@ import 'utils/app_fonts.dart';
 
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -22,7 +23,6 @@ void main() async {
   // tz.setLocalLocation(tz.getLocation(timeZoneName));
   // getIt<SharedPreferences>().clear();
   // await deleteDatabase(path);
-  
 
   // Crud.instance.deleteAll();
   // await LocalNotification().requestNotificationPermission();
@@ -45,6 +45,24 @@ class MyApp extends StatelessWidget {
     // final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
     return MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('en'), // English
+        Locale('es'), // Spanish
+        
+        // Add more locales
+      ],
+
+      /**
+       
+supportedLocales: AppLocalizations.supportedLocales,
+      localizationsDelegates: AppLocalizations.localizationsDelegates,
+      locale: Locale('en'), 
+       */
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'Remind Me',

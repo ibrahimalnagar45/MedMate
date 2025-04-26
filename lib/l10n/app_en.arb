@@ -1,0 +1,78 @@
+{
+  "onBoardingText1": "Schedule and manage your medications easily with a simple, easy-to-use calendar.",
+  "onBoardingText2": "Never forget your medications again! Get timely reminders to stay on track with your health.",
+  "onBoardingText3": "Taking your medications on time helps you feel your best. We’ll help you stay committed!",
+  
+  "yourPrivateNurse": "Your Private Nurse",
+  "dontForgetMedicine": "Never forget your medicine again",
+  "userName": "Name",
+  "userAge": "Age",
+  "nameRequired": "You must enter your name",
+  
+  "home": "Home",
+  "medName": "{userName}",
+  "medDescription": "{description}",
+  "medType": "{medType}",
+  "medDose": "{dose}",
+  "medFrequency": "{frequency}",
+  "medStartDate": "{startDate}",
+  "medCreatedAt": "{createdAt}",
+  "medNextTime": "{nextTime}",
+  
+  "@medName": {
+    "placeholders": {
+      "userName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medDescription": {
+    "placeholders": {
+      "description": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medType": {
+    "placeholders": {
+      "medType": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medDose": {
+    "placeholders": {
+      "dose": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medFrequency": {
+    "placeholders": {
+      "frequency": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medStartDate": {
+    "placeholders": {
+      "startDate": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medCreatedAt": {
+    "placeholders": {
+      "createdAt": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medNextTime": {
+    "placeholders": {
+      "nextTime": {
+        "type": "Object"
+      }
+    }
+  }
+}

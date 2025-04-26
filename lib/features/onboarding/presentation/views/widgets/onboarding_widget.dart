@@ -12,8 +12,8 @@ class OnBoardingViewWidget extends StatelessWidget {
     return Column(
       children: [
         ClipRRect(
-          child: Image.asset(onboardingModel.image),
           borderRadius: BorderRadius.circular(12),
+          child: Image.asset(onboardingModel.image),
         ),
         const SizedBox(height: 50),
         Padding(

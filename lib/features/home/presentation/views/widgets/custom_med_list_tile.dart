@@ -13,6 +13,7 @@ import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/image_controller.dart';
 import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/text_styles.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
 
 class CustomMedListTile extends StatelessWidget {
   const CustomMedListTile({super.key, required this.medModel});
@@ -20,6 +21,7 @@ class CustomMedListTile extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (medModel.getNextTime()!.isAfter(DateTime.now())) {
+      log("next time is after now");
       medModel.setNextTime();
     }
     return Dismissible(
@@ -64,7 +66,7 @@ class CustomMedListTile extends StatelessWidget {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    medModel.name.toString(),
+                    '                   AppLocalizations.of(context)!.medName(medModel.name!),',
                     style: TextStyles.regWhtieTextStyle,
                   ),
                   Text.rich(

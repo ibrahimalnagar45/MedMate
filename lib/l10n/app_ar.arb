@@ -1,0 +1,78 @@
+{
+  "onBoardingText1": "جدول وقم بإدارة أدويتك بسهولة باستخدام تقويم بسيط وسهل الاستخدام",
+  "onBoardingText2": "لا تنسى أدويتك مرة أخرى! احصل على تذكيرات في الوقت المحدد للبقاء على المسار الصحيح مع صحتك.",
+  "onBoardingText3": "تناول أدويتك في الوقت المحدد يساعدك على الشعور بأفضل حال. سنساعدك على البقاء ملتزمًا!",
+  
+  "yourPrivateNurse": "ممرضك الخاص",
+  "dontForgetMedicine": "متنساش ميعاد دواءك تاني",
+  "userName": "الاسم",
+  "userAge": "العمر",
+  "nameRequired": "يجب أن تدخل اسمك",
+  
+  "home": "الصفحة الرئيسية",
+  "medName": "{userName}",
+  "medDescription": "{description}",
+  "medType": "{medType}",
+  "medDose": "{dose}",
+  "medFrequency": "{frequency}",
+  "medStartDate": "{startDate}",
+  "medCreatedAt": "{createdAt}",
+  "medNextTime": "{nextTime}",
+  
+  "@medName": {
+    "placeholders": {
+      "userName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medDescription": {
+    "placeholders": {
+      "description": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medType": {
+    "placeholders": {
+      "medType": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medDose": {
+    "placeholders": {
+      "dose": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medFrequency": {
+    "placeholders": {
+      "frequency": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medStartDate": {
+    "placeholders": {
+      "startDate": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medCreatedAt": {
+    "placeholders": {
+      "createdAt": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medNextTime": {
+    "placeholders": {
+      "nextTime": {
+        "type": "Object"
+      }
+    }
+  }
+}

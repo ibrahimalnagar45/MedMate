@@ -1,9 +1,11 @@
+import 'package:flutter/material.dart';
+
 import '../features/onboarding/data/models/onboarding_model.dart';
 import 'image_controller.dart';
 
-class Constants {
-  Constants._();
-   static const List<OnboardingModel> onBoardings = [
+class OnBoardingConstants {
+  OnBoardingConstants._();
+  static List<OnboardingModel> onBoardings(BuildContext context) => [
     OnboardingModel(
       text: 'جدول وقم بإدارة أدويتك بسهولة باستخدام تقويم بسيط وسهل الاستخدام',
       image: ImageController.onBoardingImage1,
@@ -19,5 +21,4 @@ class Constants {
       image: ImageController.onBoardingImage3,
     ),
   ];
-
 }

@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/utils/constants.dart';
@@ -40,9 +39,7 @@ class _OnboardingViewState extends State<OnboardingView>
   void dispose() {
     timer.cancel();
     _pageController.dispose();
-    log(
-      'from onboardingview the value SharedPrefrenceDb.onBoardingVisited is ${prefs.getBool(SharedPrefrenceDb.onBoardingVisited)}',
-    );
+
     super.dispose();
   }
 
@@ -61,16 +58,17 @@ class _OnboardingViewState extends State<OnboardingView>
                 onPageChanged: (value) {
                   setState(() => currentIndex = value);
                 },
-                itemCount: Constants.onBoardings.length,
+                itemCount: OnBoardingConstants.onBoardings(context).length,
                 itemBuilder: (context, index) {
                   return OnBoardingViewWidget(
-                    onboardingModel: Constants.onBoardings[index],
+                    onboardingModel:
+                        OnBoardingConstants.onBoardings(context)[index],
                   );
                 },
               ),
             ),
             PageIndecator(
-              length: Constants.onBoardings.length,
+              length: OnBoardingConstants.onBoardings(context).length,
               currentIndex: currentIndex,
             ),
             const Expanded(flex: 1, child: SizedBox()),
@@ -81,16 +79,15 @@ class _OnboardingViewState extends State<OnboardingView>
   }
 
   navigation() {
-    if (currentIndex < Constants.onBoardings.length - 1) {
+    if (currentIndex < OnBoardingConstants.onBoardings(context).length - 1) {
       currentIndex++;
-    } else if (currentIndex == Constants.onBoardings.length - 1) {
+    } else if (currentIndex ==
+        OnBoardingConstants.onBoardings(context).length - 1) {
       getIt<SharedPreferences>().setBool(
         SharedPrefrenceDb.onBoardingVisited,
         true,
       );
-      debugPrint(
-        'from onboardingview the value SharedPrefrenceDb.onBoardingVisited is ${prefs.getBool(SharedPrefrenceDb.onBoardingVisited)}',
-      );
+
       if (UserModel.instance.name == null) {
         context.replaceWith(UserDataView());
       } else {
