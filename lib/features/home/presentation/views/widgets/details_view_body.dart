@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/models/med_model.dart';
+
+import '../../../../../core/services/functions/get_localized_med_type.dart';
 
 class DetailsViewBody extends StatelessWidget {
   final MedModel med;
@@ -22,34 +25,51 @@ class DetailsViewBody extends StatelessWidget {
         child: ListView(
           padding: const EdgeInsets.all(16),
           children: [
-            _infoTile('اسم الدواء', med.name ?? 'غير محدد', Icons.medication),
             _infoTile(
-              'الوصف',
-              med.description ?? 'لا يوجد وصف',
+              S.of(context).title,
+              S.of(context).medName(med.name ?? S.of(context).unSpecified),
+              Icons.medication,
+            ),
+            _infoTile(
+              S.of(context).description,
+              S
+                  .of(context)
+                  .medDescription(
+                    med.description == null
+                        ? S.of(context).NoDescription
+                        : med.description!,
+                  ),
+
               Icons.description,
             ),
             _infoTile(
-              'النوع',
-              med.getArabicMedType() ?? 'غير محدد',
+              S.of(context).type,
+            getLocalizedMedType(med.type!, context),
+
               Icons.category,
             ),
-            _infoTile('الجرعة', '${med.dose ?? 0}', Icons.local_pharmacy),
             _infoTile(
-              'كل',
+              S.of(context).dose,
+              S.of(context).medDose(med.dose ?? S.of(context).unSpecified),
+              Icons.local_pharmacy,
+            ),
+            _infoTile(
+              S.of(context).frequency,
               med.frequency == 24
-                  ? 'يوم'
+                  ? S.of(context).everyDay
                   : med.frequency != 12
-                  ? '${med.frequency ?? 0} ساعات'
-                  : '${med.frequency ?? 0} ساعة',
+                  ? S.of(context).everyNumHour(med.frequency ?? 0)
+                  // ? '${med.frequency ?? 0} ساعات'
+                  : S.of(context).everyNumHours(med.frequency ?? 0),
               Icons.repeat,
             ),
             _infoTile(
-              'تاريخ البدء',
+              S.of(context).startDate,
               _formatDate(med.startDate),
               Icons.date_range,
             ),
             _infoTile(
-              ' الجرعة القادمة الساعة',
+              S.of(context).nextDoseAt,
               med.getFormattedNextTime(),
               Icons.alarm,
             ),

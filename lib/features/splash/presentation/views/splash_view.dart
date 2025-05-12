@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:midmate/core/services/local_notification.dart';
@@ -8,6 +10,7 @@ import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
+import '../../../../main.dart';
 import '../../../../utils/image_controller.dart';
 
 class SplashView extends StatefulWidget {
@@ -28,20 +31,21 @@ class _SplashViewState extends State<SplashView> {
     SharedPrefrenceDb.username,
   );
 
-  // @override
-  // void dispose()async {
-  // await LocalNotification().initializeDefaultNotificationSetting();
-
-  // await LocalNotification().requestNotificationPermission();
-
-  //   super.dispose();
-  // }
   @override
   void initState() {
     super.initState();
 
     ensureInitialized();
     // Wait for Flutter to fully initialize
+  }
+
+  @override
+  void dispose() {
+    LocalNotification(
+      navigatorKey: navigatorKey,
+    ).initializeDefaultNotificationSetting();
+
+    super.dispose();
   }
 
   @override
@@ -63,6 +67,7 @@ class _SplashViewState extends State<SplashView> {
           // height: 400,
           child: Lottie.asset(
             ImageController.splashLottieImage,
+            // 'assets/images/splash_screen.json'whs,
             animate: true,
             width: 200,
             height: 200,

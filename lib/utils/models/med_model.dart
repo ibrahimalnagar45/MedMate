@@ -1,7 +1,8 @@
+import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 
- 
+import '../../generated/l10n.dart';
 
 class MedModel {
   // 6 params
@@ -39,18 +40,23 @@ class MedModel {
   }
 
   void setNextTime() {
-    nextTime = createdAt!.add(
-      Duration(
-        hours: frequency! + startDate!.hour,
+    if (nextTime == null) {
+      nextTime = createdAt!.add(
+        Duration(
+          hours: frequency! + startDate!.hour,
 
-        // days: startDate!.day == DateTime.now().day ? startDate!.day : 0,
-      ),
-    );
+          // days: startDate!.day == DateTime.now().day ? startDate!.day : 0,
+        ),
+      );
+    } else {
+      nextTime = nextTime!.add(Duration(hours: frequency!));
+    }
   }
 
   getNextTime() {
     if (nextTime == null) {
       setNextTime();
+      debugPrint('next time is null');
     }
     return nextTime;
   }
@@ -110,46 +116,10 @@ class MedModel {
     }
   }
 
-  String? getArabicMedType() {
-    if (type != null) {
-      switch (type!) {
-        case MedType.powder:
-          return 'مسحوق';
-        case MedType.pill:
-          return 'قرص';
-        case MedType.syrup:
-          return 'شراب';
-        case MedType.drop:
-          return 'قطرة';
-        case MedType.cream:
-          return 'كريم';
-        case MedType.injection:
-          return 'حقنة';
-        case MedType.inhaler:
-          return 'بخاخ';
-      }
-    }
-  }
+    
+  
 }
 
-String? getArabicMedType(MedType type) {
-  switch (type) {
-    case MedType.powder:
-      return 'مسحوق';
-    case MedType.pill:
-      return 'قرص';
-    case MedType.syrup:
-      return 'شراب';
-    case MedType.drop:
-      return 'قطرة';
-    case MedType.cream:
-      return 'كريم';
-    case MedType.injection:
-      return 'حقنة';
-    case MedType.inhaler:
-      return 'بخاخ';
-  }
-}
 
 enum MedType { pill, powder, syrup, drop, cream, injection, inhaler }
 

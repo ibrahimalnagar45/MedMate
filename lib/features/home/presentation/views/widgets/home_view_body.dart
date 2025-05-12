@@ -8,7 +8,7 @@ import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
 import 'package:midmate/main.dart';
 import 'package:midmate/utils/image_controller.dart';
- 
+
 import '../../../../../utils/app_colors.dart';
 import 'add_med_modal_bottom_sheet.dart';
 
@@ -20,33 +20,29 @@ class HomeViewBody extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar(),
-      floatingActionButton: Align(
-        alignment: Alignment.bottomRight,
-        child: Padding(
-          padding: const EdgeInsets.only(right: 30.0, bottom: 10),
-          child: FloatingActionButton(
-            backgroundColor: AppColors.blue,
-            foregroundColor: AppColors.white,
-
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (context) {
-                  return BlocProvider(
-                    create: (context) => MedsCubit(),
-                    child: AddMedModalBottomSheet(formKey: _formKey),
-                  );
-                },
-              ).then((_) {
-                BlocProvider.of<MedsCubit>(context).getAllMed();
-              });
+      appBar: buildAppBar('Home'),
+      floatingActionButton:
+      // padding: const EdgeInsets.only(right: 30.0, bottom: 10),
+      FloatingActionButton(
+        backgroundColor: AppColors.blue,
+        foregroundColor: AppColors.white,
+        onPressed: () {
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return BlocProvider(
+                create: (context) => MedsCubit(),
+                child: AddMedModalBottomSheet(formKey: _formKey),
+              );
             },
-            child: const Icon(Icons.add),
-          ),
-        ),
+          ).then((_) {
+            BlocProvider.of<MedsCubit>(context).getAllMed();
+          });
+        },
+        child: const Icon(Icons.add),
       ),
+
       backgroundColor: AppColors.grey,
 
       body: Padding(

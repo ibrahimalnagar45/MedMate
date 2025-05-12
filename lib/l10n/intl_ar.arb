@@ -1,0 +1,151 @@
+{
+  "onBoardingText1": "جدول وقم بإدارة أدويتك بسهولة باستخدام تقويم بسيط وسهل الاستخدام",
+  "onBoardingText2": "لا تنسى أدويتك مرة أخرى! احصل على تذكيرات في الوقت المحدد للبقاء على المسار الصحيح مع صحتك.",
+  "onBoardingText3": "تناول أدويتك في الوقت المحدد يساعدك على الشعور بأفضل حال. سنساعدك على البقاء ملتزمًا!",
+  
+  "yourPrivateNurse": "ممرضك الخاص",
+  "dontForgetMedicine": "متنساش ميعاد دواءك تاني",
+  "userName": "{userName}",
+  "userAge": "العمر",
+  "nameRequired": "يجب أن تدخل اسمك",
+
+  "appBarTitle": "{appBarTitle}",
+"home": "الرئيسية",
+  "medName": "{medName}",
+  "medDescription": "{medDescription}",
+  "medType": "{medType}",
+  "medDose": "{dose}",
+  "medFrequency": "{frequency}",
+  "medStartDate": "{startDate}",
+  "medCreatedAt": "{createdAt}",
+  "medNextTime": "{medNextTime}",
+
+  "every": "كل",
+  "everyDay": "كل يوم",
+  
+  "now": "الان",
+  "every6Hours": "كل 6 ساعات",
+  "every8Hours": "كل 8 ساعات",
+  "every12Hours": "كل 12 ساعة",
+  "everyNumHour": "كل {num} ساعة",
+  "everyNumHours": "كل {num} ساعات",
+  "after6Hours": "بعد 6 ساعات",
+  "after8Hours": "بعد 8 ساعات",
+  "after12Hours": "بعد 12 ساعة",
+  "afterADay":  "بعد يوم",
+  
+  "ml": "مل",
+  
+  "title": "اسم الدواء",
+  "description": "الوصف",
+  "NoDescription": "لا يوجد وصف",
+  "type": "نوع الدواء",
+  "dose": "الجرعة",
+  "frequency": "التكرار",
+  "startDate": "تاريخ البدء",
+  "nextDoseAt": "الجرعة التالية في", 
+  "unSpecified": "غير محدد",
+
+
+
+  "example": "مثال",
+  "medNameExample": "الميتفورمين",
+  "medDescriptionExample": "يرج قبل الاستخدام",
+  "AddMedicine":"اضافة الدواء",
+
+
+  "pill": "قرص",
+  "powder": "مسحوق",
+  "syrup": "شراب",
+  "drop": "قطرة",
+  "cream": "كريم",
+  "injection": "حقنة",
+  "inhaler": "بخاخ", 
+
+
+
+
+  "@appBarTitle": {
+    "placeholders": {
+      "appBarTitle": {
+        "type": "Object"
+      }
+    }
+  },
+
+  "@userName": {
+    "placeholders": {
+      "userName": {
+        "type": "Object"
+      }
+    }
+  },
+   
+
+"@everyNumHour": {
+    "placeholders": {
+      "num": {
+        "type": "Object"
+      }
+      }
+  },
+
+   
+  "@medName": {
+    "placeholders": {
+      "medName": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medDescription": {
+    "placeholders": {
+      "medDescription": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medType": {
+    "placeholders": {
+      "medType": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medDose": {
+    "placeholders": {
+      "dose": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medFrequency": {
+    "placeholders": {
+      "frequency": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medStartDate": {
+    "placeholders": {
+      "startDate": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medCreatedAt": {
+    "placeholders": {
+      "createdAt": {
+        "type": "Object"
+      }
+    }
+  },
+  "@medNextTime": {
+    "placeholders": {
+      "medNextTime": {
+        "type": "Object"
+      }
+    }
+  }
+}
+

@@ -17,11 +17,10 @@ class CustomTextFormFeild extends StatelessWidget {
     return TextFormField(
       validator: validator,
 
-
       onChanged: onSubmitted,
       onSaved: onSubmitted,
-      textDirection: TextDirection.rtl,
 
+      // textDirection: TextDirection.rtl,
       style: TextStyles.hintTextStyle,
       cursorColor: AppColors.blue,
       decoration: InputDecoration(
@@ -38,7 +37,7 @@ class CustomTextFormFeild extends StatelessWidget {
 
         // hintText: _hintText,
         hintStyle: TextStyles.hintTextStyle,
-        hintTextDirection: TextDirection.rtl,
+        // hintTextDirection: TextDirection.rtl,
       ),
     );
   }

@@ -10,7 +10,7 @@ class CustomMedTypeIcon extends StatelessWidget {
       radius: 14,
       backgroundColor: Colors.transparent,
       child: Image.asset(
-        icon,
+       icon,
         fit: BoxFit.cover,
         color: AppColors.white,
 

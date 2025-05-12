@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:midmate/core/services/functions/get_localized_med_type.dart';
 import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/cusotm_label.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_button.dart';
@@ -9,9 +10,12 @@ import 'package:midmate/main.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/med_model.dart';
+import '../../../../../generated/l10n.dart';
 import '../../manager/cubit/meds_cubit.dart';
 import 'custom_drop_down_menu.dart';
-int _notificationId=0;
+
+int _notificationId = 0;
+
 class AddMedModalBottomSheet extends StatefulWidget {
   const AddMedModalBottomSheet({
     super.key,
@@ -34,6 +38,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
   int? medFrequency;
   DateTime? medStartDate;
   DateTime? medCreatedAt;
+  String? description;
   @override
   void initState() {
     doseEntries = [];
@@ -59,9 +64,10 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
             children: [
               SizedBox(height: 20),
               // TextFormField(),
-              CustomLabel(title: 'اسم الدواء', color: AppColors.blue),
+              CustomLabel(title: S.of(context).title, color: AppColors.blue),
               CustomTextFormFeild(
-                hintText: 'مثال: الميتفورمين',
+                hintText:
+                    "${S.of(context).example}: ${S.of(context).medNameExample}",
 
                 onSubmitted: (vale) {
                   setState(() {
@@ -70,12 +76,13 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                 },
               ),
 
-              CustomLabel(title: 'نوع الدواء', color: AppColors.blue),
+              CustomLabel(title: S.of(context).type, color: AppColors.blue),
               CustomDropDownMenu(
-                hintText: ' مثال: اقراص ,دواء, حقن',
+                hintText:
+                    '${S.of(context).example}: ${S.of(context).pill},${S.of(context).syrup}',
                 entries: List.generate(MedType.values.length, (index) {
                   return DropdownMenuEntry(
-                    label: getArabicMedType(MedType.values[index])!,
+                    label: getLocalizedMedType(MedType.values[index], context),
                     value: MedType.values[index],
                   );
                 }),
@@ -88,9 +95,10 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                 },
               ),
 
-              CustomLabel(title: 'الجرعة', color: AppColors.blue),
+              CustomLabel(title: S.of(context).dose, color: AppColors.blue),
               CustomDropDownMenu(
-                hintText: 'مثال: 1 قرص, 30 ملي',
+                hintText:
+                    "${S.of(context).example}: 1 ${S.of(context).pill}, 30 ${S.of(context).ml}",
                 entries: doseEntries,
                 onSelected: (value) {
                   log(value.runtimeType.toString());
@@ -100,10 +108,14 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                   });
                 },
               ),
-              CustomLabel(title: ' المده', color: AppColors.blue),
+              CustomLabel(
+                title: S.of(context).frequency,
+                color: AppColors.blue,
+              ),
               CustomDropDownMenu(
-                entries: getDurationEntries(),
-                hintText: 'مثال: كل 6, 8, 12 ساعات, كل يوم',
+                entries: getDurationEntries(context),
+                hintText:
+                    "${S.of(context).example}: ${S.of(context).every6Hours}, ${S.of(context).everyDay}",
                 onSelected: (value) {
                   setState(() {
                     medFrequency = value;
@@ -111,21 +123,28 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                 },
               ),
 
-              CustomLabel(title: 'تاريخ البدء', color: AppColors.blue),
+              CustomLabel(
+                title: S.of(context).startDate,
+                color: AppColors.blue,
+              ),
               CustomDropDownMenu(
                 entries: getStartDateEntries(),
-                hintText: 'مثال: الان, 6, 8, 12  بعد ساعة',
+                hintText: "${S.of(context).example}: ${S.of(context).now}",
                 onSelected: (value) {
                   medStartDate = DateTime.now().copyWith(hour: value);
                 },
               ),
               CustomLabel(
-                title: ' وصف او ملاحظات',
+                title: S.of(context).description,
                 color: AppColors.blue,
                 isImporant: false,
               ),
 
-              CustomTextFormFeild(hintText: 'مثال: يرج قبل الاستخدام'),
+              CustomTextFormFeild(
+                hintText:
+                    "${S.of(context).example}: ${S.of(context).medDescriptionExample}",
+                onSubmitted: (p0) => description = p0,
+              ),
               SizedBox(height: 20),
               errorMessage != null
                   ? Text(errorMessage!, style: TextStyle(color: AppColors.red))
@@ -151,7 +170,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                       }
                       MedModel med = MedModel(
                         name: medName,
-                        description: 'no description',
+                        description: description,
                         type: medType,
                         dose: medDose,
                         frequency: medFrequency,
@@ -190,21 +209,21 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
 
   getStartDateEntries() {
     return [
-      DropdownMenuEntry(label: 'الان', value: 0),
-      DropdownMenuEntry(label: 'بعد 6 ساعات', value: 6),
-      DropdownMenuEntry(label: 'بعد 8 ساعات', value: 8),
-      DropdownMenuEntry(label: 'بعد 12 ساعات', value: 12),
-      DropdownMenuEntry(label: 'بعد يوم', value: 24),
+      DropdownMenuEntry(label: S.of(context).now, value: 0),
+      DropdownMenuEntry(label: S.of(context).after6Hours, value: 6),
+      DropdownMenuEntry(label: S.of(context).after8Hours, value: 8),
+      DropdownMenuEntry(label: S.of(context).after12Hours, value: 12),
+      DropdownMenuEntry(label: S.of(context).afterADay, value: 24),
     ];
   }
 }
 
-getDurationEntries() {
+getDurationEntries(context) {
   return [
-    DropdownMenuEntry(value: 6, label: 'كل 6 ساعات'),
-    DropdownMenuEntry(value: 8, label: 'كل 8 ساعات'),
-    DropdownMenuEntry(value: 12, label: 'كل 12 ساعات'),
-    DropdownMenuEntry(value: 24, label: 'كل يوم'),
+    DropdownMenuEntry(value: 6, label: S.of(context).every6Hours),
+    DropdownMenuEntry(value: 8, label: S.of(context).every8Hours),
+    DropdownMenuEntry(value: 12, label: S.of(context).every12Hours),
+    DropdownMenuEntry(value: 24, label: S.of(context).everyDay),
   ];
 }
 

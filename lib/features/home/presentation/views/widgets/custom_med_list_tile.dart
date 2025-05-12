@@ -3,10 +3,12 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_slidable/flutter_slidable.dart';
+import 'package:midmate/core/services/functions/get_localized_med_type.dart';
 import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/details_view.dart';
 import 'package:midmate/features/home/presentation/views/widgets/custom_med_type_icon.dart';
+import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/main.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/extension_fun.dart';
@@ -14,14 +16,18 @@ import 'package:midmate/utils/image_controller.dart';
 import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/text_styles.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:intl/intl.dart';
 
 class CustomMedListTile extends StatelessWidget {
   const CustomMedListTile({super.key, required this.medModel});
   final MedModel medModel;
   @override
   Widget build(BuildContext context) {
-    if (medModel.getNextTime()!.isAfter(DateTime.now())) {
-      log("next time is after now");
+    // medModel.setNextTime();
+    if (medModel.getNextTime()!.isBefore(DateTime.now())) {
+      log("next time is before now");
+      log(medModel.nextTime.toString());
+      log('now is ${DateTime.now()}');
       medModel.setNextTime();
     }
     return Dismissible(
@@ -60,15 +66,17 @@ class CustomMedListTile extends StatelessWidget {
           child: Row(
             children: [
               _medIcon(medModel.type!),
-              SizedBox(width: 15),
+              SizedBox(width: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    '                   AppLocalizations.of(context)!.medName(medModel.name!),',
+                    S.of(context).medName(medModel.name!),
+                    // S.of(context).ttt,
                     style: TextStyles.regWhtieTextStyle,
                   ),
+
                   Text.rich(
                     TextSpan(
                       children: [
@@ -79,19 +87,49 @@ class CustomMedListTile extends StatelessWidget {
                         TextSpan(text: ' '),
                         TextSpan(
                           text:
-                              medModel.getArabicMedType() == 'مسحوق' ||
-                                      medModel.getArabicMedType() == 'شراب' ||
-                                      medModel.getArabicMedType() == 'بخاخ' ||
-                                      medModel.getArabicMedType() == 'كريم'
-                                  ? "ملي"
-                                  : medModel.getArabicMedType(),
+                              getLocalizedMedType(medModel.type!, context) ==
+                                          S.of(context).powder ||
+                                      getLocalizedMedType(
+                                            medModel.type!,
+                                            context,
+                                          ) ==
+                                          S.of(context).syrup ||
+                                      getLocalizedMedType(
+                                            medModel.type!,
+                                            context,
+                                          ) ==
+                                          S.of(context).inhaler ||
+                                      getLocalizedMedType(
+                                            medModel.type!,
+                                            context,
+                                          ) ==
+                                          S.of(context).cream
+                                  ? S.of(context).ml
+                                  : S
+                                      .of(context)
+                                      .medType(
+                                        isArabic()
+                                            ? getLocalizedMedType(
+                                              medModel.type!,
+                                              context,
+                                            )
+                                            : S
+                                                .of(context)
+                                                .medType(medModel.type!)
+                                                .toString()
+                                                .substring(8),
+                                      ),
+
                           style: TextStyles.regGreyTextStyle,
                         ),
+                        TextSpan(text: ' '),
                         TextSpan(
                           text:
                               medModel.frequency!.toInt() == 24
-                                  ? " كل يوم "
-                                  : " كل ${medModel.frequency!} ساعات",
+                                  ? S.of(context).everyDay
+                                  : S
+                                      .of(context)
+                                      .everyNumHour(medModel.frequency!),
                           style: TextStyles.regGreyTextStyle,
                         ),
                       ],
@@ -99,12 +137,18 @@ class CustomMedListTile extends StatelessWidget {
                   ),
                 ],
               ),
-              Spacer(),
-              Text(
-                medModel.startDate == null
-                    ? ''
-                    : " الموعد القادم  ${medModel.getFormattedNextTime()}",
-                style: TextStyles.regWhtieTextStyle,
+              // Spacer(),
+              Expanded(
+                // fit: FlexFit.tight,
+                child: Text(
+                  medModel.startDate == null
+                      ? ''
+                      : " ${medModel.getFormattedNextTime()}",
+                  style: TextStyles.regWhtieTextStyle,
+                  textAlign: isArabic() ? TextAlign.left : TextAlign.right,
+                  maxLines: 2,
+                  overflow: TextOverflow.ellipsis,
+                ),
               ),
             ],
           ),
@@ -130,4 +174,8 @@ class CustomMedListTile extends StatelessWidget {
       return CustomMedTypeIcon(icon: ImageController.drop);
     }
   }
+}
+
+bool isArabic() {
+  return Intl.getCurrentLocale() == 'ar';
 }

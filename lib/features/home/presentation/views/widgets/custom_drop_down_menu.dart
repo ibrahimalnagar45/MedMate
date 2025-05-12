@@ -27,12 +27,13 @@ class CustomDropDownMenu<T> extends StatelessWidget {
         borderRadius: BorderRadius.circular(10),
       ),
       child: DropdownMenu<T>(
-        
-        textAlign: TextAlign.right,
+        // textAlign: TextAlign.right,
         inputDecorationTheme: InputDecorationTheme(
           border: InputBorder.none,
           hintStyle: TextStyles.hintTextStyle,
+          contentPadding: EdgeInsets.symmetric(horizontal: 10),
         ),
+
         textStyle: TextStyles.hintTextStyle,
         onSelected: onSelected,
         width: context.width() - 32,
