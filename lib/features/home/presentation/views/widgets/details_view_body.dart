@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
+import 'package:midmate/core/services/functions/get_type_measured.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/models/med_model.dart';
 
@@ -44,15 +45,18 @@ class DetailsViewBody extends StatelessWidget {
             ),
             _infoTile(
               S.of(context).type,
-            getLocalizedMedType(med.type!, context),
+              getLocalizedMedType(med.type!, context),
 
               Icons.category,
             ),
+            // dose
             _infoTile(
               S.of(context).dose,
-              S.of(context).medDose(med.dose ?? S.of(context).unSpecified),
+              "${S.of(context).medDose(med.dose!.toInt())} ${getTypeMeasurement(med.type!)} ",
               Icons.local_pharmacy,
             ),
+
+            // frequency
             _infoTile(
               S.of(context).frequency,
               med.frequency == 24
@@ -63,11 +67,13 @@ class DetailsViewBody extends StatelessWidget {
                   : S.of(context).everyNumHours(med.frequency ?? 0),
               Icons.repeat,
             ),
+            // start date
             _infoTile(
               S.of(context).startDate,
               _formatDate(med.startDate),
               Icons.date_range,
             ),
+            // next time
             _infoTile(
               S.of(context).nextDoseAt,
               med.getFormattedNextTime(),

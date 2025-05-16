@@ -100,7 +100,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "Taking your medications on time helps you feel your best. We’ll help you stay committed!",
     ),
     "pill": MessageLookupByLibrary.simpleMessage("pill"),
+    "pleaseAddAllInfo": MessageLookupByLibrary.simpleMessage(
+      "Please add all the info",
+    ),
     "powder": MessageLookupByLibrary.simpleMessage("powder"),
+    "skip": MessageLookupByLibrary.simpleMessage("Skip"),
     "startDate": MessageLookupByLibrary.simpleMessage("start date"),
     "syrup": MessageLookupByLibrary.simpleMessage("syrup"),
     "title": MessageLookupByLibrary.simpleMessage("medicine name"),

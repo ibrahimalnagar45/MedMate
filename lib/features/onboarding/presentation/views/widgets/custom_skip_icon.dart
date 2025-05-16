@@ -6,6 +6,7 @@ import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../generated/l10n.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/service_locator.dart';
 import '../../../../../utils/text_styles.dart';
@@ -32,14 +33,14 @@ class CustomSkipIcon extends StatelessWidget {
             debugPrint(
               'from custom icon the value SharedPrefrenceDb.onBoardingVisited is ${getIt<SharedPreferences>().getBool(SharedPrefrenceDb.onBoardingVisited)}',
             );
-            if (UserModel.instance.name == '') {
+            if (UserModel.instance.name!.isEmpty) {
               context.replaceWith(UserDataView());
             } else {
               context.replaceWith(HomeView());
             }
           },
           child: Text(
-            'تخطي',
+            S.of(context).skip,
             style: TextStyles.regGreyTextStyle.copyWith(
               fontSize: 20,
               color: AppColors.blue,

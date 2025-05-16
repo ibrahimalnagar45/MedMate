@@ -14,6 +14,7 @@ class MedsCubit extends Cubit<MedsState> {
   getAllMed() async {
     emit(MedsLoading());
     try {
+
       meds = await db.getAllMeds();
       emit(GetMedsSuccess(meds: meds));
       for (var med in meds) {

@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_slidable/flutter_slidable.dart';
 import 'package:midmate/core/services/functions/get_localized_med_type.dart';
 import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
@@ -15,45 +12,48 @@ import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/image_controller.dart';
 import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/text_styles.dart';
-import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
 
-class CustomMedListTile extends StatelessWidget {
+import '../../../../../core/services/functions/check_med_next_time.dart';
+
+class CustomMedListTile extends StatefulWidget {
   const CustomMedListTile({super.key, required this.medModel});
   final MedModel medModel;
+
+  @override
+  State<CustomMedListTile> createState() => _CustomMedListTileState();
+}
+
+class _CustomMedListTileState extends State<CustomMedListTile> {
+  @override
+  void initState() {
+    checkMedNextTime(widget.medModel);
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
-    // medModel.setNextTime();
-    if (medModel.getNextTime()!.isBefore(DateTime.now())) {
-      log("next time is before now");
-      log(medModel.nextTime.toString());
-      log('now is ${DateTime.now()}');
-      medModel.setNextTime();
-    }
     return Dismissible(
       secondaryBackground: Container(
-        alignment: Alignment.centerLeft,
         padding: const EdgeInsets.only(left: 20),
         child: const Icon(Icons.delete, color: AppColors.red),
       ),
       background: Container(
-        // color: AppColors.red,
-        alignment: Alignment.centerRight,
         padding: const EdgeInsets.only(right: 20),
         child: const Icon(Icons.delete, color: AppColors.red),
       ),
-      key: Key(medModel.id.toString()),
+      key: Key(widget.medModel.id.toString()),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
-        BlocProvider.of<MedsCubit>(context).deleteAMed(medModel.id!);
+        BlocProvider.of<MedsCubit>(context).deleteAMed(widget.medModel.id!);
         BlocProvider.of<MedsCubit>(context).getAllMed();
         LocalNotification(
           navigatorKey: navigatorKey,
-        ).cancleNotification(id: medModel.id!);
+        ).cancleNotification(id: widget.medModel.id!);
       },
       child: GestureDetector(
         onTap: () {
-          context.goTo(DetailsView(med: medModel));
+          context.goTo(DetailsView(med: widget.medModel));
         },
         child: Container(
           height: 60,
@@ -65,14 +65,14 @@ class CustomMedListTile extends StatelessWidget {
           padding: const EdgeInsets.symmetric(horizontal: 8),
           child: Row(
             children: [
-              _medIcon(medModel.type!),
+              _medIcon(widget.medModel.type!),
               SizedBox(width: 10),
               Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(
-                    S.of(context).medName(medModel.name!),
+                    S.of(context).medName(widget.medModel.name!),
                     // S.of(context).ttt,
                     style: TextStyles.regWhtieTextStyle,
                   ),
@@ -81,26 +81,29 @@ class CustomMedListTile extends StatelessWidget {
                     TextSpan(
                       children: [
                         TextSpan(
-                          text: medModel.dose!.toInt().toString(),
+                          text: widget.medModel.dose!.toInt().toString(),
                           style: TextStyles.regGreyTextStyle,
                         ),
                         TextSpan(text: ' '),
                         TextSpan(
                           text:
-                              getLocalizedMedType(medModel.type!, context) ==
+                              getLocalizedMedType(
+                                            widget.medModel.type!,
+                                            context,
+                                          ) ==
                                           S.of(context).powder ||
                                       getLocalizedMedType(
-                                            medModel.type!,
+                                            widget.medModel.type!,
                                             context,
                                           ) ==
                                           S.of(context).syrup ||
                                       getLocalizedMedType(
-                                            medModel.type!,
+                                            widget.medModel.type!,
                                             context,
                                           ) ==
                                           S.of(context).inhaler ||
                                       getLocalizedMedType(
-                                            medModel.type!,
+                                            widget.medModel.type!,
                                             context,
                                           ) ==
                                           S.of(context).cream
@@ -110,12 +113,12 @@ class CustomMedListTile extends StatelessWidget {
                                       .medType(
                                         isArabic()
                                             ? getLocalizedMedType(
-                                              medModel.type!,
+                                              widget.medModel.type!,
                                               context,
                                             )
                                             : S
                                                 .of(context)
-                                                .medType(medModel.type!)
+                                                .medType(widget.medModel.type!)
                                                 .toString()
                                                 .substring(8),
                                       ),
@@ -125,11 +128,11 @@ class CustomMedListTile extends StatelessWidget {
                         TextSpan(text: ' '),
                         TextSpan(
                           text:
-                              medModel.frequency!.toInt() == 24
+                              widget.medModel.frequency!.toInt() == 24
                                   ? S.of(context).everyDay
                                   : S
                                       .of(context)
-                                      .everyNumHour(medModel.frequency!),
+                                      .everyNumHour(widget.medModel.frequency!),
                           style: TextStyles.regGreyTextStyle,
                         ),
                       ],
@@ -141,9 +144,9 @@ class CustomMedListTile extends StatelessWidget {
               Expanded(
                 // fit: FlexFit.tight,
                 child: Text(
-                  medModel.startDate == null
+                  widget.medModel.startDate == null
                       ? ''
-                      : " ${medModel.getFormattedNextTime()}",
+                      : " ${widget.medModel.getFormattedNextTime()}",
                   style: TextStyles.regWhtieTextStyle,
                   textAlign: isArabic() ? TextAlign.left : TextAlign.right,
                   maxLines: 2,

@@ -1,14 +1,9 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
-import 'package:midmate/main.dart';
 import 'package:midmate/utils/image_controller.dart';
-
 import '../../../../../utils/app_colors.dart';
 import 'add_med_modal_bottom_sheet.dart';
 
@@ -19,11 +14,11 @@ class HomeViewBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final MedsCubit medCubit = context.read<MedsCubit>();
+
     return Scaffold(
       appBar: buildAppBar('Home'),
-      floatingActionButton:
-      // padding: const EdgeInsets.only(right: 30.0, bottom: 10),
-      FloatingActionButton(
+      floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.blue,
         foregroundColor: AppColors.white,
         onPressed: () {
@@ -37,7 +32,7 @@ class HomeViewBody extends StatelessWidget {
               );
             },
           ).then((_) {
-            BlocProvider.of<MedsCubit>(context).getAllMed();
+            medCubit.getAllMed();
           });
         },
         child: const Icon(Icons.add),

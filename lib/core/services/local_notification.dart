@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:midmate/features/notification/presentation/views/alaram_view.dart';
 import 'package:midmate/features/notification/presentation/views/notification_view.dart';
- import 'package:timezone/timezone.dart' as tz;
+import 'package:timezone/timezone.dart' as tz;
 // import 'package:android_intent_plus/android_intent.dart';
 
 class LocalNotification {
@@ -80,29 +80,6 @@ class LocalNotification {
       ),
     );
   }
-
-  // showNotification({String? title, String? body}) async {
-  //   const AndroidNotificationDetails androidNotificationDetails =
-  //       AndroidNotificationDetails(
-  //         'notification_channel_id',
-  //         'your channel name',
-  //         channelDescription: 'your channel description',
-  //         importance: Importance.max,
-  //         priority: Priority.high,
-  //         ticker: 'ticker',
-  //         icon: 'ic_notification',
-  //       );
-  //   const NotificationDetails notificationDetails = NotificationDetails(
-  //     android: androidNotificationDetails,
-  //   );
-  //   await flutterLocalNotificationsPlugin.show(
-  //     id++,
-  //     title,
-  //     body,
-  //     notificationDetails,
-  //     payload: 'item x',
-  //   );
-  // }
 
   Future<void> showNotificationWithActions({
     required String title,
@@ -191,13 +168,10 @@ class LocalNotification {
     String? title,
     String? body,
     required int id,
-    // int? date,
-
-    // required MedModel med,
     required DateTime date,
   }) async {
     log('scheduled alarm notification called');
-    // log(date!.s)
+
     const AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
           'repeated_scheduled_alarm_channel_id',
@@ -222,12 +196,7 @@ class LocalNotification {
       id,
       title,
       body,
-      Duration(
-        // days: date.day,
-        hours: date.hour,
-        minutes: date.minute,
-        seconds: date.second,
-      ),
+      Duration(hours: date.hour, minutes: date.minute, seconds: date.second),
       platformChannelSpecifics,
       payload: 'time_to_take_medicine',
     );
@@ -281,16 +250,21 @@ class LocalNotification {
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 
-  getAllNotification() async {
+  getAllActiveNotification() async {
     final List<ActiveNotification> pendingNotificationRequests =
         await flutterLocalNotificationsPlugin.getActiveNotifications();
-    log('active  notifications: $pendingNotificationRequests');
+    log('active  notifications: ${pendingNotificationRequests.first.title}');
   }
 
   getAllScheduledNotification() async {
     final List<PendingNotificationRequest> pendingNotificationRequests =
         await flutterLocalNotificationsPlugin.pendingNotificationRequests();
-    log('sheduled notifications: $pendingNotificationRequests');
+    log('sheduled notifications:\n');
+
+    for (var noti in pendingNotificationRequests) {
+      log("noti id   ${noti.id}");
+      log("noti title ${noti.title}");
+    }
   }
 
   // permission for android 13 and above

@@ -10,7 +10,10 @@ import 'package:midmate/main.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/med_model.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../generated/l10n.dart';
+import '../../../../../utils/service_locator.dart';
+import '../../../../../utils/services/shared_prefrence_service.dart';
 import '../../manager/cubit/meds_cubit.dart';
 import 'custom_drop_down_menu.dart';
 
@@ -39,8 +42,10 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
   DateTime? medStartDate;
   DateTime? medCreatedAt;
   String? description;
+  late MedsCubit medsCubit;
   @override
   void initState() {
+    medsCubit = context.read<MedsCubit>();
     doseEntries = [];
     medCreatedAt = DateTime.now();
     // medModel = MedModel.newMed();
@@ -131,7 +136,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                 entries: getStartDateEntries(),
                 hintText: "${S.of(context).example}: ${S.of(context).now}",
                 onSelected: (value) {
-                  medStartDate = DateTime.now().copyWith(hour: value);
+                  medStartDate = DateTime.now().add(Duration(hours: value));
                 },
               ),
               CustomLabel(
@@ -154,7 +159,8 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                 width: 150,
                 child: CustomButton(
                   bgColor: AppColors.blue,
-                  title: 'اضافة',
+
+                  title: S.of(context).AddMedicine,
                   strColor: AppColors.white,
                   onPressed: () async {
                     if (widget._formKey.currentState!.validate()) {
@@ -163,38 +169,34 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                           medDose == null ||
                           medStartDate == null ||
                           medFrequency == null) {
-                        errorMessage = 'يرجى تعبئة جميع الحقول المطلوبة';
+                        errorMessage = S.of(context).pleaseAddAllInfo;
                         setState(() {});
                         log('empty fields');
                         return;
                       }
                       MedModel med = MedModel(
                         name: medName,
-                        description: description,
+                        description: description ?? S.current.unSpecified,
                         type: medType,
                         dose: medDose,
                         frequency: medFrequency,
                         startDate: medStartDate,
                         createdAt: medCreatedAt,
+                        id: ++_notificationId,
                       );
-
-                      Future.delayed(Duration(seconds: 3));
 
                       log(med.toString());
                       await LocalNotification(
                         navigatorKey: navigatorKey,
                       ).showScheduledRepeatedNotification(
-                        id: _notificationId++,
+                        id: med.id!,
                         title:
-                            'this is the time to take ur medicine ${med.name}',
+                            'this is the time to take ur medicine ${getIt<SharedPreferences>().getString(S.current.userName(SharedPrefrenceDb.username))}  ${med.name}',
                         body:
                             'this is the time to take ur medicine ${med.name}',
                         date: med.getNextTime(),
-
-                        // id: medModel.id,
                       );
-
-                      BlocProvider.of<MedsCubit>(context).insert(med);
+                      medsCubit.insert(med);
                       context.pop();
                     }
                   },
@@ -216,46 +218,56 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
       DropdownMenuEntry(label: S.of(context).afterADay, value: 24),
     ];
   }
-}
 
-getDurationEntries(context) {
-  return [
-    DropdownMenuEntry(value: 6, label: S.of(context).every6Hours),
-    DropdownMenuEntry(value: 8, label: S.of(context).every8Hours),
-    DropdownMenuEntry(value: 12, label: S.of(context).every12Hours),
-    DropdownMenuEntry(value: 24, label: S.of(context).everyDay),
-  ];
-}
+  getDurationEntries(context) {
+    return [
+      DropdownMenuEntry(value: 6, label: S.of(context).every6Hours),
+      DropdownMenuEntry(value: 8, label: S.of(context).every8Hours),
+      DropdownMenuEntry(value: 12, label: S.of(context).every12Hours),
+      DropdownMenuEntry(value: 24, label: S.of(context).everyDay),
+    ];
+  }
 
-getMedDoseEntries(MedType? medType) {
-  if (medType == MedType.pill) {
-    return List.generate(4, (index) {
-      return DropdownMenuEntry(label: '${index + 1} قرص', value: index + 1);
-    });
-  } else if (medType == MedType.syrup || medType == MedType.powder) {
-    return List.generate(4, (index) {
-      return DropdownMenuEntry(
-        label: '${(index + 1) * 10} ملي',
-        value: index + 1 * 10,
-      );
-    });
-  } else if (medType == MedType.drop) {
-    return List.generate(4, (index) {
-      return DropdownMenuEntry(label: '${index + 1} قطرة', value: index + 1);
-    });
-  } else if (medType == MedType.cream) {
-    return List.generate(4, (index) {
-      return DropdownMenuEntry(label: '${index + 1} ملي', value: index + 1);
-    });
-  } else if (medType == MedType.injection) {
-    return List.generate(4, (index) {
-      return DropdownMenuEntry(label: '${index + 1} حقنة', value: index + 1);
-    });
-  } else if (medType == MedType.inhaler) {
-    return List.generate(4, (index) {
-      return DropdownMenuEntry(label: '${index + 1} بخه', value: index + 1);
-    });
-  } else {
-    return [];
+  getMedDoseEntries(MedType? medType) {
+    if (medType == MedType.pill) {
+      return List.generate(4, (index) {
+        return DropdownMenuEntry(
+          label: '${index + 1} ${S.current.pill}',
+          value: index + 1,
+        );
+      });
+    } else if (medType == MedType.syrup ||
+        medType == MedType.powder ||
+        medType == MedType.cream) {
+      return List.generate(4, (index) {
+        return DropdownMenuEntry(
+          label: '${(index + 1) * 10} ${S.current.ml}',
+          value: index + 1 * 10,
+        );
+      });
+    } else if (medType == MedType.drop) {
+      return List.generate(4, (index) {
+        return DropdownMenuEntry(
+          label: '${index + 1} ${S.current.drop}',
+          value: index + 1,
+        );
+      });
+    } else if (medType == MedType.injection) {
+      return List.generate(4, (index) {
+        return DropdownMenuEntry(
+          label: '${index + 1} ${S.current.injection}',
+          value: index + 1,
+        );
+      });
+    } else if (medType == MedType.inhaler) {
+      return List.generate(4, (index) {
+        return DropdownMenuEntry(
+          label: '${index + 1} ${S.current.inhaler}',
+          value: index + 1,
+        );
+      });
+    } else {
+      return [];
+    }
   }
 }

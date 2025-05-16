@@ -98,7 +98,11 @@ class MessageLookup extends MessageLookupByLibrary {
       "تناول أدويتك في الوقت المحدد يساعدك على الشعور بأفضل حال. سنساعدك على البقاء ملتزمًا!",
     ),
     "pill": MessageLookupByLibrary.simpleMessage("قرص"),
+    "pleaseAddAllInfo": MessageLookupByLibrary.simpleMessage(
+      " يرجى ادخال جميع المعلومات",
+    ),
     "powder": MessageLookupByLibrary.simpleMessage("مسحوق"),
+    "skip": MessageLookupByLibrary.simpleMessage("تخطي"),
     "startDate": MessageLookupByLibrary.simpleMessage("تاريخ البدء"),
     "syrup": MessageLookupByLibrary.simpleMessage("شراب"),
     "title": MessageLookupByLibrary.simpleMessage("اسم الدواء"),

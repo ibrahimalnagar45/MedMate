@@ -85,6 +85,11 @@ class S {
     );
   }
 
+  /// `Skip`
+  String get skip {
+    return Intl.message('Skip', name: 'skip', desc: '', args: []);
+  }
+
   /// `Your Private Nurse`
   String get yourPrivateNurse {
     return Intl.message(
@@ -330,6 +335,16 @@ class S {
     return Intl.message(
       'No description',
       name: 'NoDescription',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Please add all the info`
+  String get pleaseAddAllInfo {
+    return Intl.message(
+      'Please add all the info',
+      name: 'pleaseAddAllInfo',
       desc: '',
       args: [],
     );

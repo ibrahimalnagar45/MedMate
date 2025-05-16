@@ -1,5 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
+import 'package:midmate/core/services/functions/check_med_next_time.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 
 import '../../generated/l10n.dart';
@@ -16,9 +17,7 @@ class MedModel {
   DateTime? createdAt;
   int? id;
   List<DateTime> logs = [];
-  MedModel.newMed() {
-    // id++;
-  }
+  MedModel.newMed();
   MedModel({
     required this.name,
     required this.description,
@@ -28,26 +27,20 @@ class MedModel {
     required this.frequency,
     required this.startDate,
     this.id,
-  }) {
-    // id++;
-  }
+  });
 
   String getFormattedNextTime() {
+    checkMedNextTime(this);
+
     if (nextTime == null) {
-      setNextTime();
+      checkMedNextTime(this);
     }
     return DateFormat('dd/MM-hh:mm a').format(nextTime!);
   }
 
   void setNextTime() {
     if (nextTime == null) {
-      nextTime = createdAt!.add(
-        Duration(
-          hours: frequency! + startDate!.hour,
-
-          // days: startDate!.day == DateTime.now().day ? startDate!.day : 0,
-        ),
-      );
+      nextTime = startDate!.add(Duration(hours: frequency!));
     } else {
       nextTime = nextTime!.add(Duration(hours: frequency!));
     }
@@ -115,55 +108,6 @@ class MedModel {
       return MedType.pill;
     }
   }
-
-    
-  
 }
 
-
 enum MedType { pill, powder, syrup, drop, cream, injection, inhaler }
-
-// dose amounts for each type of med
-/**
- Pill / Tablet / Capsule
-
-Dose: tablet, pill, capsule
-
-Arabic: قرص، حبة، كبسولة
-
-Syrup / Liquid
-
-Dose: ml, teaspoon, tablespoon
-
-Arabic: مل، ملعقة صغيرة، ملعقة كبيرة
-
-Inhaler
-
-Dose: puff
-
-Arabic: بخة
-
-Injection
-
-Dose: ml, dose, units (IU/mg/etc.)
-
-Arabic: مل، جرعة، وحدة
-
-Drop (e.g., eye/ear)
-
-Dose: drop
-
-Arabic: قطرة
-
-Cream / Ointment / Gel
-
-Dose: thin layer, pea-sized amount, cm
-
-Arabic: طبقة رقيقة، كمية بحجم حبة البازلاء، سنتيمتر
-
-Powder
-
-Dose: sachet, scoop, gram
-
-Arabic: كيس، مكيال، غرام
- */
