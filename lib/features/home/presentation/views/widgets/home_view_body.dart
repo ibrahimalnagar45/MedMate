@@ -23,7 +23,6 @@ class HomeViewBody extends StatelessWidget {
         backgroundColor: AppColors.blue,
         foregroundColor: AppColors.white,
         onPressed: () {
-          Crud.instance.getAllusers();
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
