@@ -12,7 +12,7 @@
   
   "appBarTitle": "{appBarTitle}",
   "home": "Home",
-  
+  "Add": "Add",
   "medName": "{medName}",
   "medDescription": "{medDescription}",
   "medType": "{medType}",

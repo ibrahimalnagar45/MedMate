@@ -1,13 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:midmate/features/user_data/presentation/views/add_new_user_view.dart';
-import 'package:midmate/features/user_data/presentation/views/user_data_view.dart';
-import 'package:midmate/features/user_data/presentation/views/widgets/add_new_user_view_body.dart';
-import 'package:midmate/generated/l10n.dart';
+ import 'package:midmate/generated/l10n.dart';
+import 'package:midmate/main.dart';
 import 'package:midmate/utils/app_colors.dart';
-import 'package:midmate/utils/extension_fun.dart';
-import 'package:midmate/utils/services/shared_prefrence_service.dart';
+ import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../utils/extension_fun.dart';
 import '../../../../../utils/service_locator.dart';
+import '../../../../user_data/presentation/views/add_new_user_view.dart';
 
 AppBar buildAppBar(String screenName, BuildContext context) {
   return AppBar(
@@ -18,15 +17,32 @@ AppBar buildAppBar(String screenName, BuildContext context) {
       ),
     ),
     centerTitle: true,
+    actions: [
+      IconButton(
+        onPressed: () {
+          showMenu(
+            context: context,
+            items:
+                users
+                    .asMap()
+                    .map(
+                      (key, value) => MapEntry(
+                        key,
+                        PopupMenuItem(child: Text("value.name!")),
+                      ),
+                    )
+                    .values
+                    .toList(),
+          );
+        },
+        icon: Icon(Icons.keyboard_arrow_down_rounded),
+      ),
+    ],
     leading: Padding(
       padding: const EdgeInsets.symmetric(vertical: 5),
       child: GestureDetector(
         onTap: () {
-          // Context(context).goTo(AddNewUserView());
-          showDialog(
-            context: context,
-            builder: (context) => AddNewUserViewBody(),
-          );
+          Context(context).goTo(AddNewUserView());
         },
         child: CircleAvatar(
           // radius: 20,

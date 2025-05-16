@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
+import 'package:midmate/features/user_data/presentation/views/widgets/custom_button.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/user_model.dart';
@@ -27,75 +28,76 @@ class _AddNewUserViewBodyState extends State<AddNewUserViewBody> {
 
     return Form(
       key: _formKey,
-      child: SingleChildScrollView(
-        child: Container(
-          decoration: const BoxDecoration(
-            color: AppColors.blue,
-            borderRadius: BorderRadius.vertical(
-              top: Radius.circular(50),
-              bottom: Radius.circular(50),
-            ),
+      child: Container(
+        decoration: const BoxDecoration(
+          color: AppColors.blue,
+          borderRadius: BorderRadius.vertical(
+            // top: Radius.circular(50),
+            // bottom: Radius.circular(50),
           ),
-          width: double.infinity,
-          child: Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 10.0),
-            child: Column(
-              children: [
-                // SizedBox(height: Context(context).height() * .07),
-                SizedBox(height: 10),
-                Text(
-                  S.of(context).yourPrivateNurse,
-                  style: TextStyles.primaryBoldBlackTextStyle,
-                ),
-                SizedBox(height: 10),
-                Text(
-                  S.of(context).dontForgetMedicine,
-                  style: TextStyles.regGreyTextStyle,
-                ),
+        ),
 
-                CustomLabel(title: S.of(context).userName),
-                CustomTextFormFeild(
-                  validator: (vlaue) {
-                    if (vlaue!.isEmpty || vlaue.trim().isEmpty) {
-                      return S.of(context).nameRequired;
-                    }
-                    return null;
-                  },
-                  onSubmitted: (value) {
-                    if (_formKey.currentState!.validate()) {
-                      userName = value;
-                      setState(() {});
-                    }
-                  },
-                ),
-                SizedBox(height: 15),
-                CustomLabel(title: S.of(context).userAge),
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 10.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              // SizedBox(height: Context(context).height() * .07),
+              SizedBox(height: 10),
+              Text(
+                S.of(context).yourPrivateNurse,
+                style: TextStyles.primaryBoldBlackTextStyle,
+              ),
+              SizedBox(height: 10),
+              Text(
+                S.of(context).dontForgetMedicine,
+                style: TextStyles.regGreyTextStyle,
+              ),
 
-                AgeDropDownMenu(
-                  onSelected: (value) {
-                    age = value;
+              CustomLabel(title: S.of(context).userName),
+              CustomTextFormFeild(
+                validator: (vlaue) {
+                  if (vlaue!.isEmpty || vlaue.trim().isEmpty) {
+                    return S.of(context).nameRequired;
+                  }
+                  return null;
+                },
+                onSubmitted: (value) {
+                  if (_formKey.currentState!.validate()) {
+                    userName = value;
                     setState(() {});
-                    if (_formKey.currentState!.validate()) {
-                      Crud.instance.insertUser(
-                        Person(name: userName!, age: age!),
-                      );
+                  }
+                },
+              ),
+              SizedBox(height: 15),
+              CustomLabel(title: S.of(context).userAge),
 
-                      context.pop();
-                      // Navigator.of(context).push(
-                      //   MaterialPageRoute(
-                      //     builder: (context) => HomeView(),
-                      //   ),
-                      // );
-                    }
-                  },
-                ),
-                // SizedBox(height: 80),
-              ],
-            ),
+              AgeDropDownMenu(
+                onSelected: (value) {
+                  age = value;
+                  setState(() {});
+                },
+              ),
+              SizedBox(height: 80),
+
+              CustomButton(
+                bgColor: AppColors.grey,
+                title: S.of(context).Add,
+                strColor: AppColors.blue,
+                onPressed: () {
+                  if (_formKey.currentState!.validate()) {
+                    Crud.instance.insertUser(
+                      Person(name: userName!, age: age!),
+                    );
+                    context.pop();
+                  }
+                },
+              ),
+            ],
           ),
         ),
       ),
     );
-  
   }
 }

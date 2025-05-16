@@ -36,7 +36,8 @@ class Crud {
 
   Future<List<Person>> getAllusers() async {
     Database db = await SqHelper().getUsersDbInstance();
-    List<Map<String, dynamic>> maps = await db.query(DbConstants.medTableName);
+    List<Map<String, dynamic>> maps = await db.query(DbConstants.usersTableName);
+    log(maps.toList().toString());
     return List.generate(maps.length, (i) {
       return Person.fromMap(maps[i]);
     });

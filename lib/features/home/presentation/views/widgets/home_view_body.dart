@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
@@ -22,6 +23,7 @@ class HomeViewBody extends StatelessWidget {
         backgroundColor: AppColors.blue,
         foregroundColor: AppColors.white,
         onPressed: () {
+          Crud.instance.getAllusers();
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,

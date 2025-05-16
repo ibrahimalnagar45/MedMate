@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_heart_icon.dart';
 import 'package:midmate/utils/extension_fun.dart';
-import 'package:midmate/utils/service_locator.dart';
-import 'package:midmate/utils/services/shared_prefrence_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:midmate/utils/models/user_model.dart';
+import '../../../../../generated/l10n.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/text_styles.dart';
 import 'age_drop_down_menu.dart';
@@ -55,21 +55,21 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                             //  custom heart circle avatar
                             CustomHeartIcon(),
                             SizedBox(height: 10),
-                            const Text(
-                              ' ممرضك الخاص بك ',
+                            Text(
+                              S.of(context).yourPrivateNurse,
                               style: TextStyles.primaryBoldBlackTextStyle,
                             ),
                             SizedBox(height: 10),
-                            const Text(
-                              'متنساش ميعاد دواءك تاني ',
+                            Text(
+                              S.of(context).dontForgetMedicine,
                               style: TextStyles.regGreyTextStyle,
                             ),
 
-                            CustomLabel(title: 'الاسم'),
+                            CustomLabel(title: S.of(context).userName),
                             CustomTextFormFeild(
                               validator: (vlaue) {
                                 if (vlaue!.isEmpty || vlaue.trim().isEmpty) {
-                                  return 'يجب ان تدخل اسمك';
+                                  return S.of(context).nameRequired;
                                 }
                                 return null;
                               },
@@ -81,7 +81,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                               },
                             ),
                             SizedBox(height: 15),
-                            CustomLabel(title: 'العمر'),
+                            CustomLabel(title: S.of(context).userAge),
 
                             AgeDropDownMenu(
                               onSelected: (value) {
@@ -92,15 +92,18 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                                   // SharedPrefrenceInstances.userModel =
                                   //     UserModel.instance;
 
-                                  getIt<SharedPreferences>().setString(
-                                    SharedPrefrenceDb.username,
-                                    userName!,
-                                  );
-                                  getIt<SharedPreferences>().setString(
-                                    SharedPrefrenceDb.userAge,
-                                    value!,
-                                  );
+                                  // getIt<SharedPreferences>().setString(
+                                  //   SharedPrefrenceDb.username,
+                                  //   userName!,
+                                  // );
+                                  // getIt<SharedPreferences>().setString(
+                                  //   SharedPrefrenceDb.userAge,
+                                  //   value!,
+                                  // );
 
+                                  Crud.instance.insertUser(
+                                    Person(age: value, name: userName),
+                                  );
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => HomeView(),

@@ -10,7 +10,7 @@
   "userName": "الاسم",
   "userAge": "العمر",
   "nameRequired": "يجب أن تدخل اسمك",
-
+"Add": "اضافة", 
   "appBarTitle": "{appBarTitle}",
 "home": "الرئيسية", 
   "medName": "{medName}",

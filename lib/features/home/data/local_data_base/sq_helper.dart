@@ -8,8 +8,8 @@ import 'package:path/path.dart';
 class SqHelper {
   Database? db;
 
-  SqHelper() {
-    getMedsDbInstance();
+  SqHelper()  {
+      getMedsDbInstance();
     getUsersDbInstance();
   }
 

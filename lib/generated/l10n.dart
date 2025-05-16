@@ -145,6 +145,11 @@ class S {
     return Intl.message('Home', name: 'home', desc: '', args: []);
   }
 
+  /// `Add`
+  String get Add {
+    return Intl.message('Add', name: 'Add', desc: '', args: []);
+  }
+
   /// `{medName}`
   String medName(Object medName) {
     return Intl.message('$medName', name: 'medName', desc: '', args: [medName]);
