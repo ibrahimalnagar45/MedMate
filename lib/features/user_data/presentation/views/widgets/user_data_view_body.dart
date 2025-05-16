@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_heart_icon.dart';
 import 'package:midmate/utils/extension_fun.dart';
@@ -7,7 +6,6 @@ import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../utils/app_colors.dart';
-import '../../../../../utils/models/user_model.dart';
 import '../../../../../utils/text_styles.dart';
 import 'age_drop_down_menu.dart';
 import 'cusotm_label.dart';
@@ -32,8 +30,6 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
         child: SizedBox(
           height: Context(context).height(),
           child: Stack(
-            // crossAxisAlignment: CrossAxisAlignment.center,
-            // mainAxisAlignment: MainAxisAlignment.center,
             children: [
               // SvgPicture.asset('assets/images/image 1.svg'),
               UpperImage(),

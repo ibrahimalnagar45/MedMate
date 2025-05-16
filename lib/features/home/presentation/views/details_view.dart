@@ -10,7 +10,7 @@ class DetailsView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: buildAppBar('Details'),
+      appBar: buildAppBar('Details', context),
       body: SafeArea(child: DetailsViewBody(med: med)),
     );
   }

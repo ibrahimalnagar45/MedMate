@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:midmate/utils/models/med_model.dart';
+import 'package:midmate/utils/models/user_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'db_constants.dart';
 
@@ -9,38 +10,54 @@ class Crud {
   const Crud._();
   static const Crud instance = Crud._();
 
-  Future<MedModel> insert(MedModel med) async {
-    Database db = await SqHelper().getDbInstance();
+  Future<MedModel> insertMed(MedModel med) async {
+    Database db = await SqHelper().getMedsDbInstance();
 
-    await db.insert(DbConstants.tableName, med.toMap());
+    await db.insert(DbConstants.medTableName, med.toMap());
     log(med.toString());
     return med;
   }
 
+  Future<Person> insertUser(Person user) async {
+    Database db = await SqHelper().getUsersDbInstance();
+
+    await db.insert(DbConstants.usersTableName, user.toMap());
+    log(user.toString());
+    return user;
+  }
+
   Future<List<MedModel>> getAllMeds() async {
-    Database db = await SqHelper().getDbInstance();
-    List<Map<String, dynamic>> maps = await db.query(DbConstants.tableName);
+    Database db = await SqHelper().getMedsDbInstance();
+    List<Map<String, dynamic>> maps = await db.query(DbConstants.medTableName);
     return List.generate(maps.length, (i) {
       return MedModel.fromMap(maps[i]);
     });
   }
 
+  Future<List<Person>> getAllusers() async {
+    Database db = await SqHelper().getUsersDbInstance();
+    List<Map<String, dynamic>> maps = await db.query(DbConstants.medTableName);
+    return List.generate(maps.length, (i) {
+      return Person.fromMap(maps[i]);
+    });
+  }
+
   Future<MedModel?> getMed(int id) async {
-    Database db = await SqHelper().getDbInstance();
+    Database db = await SqHelper().getMedsDbInstance();
 
     List<Map<String, dynamic>> maps = await db.query(
-      DbConstants.tableName,
+      DbConstants.medTableName,
       columns: [
-        DbConstants.columnId,
-        DbConstants.columnName,
-        DbConstants.columnDescription,
-        DbConstants.columnType,
-        DbConstants.columnAmount,
-        DbConstants.columnFrequency,
-        DbConstants.columnStartDate,
-        DbConstants.columnCreatedAt,
+        DbConstants.medsColumnId,
+        DbConstants.medsColumnName,
+        DbConstants.medsColumnDescription,
+        DbConstants.medsColumnType,
+        DbConstants.medsColumnAmount,
+        DbConstants.medsColumnFrequency,
+        DbConstants.medsColumnStartDate,
+        DbConstants.medsColumnCreatedAt,
       ],
-      where: '${DbConstants.columnId} = ?',
+      where: '${DbConstants.medsColumnId} = ?',
       whereArgs: [id],
     );
     if (maps.isNotEmpty) {
@@ -49,35 +66,81 @@ class Crud {
     return null;
   }
 
-  Future<int> delete(int id) async {
-    Database db = await SqHelper().getDbInstance();
+  Future<Person?> getUser(int id) async {
+    Database db = await SqHelper().getUsersDbInstance();
+
+    List<Map<String, dynamic>> maps = await db.query(
+      DbConstants.usersTableName,
+      columns: [
+        DbConstants.usersColumnId,
+        DbConstants.usersColumnName,
+        DbConstants.usersColumnAge,
+      ],
+      where: '${DbConstants.usersColumnId} = ?',
+      whereArgs: [id],
+    );
+    if (maps.isNotEmpty) {
+      return Person.fromMap(maps.first);
+    }
+    return null;
+  }
+
+  Future<int> deleteUser(int id) async {
+    Database db = await SqHelper().getUsersDbInstance();
 
     return await db.delete(
-      DbConstants.tableName,
-      where: '${DbConstants.columnId} = ?',
+      DbConstants.usersTableName,
+      where: '${DbConstants.usersColumnId} = ?',
       whereArgs: [id],
     );
   }
 
-  Future<int> update(MedModel todo) async {
-    Database db = await SqHelper().getDbInstance();
+  Future<int> deleteMed(int id) async {
+    Database db = await SqHelper().getMedsDbInstance();
+
+    return await db.delete(
+      DbConstants.medTableName,
+      where: '${DbConstants.medsColumnId} = ?',
+      whereArgs: [id],
+    );
+  }
+
+  Future<int> updateMed(MedModel todo) async {
+    Database db = await SqHelper().getMedsDbInstance();
 
     return await db.update(
-      DbConstants.tableName,
+      DbConstants.medTableName,
       todo.toMap(),
-      where: '${DbConstants.columnId} = ?',
+      where: '${DbConstants.medsColumnId} = ?',
       whereArgs: [MedModel.newMed().id],
     );
   }
 
-  Future<void> deleteAll() async {
-    Database db = await SqHelper().getDbInstance();
+  Future<int> updateUserInfo(MedModel todo) async {
+    Database db = await SqHelper().getUsersDbInstance();
 
-    db.delete(DbConstants.tableName);
+    return await db.update(
+      DbConstants.usersTableName,
+      todo.toMap(),
+      where: '${DbConstants.usersColumnId} = ?',
+      whereArgs: [Person().id],
+    );
   }
 
-  Future close() async {
-    Database db = await SqHelper().getDbInstance();
+  Future<void> deleteAllMeds() async {
+    Database db = await SqHelper().getMedsDbInstance();
+
+    db.delete(DbConstants.medTableName);
+  }
+
+  Future closeMedsDb() async {
+    Database db = await SqHelper().getMedsDbInstance();
+
+    db.close();
+  }
+
+  Future closeUsersDb() async {
+    Database db = await SqHelper().getUsersDbInstance();
 
     db.close();
   }

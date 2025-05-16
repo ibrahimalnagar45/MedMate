@@ -6,7 +6,7 @@
   
   "yourPrivateNurse": "Your Private Nurse",
   "dontForgetMedicine": "Never forget your medicine again",
-  "userName": "{userName}",
+  "userName": "userName",
   "userAge": "Age",
   "nameRequired": "You must enter your name",
   
@@ -78,13 +78,7 @@
     }
   },
 
-"@userName": {
-    "placeholders": {
-      "userName": {
-        "type": "Object"
-      }
-    }
-  },
+ 
 
   "@everyNumHour": {
     "placeholders": {

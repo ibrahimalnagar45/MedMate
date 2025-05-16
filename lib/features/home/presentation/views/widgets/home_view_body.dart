@@ -17,7 +17,7 @@ class HomeViewBody extends StatelessWidget {
     final MedsCubit medCubit = context.read<MedsCubit>();
 
     return Scaffold(
-      appBar: buildAppBar('Home'),
+      appBar: buildAppBar('Home', context),
       floatingActionButton: FloatingActionButton(
         backgroundColor: AppColors.blue,
         foregroundColor: AppColors.white,

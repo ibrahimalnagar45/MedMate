@@ -191,13 +191,13 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                       ).showScheduledRepeatedNotification(
                         id: med.id!,
                         title:
-                            'this is the time to take ur medicine ${getIt<SharedPreferences>().getString(S.current.userName(SharedPrefrenceDb.username))}  ${med.name}',
+                            'this is the time to take ur medicine ${getIt<SharedPreferences>().getString(SharedPrefrenceDb.username)}  ${med.name}',
                         body:
                             'this is the time to take ur medicine ${med.name}',
                         date: med.getNextTime(),
                       );
                       medsCubit.insert(med);
-                      context.pop();
+                      Context(context).pop();
                     }
                   },
                 ),

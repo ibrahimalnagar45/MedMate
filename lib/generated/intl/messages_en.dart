@@ -42,8 +42,6 @@ class MessageLookup extends MessageLookupByLibrary {
 
   static String m10(medType) => "${medType}";
 
-  static String m11(userName) => "${userName}";
-
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
     "AddMedicine": MessageLookupByLibrary.simpleMessage("Add Medicine"),
@@ -111,7 +109,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "type": MessageLookupByLibrary.simpleMessage("type"),
     "unSpecified": MessageLookupByLibrary.simpleMessage("unspecified"),
     "userAge": MessageLookupByLibrary.simpleMessage("Age"),
-    "userName": m11,
+    "userName": MessageLookupByLibrary.simpleMessage("userName"),
     "yourPrivateNurse": MessageLookupByLibrary.simpleMessage(
       "Your Private Nurse",
     ),

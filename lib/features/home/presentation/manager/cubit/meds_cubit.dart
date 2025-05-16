@@ -14,7 +14,6 @@ class MedsCubit extends Cubit<MedsState> {
   getAllMed() async {
     emit(MedsLoading());
     try {
-
       meds = await db.getAllMeds();
       emit(GetMedsSuccess(meds: meds));
       for (var med in meds) {
@@ -29,7 +28,7 @@ class MedsCubit extends Cubit<MedsState> {
     emit(MedsLoading());
 
     try {
-      db.insert(med);
+      db.insertMed(med);
       emit(InsertMedsSuccess(med: med));
     } catch (e) {
       emit(InsertMedsFaluire(erMessage: e.toString()));
@@ -39,7 +38,7 @@ class MedsCubit extends Cubit<MedsState> {
   deleteAMed(int id) async {
     emit(MedsLoading());
     try {
-      await db.delete(id);
+      await db.deleteMed(id);
       meds.removeWhere((med) => med.id == id);
       emit(DeleteMedSuccess());
       // emit(DeleteMedSuccess());

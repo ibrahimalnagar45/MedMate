@@ -9,19 +9,19 @@ class SqHelper {
   Database? db;
 
   SqHelper() {
-    getDbInstance();
-    // Future.sync(() async => getDbInstance());
+    getMedsDbInstance();
+    getUsersDbInstance();
   }
 
-  Future<String> _getDbPath() async {
+  Future<String> _getDbPath(String dbTableName) async {
     databaseFactory = databaseFactorySqflitePlugin;
     String dbPath = await getDatabasesPath();
-    return join(dbPath, DbConstants.tableName);
+    return join(dbPath, dbTableName);
   }
 
   // create db or open it
-  Future<Database> getDbInstance() async {
-    String path = await _getDbPath();
+  Future<Database> getMedsDbInstance() async {
+    String path = await _getDbPath(DbConstants.medTableName);
     try {
       // await deleteDatabase(path);
 
@@ -30,15 +30,43 @@ class SqHelper {
         version: 1,
         onCreate: (Database db, int version) async {
           await db.execute('''
-create table ${DbConstants.tableName} ( 
-  ${DbConstants.columnId} integer primary key autoincrement, 
-  ${DbConstants.columnName} text not null,
-  ${DbConstants.columnDescription} text ,
-  ${DbConstants.columnType} text ,
-  ${DbConstants.columnAmount} double,
-  ${DbConstants.columnFrequency} integer,
-  ${DbConstants.columnStartDate} text ,
-  ${DbConstants.columnCreatedAt} text )
+create table ${DbConstants.medTableName} ( 
+  ${DbConstants.medsColumnId} integer primary key autoincrement, 
+  ${DbConstants.medsColumnName} text not null,
+  ${DbConstants.medsColumnDescription} text ,
+  ${DbConstants.medsColumnType} text ,
+  ${DbConstants.medsColumnAmount} double,
+  ${DbConstants.medsColumnFrequency} integer,
+  ${DbConstants.medsColumnStartDate} text ,
+  ${DbConstants.medsColumnCreatedAt} text )
+''');
+        },
+        onOpen: _onOpen,
+        onConfigure: _onConfig,
+        onUpgrade: _onUpgrade, // Fix: Add proper upgrade logic
+        onDowngrade: _onDowngrade,
+      );
+    } catch (e) {
+      log(e.toString());
+    }
+
+    log('from onCreate  :  ${db == null}');
+
+    return db!;
+  }
+
+  Future<Database> getUsersDbInstance() async {
+    String path = await _getDbPath(DbConstants.usersTableName);
+    try {
+      db = await openDatabase(
+        path,
+        version: 1,
+        onCreate: (Database db, int version) async {
+          await db.execute('''
+create table ${DbConstants.usersTableName} ( 
+  ${DbConstants.usersColumnId} integer primary key autoincrement, 
+  ${DbConstants.usersColumnName} text not null,
+  ${DbConstants.usersColumnAge} text not null )
 ''');
         },
         onOpen: _onOpen,

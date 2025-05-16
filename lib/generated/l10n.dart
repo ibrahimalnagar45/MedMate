@@ -110,14 +110,9 @@ class S {
     );
   }
 
-  /// `{userName}`
-  String userName(Object userName) {
-    return Intl.message(
-      '$userName',
-      name: 'userName',
-      desc: '',
-      args: [userName],
-    );
+  /// `userName`
+  String get userName {
+    return Intl.message('userName', name: 'userName', desc: '', args: []);
   }
 
   /// `Age`

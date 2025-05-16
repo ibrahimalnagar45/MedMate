@@ -73,14 +73,14 @@ class MedModel {
 
   factory MedModel.fromMap(Map<String, dynamic> map) {
     return MedModel(
-      id: map[DbConstants.columnId],
-      name: map[DbConstants.columnName],
-      description: map[DbConstants.columnDescription],
-      type: MedModel.newMed().getType(map[DbConstants.columnType]),
-      dose: map[DbConstants.columnAmount],
-      frequency: map[DbConstants.columnFrequency],
-      startDate: DateTime.parse(map[DbConstants.columnStartDate]),
-      createdAt: DateTime.parse(map[DbConstants.columnCreatedAt]),
+      id: map[DbConstants.medsColumnId],
+      name: map[DbConstants.medsColumnName],
+      description: map[DbConstants.medsColumnDescription],
+      type: MedModel.newMed().getType(map[DbConstants.medsColumnType]),
+      dose: map[DbConstants.medsColumnAmount],
+      frequency: map[DbConstants.medsColumnFrequency],
+      startDate: DateTime.parse(map[DbConstants.medsColumnStartDate]),
+      createdAt: DateTime.parse(map[DbConstants.medsColumnCreatedAt]),
     );
   }
 
