@@ -1,13 +1,12 @@
-import 'package:midmate/utils/models/med_model.dart';
-
+ 
 class Person {
   String? name;
   String? age;
-  // i have to add this list to manage every user's meds
-  List<MedModel>? meds;
+  // // i have to add this list to manage every user's meds
+  // List<MedModel>? meds;
   int? id;
 
-  Person({this.name, this.age, this.meds, this.id});
+  Person({this.name, this.age, this.id});
 
   factory Person.fromMap(Map<String, dynamic> map) {
     return Person(name: map['name'], age: map['age']);
