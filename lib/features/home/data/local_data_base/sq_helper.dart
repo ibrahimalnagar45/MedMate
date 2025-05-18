@@ -32,6 +32,7 @@ class SqHelper {
           await db.execute('''
 create table ${DbConstants.medTableName} ( 
   ${DbConstants.medsColumnId} integer primary key autoincrement, 
+  ${DbConstants.usersColumnId} integer, 
   ${DbConstants.medsColumnName} text not null,
   ${DbConstants.medsColumnDescription} text ,
   ${DbConstants.medsColumnType} text ,

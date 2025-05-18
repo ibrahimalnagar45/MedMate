@@ -26,9 +26,13 @@ class Crud {
     return user;
   }
 
-  Future<List<MedModel>> getAllMeds() async {
+// change the id to required
+  Future<List<MedModel>> getAUserMeds([int? id]) async {
     Database db = await SqHelper().getMedsDbInstance();
-    List<Map<String, dynamic>> maps = await db.query(DbConstants.medTableName);
+    List<Map<String, dynamic>> maps = await db.query(
+      DbConstants.medTableName,
+      where: "${DbConstants.usersColumnId}==$id",
+    );
     return List.generate(maps.length, (i) {
       return MedModel.fromMap(maps[i]);
     });
@@ -36,7 +40,9 @@ class Crud {
 
   Future<List<Person>> getAllusers() async {
     Database db = await SqHelper().getUsersDbInstance();
-    List<Map<String, dynamic>> maps = await db.query(DbConstants.usersTableName);
+    List<Map<String, dynamic>> maps = await db.query(
+      DbConstants.usersTableName,
+    );
     log(maps.toList().toString());
     return List.generate(maps.length, (i) {
       return Person.fromMap(maps[i]);
