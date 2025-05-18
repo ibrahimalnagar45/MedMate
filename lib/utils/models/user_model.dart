@@ -1,4 +1,3 @@
- 
 class Person {
   String? name;
   String? age;
@@ -11,6 +10,7 @@ class Person {
   factory Person.fromMap(Map<String, dynamic> map) {
     return Person(name: map['name'], age: map['age']);
   }
+
   toMap() {
     return {'name': name, 'age': age};
   }
@@ -23,13 +23,12 @@ class UserModel extends Person {
   // void editUser(Person user) {
   //   instance.name = user.name;
   //   instance.age = user.age;
-
   // }
 
   Person getUser() => Person(name: instance.name, age: instance.age);
 
   @override
   String toString() {
-    return 'UserModel{name: $name, age: $age}';
+    return 'UserModel{id: $id, name: $name, age: $age}';
   }
 }

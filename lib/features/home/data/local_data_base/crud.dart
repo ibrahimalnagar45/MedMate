@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import 'package:midmate/core/helpers/show_snak_bar.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/models/user_model.dart';
@@ -20,13 +21,16 @@ class Crud {
 
   Future<Person> insertUser(Person user) async {
     Database db = await SqHelper().getUsersDbInstance();
-
-    await db.insert(DbConstants.usersTableName, user.toMap());
-    log(user.toString());
+    List<Person> currentUsers = await getAllusers();
+    if (!currentUsers.contains(user)) {
+      await db.insert(DbConstants.usersTableName, user.toMap());
+      log(user.toString());
+    }
+    showSnakBar('This User is already exist');
     return user;
   }
 
-// change the id to required
+  // change the id to required
   Future<List<MedModel>> getAUserMeds([int? id]) async {
     Database db = await SqHelper().getMedsDbInstance();
     List<Map<String, dynamic>> maps = await db.query(

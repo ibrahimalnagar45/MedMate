@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:midmate/core/services/functions/get_type_measured.dart';
+import 'package:midmate/core/functions/get_type_measured.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/models/med_model.dart';
 
-import '../../../../../core/services/functions/get_localized_med_type.dart';
+import '../../../../../core/functions/get_localized_med_type.dart';
 
 class DetailsViewBody extends StatelessWidget {
   final MedModel med;

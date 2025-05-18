@@ -14,7 +14,11 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-List<Person> users = [];
+final GlobalKey _buttonKey = GlobalKey();
+final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
+    GlobalKey<ScaffoldMessengerState>();
+
+// List<Person> users = [];
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterLocalization.instance.ensureInitialized();
@@ -28,8 +32,7 @@ void main() async {
 
   SqHelper();
 
-  users = await Crud.instance.getAllusers();
-  
+  // users = await Crud.instance.getAllusers();
 
   runApp(const MyApp());
 }
@@ -50,7 +53,7 @@ class MyApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: S.delegate.supportedLocales,
-
+      scaffoldMessengerKey: scaffoldMessengerKey,
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'Remind Me',

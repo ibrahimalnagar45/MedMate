@@ -1,6 +1,6 @@
 import 'package:midmate/utils/models/med_model.dart';
 
-import '../../../generated/l10n.dart';
+import '../../generated/l10n.dart';
 
 String getTypeMeasurement(MedType type) {
   switch (type) {

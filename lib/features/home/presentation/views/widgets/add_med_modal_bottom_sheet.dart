@@ -1,7 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:midmate/core/services/functions/get_localized_med_type.dart';
+import 'package:midmate/core/functions/get_localized_med_type.dart';
 import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/cusotm_label.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_button.dart';

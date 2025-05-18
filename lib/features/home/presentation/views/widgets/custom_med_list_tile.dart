@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:midmate/core/services/functions/get_localized_med_type.dart';
+import 'package:midmate/core/functions/get_localized_med_type.dart';
 import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/details_view.dart';
@@ -14,7 +14,7 @@ import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/text_styles.dart';
 import 'package:intl/intl.dart';
 
-import '../../../../../core/services/functions/check_med_next_time.dart';
+import '../../../../../core/functions/check_med_next_time.dart';
 
 class CustomMedListTile extends StatefulWidget {
   const CustomMedListTile({super.key, required this.medModel});

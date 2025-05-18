@@ -10,7 +10,9 @@ class MedsListView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return meds.isEmpty
-        ? Image.asset(ImageController.noMedAddedImage, width: 250)
+        ? Center(
+          child: Image.asset(ImageController.noMedAddedImage, width: 250),
+        )
         : ListView.builder(
           itemCount: meds.length,
           itemBuilder: (context, index) {

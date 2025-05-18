@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../../generated/l10n.dart';
-import '../../../utils/models/med_model.dart';
+import '../../generated/l10n.dart';
+import '../../utils/models/med_model.dart';
 
 String getLocalizedMedType(MedType type, BuildContext context) {
   switch (type) {
