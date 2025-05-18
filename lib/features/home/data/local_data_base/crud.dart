@@ -22,11 +22,13 @@ class Crud {
   Future<Person> insertUser(Person user) async {
     Database db = await SqHelper().getUsersDbInstance();
     List<Person> currentUsers = await getAllusers();
+
     if (!currentUsers.contains(user)) {
       await db.insert(DbConstants.usersTableName, user.toMap());
       log(user.toString());
+    } else {
+      showSnakBar('This User is already exist');
     }
-    showSnakBar('This User is already exist');
     return user;
   }
 
@@ -104,6 +106,12 @@ class Crud {
       where: '${DbConstants.usersColumnId} = ?',
       whereArgs: [id],
     );
+  }
+
+  Future<void> deleteAllusers() async {
+    Database db = await SqHelper().getUsersDbInstance();
+
+    db.delete(DbConstants.usersTableName);
   }
 
   Future<int> deleteMed(int id) async {

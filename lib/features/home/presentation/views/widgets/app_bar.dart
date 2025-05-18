@@ -53,7 +53,12 @@ AppBar buildAppBar(String screenName, BuildContext context) {
                         key,
                         PopupMenuItem(
                           value: value.id.toString(),
-                          child: Text(value.name!),
+                          child: TextButton(
+                            onPressed: () {
+                              currentUser = value;
+                            },
+                            child: Text(value.name!),
+                          ),
                         ),
                       ),
                     )
@@ -62,7 +67,6 @@ AppBar buildAppBar(String screenName, BuildContext context) {
           );
 
           if (selcted != null) {
-            
             context.pop();
           }
 
@@ -124,9 +128,7 @@ AppBar buildAppBar(String screenName, BuildContext context) {
           // radius: 20,
           backgroundColor: AppColors.blue,
           child: Text(
-            getIt<SharedPreferences>()
-                .getString(SharedPrefrenceDb.username)![0]
-                .toString(),
+            currentUser.name![0].toUpperCase(),
             style: TextStyle(color: AppColors.white),
           ),
         ),

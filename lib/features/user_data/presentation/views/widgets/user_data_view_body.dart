@@ -100,10 +100,11 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                                   //   SharedPrefrenceDb.userAge,
                                   //   value!,
                                   // );
-
-                                  Crud.instance.insertUser(
-                                    Person(age: value, name: userName),
+                                  currentUser = Person(
+                                    age: value,
+                                    name: userName,
                                   );
+                                  Crud.instance.insertUser(currentUser);
                                   Navigator.of(context).push(
                                     MaterialPageRoute(
                                       builder: (context) => HomeView(),

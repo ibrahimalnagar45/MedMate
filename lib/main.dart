@@ -6,6 +6,8 @@ import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
+import 'package:midmate/utils/services/shared_prefrence_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'utils/app_fonts.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -33,7 +35,8 @@ void main() async {
   SqHelper();
 
   // users = await Crud.instance.getAllusers();
-
+  // Crud.instance.deleteAllusers();
+  // SharedPrefrenceService.instance.prefs.clear();
   runApp(const MyApp());
 }
 

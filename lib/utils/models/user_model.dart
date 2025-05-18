@@ -14,7 +14,21 @@ class Person {
   toMap() {
     return {'name': name, 'age': age};
   }
+
+  @override
+  bool operator ==(Object other) {
+    return identical(this, other) ||
+        other is Person &&
+            runtimeType == other.runtimeType &&
+            name == other.name &&
+            age == other.age;
+  }
+
+  @override
+  int get hashCode => name.hashCode ^ age.hashCode;
 }
+
+Person currentUser = Person();
 
 class UserModel extends Person {
   UserModel._();
