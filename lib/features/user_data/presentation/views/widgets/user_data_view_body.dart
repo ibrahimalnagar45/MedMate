@@ -1,11 +1,18 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_heart_icon.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/user_model.dart';
+import 'package:midmate/utils/service_locator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../utils/app_colors.dart';
+import '../../../../../utils/services/shared_prefrence_service.dart';
 import '../../../../../utils/text_styles.dart';
 import 'age_drop_down_menu.dart';
 import 'cusotm_label.dart';
@@ -21,6 +28,7 @@ class UserDataViewBody extends StatefulWidget {
 class _UserDataViewBodyState extends State<UserDataViewBody> {
   String? userName;
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
+  int _userIds = 0;
   @override
   Widget build(BuildContext context) {
     // log(UserModel.instance.toString());
@@ -91,19 +99,33 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                                   // );
                                   // SharedPrefrenceInstances.userModel =
                                   //     UserModel.instance;
-
-                                  // getIt<SharedPreferences>().setString(
-                                  //   SharedPrefrenceDb.username,
-                                  //   userName!,
-                                  // );
-                                  // getIt<SharedPreferences>().setString(
-                                  //   SharedPrefrenceDb.userAge,
-                                  //   value!,
-                                  // );
-                                  currentUser = Person(
+                                  getIt<SharedPreferences>().setString(
+                                    SharedPrefrenceDb.username,
+                                    userName!,
+                                  );
+                                  getIt<SharedPreferences>().setString(
+                                    SharedPrefrenceDb.userAge,
+                                    value!,
+                                  );
+                                  getIt<SharedPreferences>().setString(
+                                    SharedPrefrenceDb.userId,
+                                    _userIds.toString(),
+                                  );
+                                  final Person currentUser = Person(
                                     age: value,
                                     name: userName,
+                                    id: _userIds++,
                                   );
+                                  getIt<UserCubit>().setCurrentUser(
+                                    currentUser,
+                                  );
+
+                                  log(
+                                    getIt<UserCubit>()
+                                        .getCurrentUser()
+                                        .toString(),
+                                  );
+
                                   Crud.instance.insertUser(currentUser);
                                   Navigator.of(context).push(
                                     MaterialPageRoute(

@@ -1,20 +1,24 @@
 import 'dart:developer';
-
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/utils/models/med_model.dart';
-
+import 'package:midmate/utils/models/user_model.dart';
+import 'package:midmate/utils/service_locator.dart';
 part 'meds_state.dart';
 
 class MedsCubit extends Cubit<MedsState> {
   MedsCubit() : super(MedsInitial());
 
+  final Person? currentUser = getIt<UserCubit>().getCurrentUser();
   final Crud db = Crud.instance;
   List<MedModel> meds = [];
-  getAllMed() async {
+  getUserAllMeds() async {
     emit(MedsLoading());
     try {
-      meds = await db.getAUserMeds();
+      meds = await db.getAUserMeds(
+        id: currentUser != null ? currentUser!.id! : 0,
+      );
       emit(GetMedsSuccess(meds: meds));
       for (var med in meds) {
         log(med.toString());
@@ -24,11 +28,11 @@ class MedsCubit extends Cubit<MedsState> {
     }
   }
 
-  insert(MedModel med) {
+  insert(MedModel med, int userId) {
     emit(MedsLoading());
 
     try {
-      db.insertMed(med);
+      db.insertMed(med, userId);
       emit(InsertMedsSuccess(med: med));
     } catch (e) {
       emit(InsertMedsFaluire(erMessage: e.toString()));

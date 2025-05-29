@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:midmate/core/helpers/show_snak_bar.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:midmate/utils/models/med_model.dart';
@@ -11,19 +10,33 @@ class Crud {
   const Crud._();
   static const Crud instance = Crud._();
 
-  Future<MedModel> insertMed(MedModel med) async {
+  Future<MedModel> insertMed(MedModel med, int userId) async {
     Database db = await SqHelper().getMedsDbInstance();
 
-    await db.insert(DbConstants.medTableName, med.toMap());
+    await db.insert(
+      DbConstants.medTableName,
+      med.toMap().putIfAbsent(DbConstants.usersColumnId, () {
+        return userId;
+      }),
+    );
     log(med.toString());
     return med;
   }
 
+  Future<bool> doesUserExist(Person user) async {
+    Database db = await SqHelper().getUsersDbInstance();
+    final result = await db.query(
+      DbConstants.usersTableName,
+      where: 'name = ? AND age = ?',
+      whereArgs: [user.name, user.age],
+    );
+    return result.isNotEmpty;
+  }
+
   Future<Person> insertUser(Person user) async {
     Database db = await SqHelper().getUsersDbInstance();
-    List<Person> currentUsers = await getAllusers();
-
-    if (!currentUsers.contains(user)) {
+    bool exist = await doesUserExist(user);
+    if (!exist) {
       await db.insert(DbConstants.usersTableName, user.toMap());
       log(user.toString());
     } else {
@@ -33,13 +46,14 @@ class Crud {
   }
 
   // change the id to required
-  Future<List<MedModel>> getAUserMeds([int? id]) async {
+  Future<List<MedModel>> getAUserMeds({required int id}) async {
     Database db = await SqHelper().getMedsDbInstance();
     List<Map<String, dynamic>> maps = await db.query(
       DbConstants.medTableName,
       where: "${DbConstants.usersColumnId}==$id",
     );
     return List.generate(maps.length, (i) {
+      log(maps[i].toString());
       return MedModel.fromMap(maps[i]);
     });
   }

@@ -1,7 +1,6 @@
-import 'dart:ffi';
-
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
+import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/onboarding/presentation/views/onboarding_view.dart';
@@ -9,7 +8,6 @@ import 'package:midmate/features/user_data/presentation/views/user_data_view.dar
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import '../../../../main.dart';
 import '../../../../utils/image_controller.dart';
 
@@ -22,19 +20,14 @@ class SplashView extends StatefulWidget {
 
 class _SplashViewState extends State<SplashView> {
   bool _initialized = false;
-  // bool _toHome = false;
   bool onBoardingVisited =
       getIt<SharedPreferences>().getBool(SharedPrefrenceDb.onBoardingVisited) ??
       false;
 
-  String? userName = getIt<SharedPreferences>().getString(
-    SharedPrefrenceDb.username,
-  );
-
   @override
   void initState() {
     super.initState();
-
+    // currentUser = BlocProvider.of<UserCubit>(context).getCurrentUser();
     ensureInitialized();
     // Wait for Flutter to fully initialize
   }
@@ -52,7 +45,7 @@ class _SplashViewState extends State<SplashView> {
   Widget build(BuildContext context) {
     if (_initialized) {
       if (onBoardingVisited) {
-        if (userName == null) {
+        if (getIt<UserCubit>().getCurrentUser() == null) {
           return UserDataView();
         }
         return HomeView();

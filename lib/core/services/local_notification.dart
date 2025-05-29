@@ -262,7 +262,7 @@ class LocalNotification {
     log('sheduled notifications:\n');
 
     for (var noti in pendingNotificationRequests) {
-      log("noti id   ${noti.id}");
+    log("noti id   ${noti.id}");
       log("noti title ${noti.title}");
     }
   }

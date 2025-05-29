@@ -8,11 +8,11 @@ class Person {
   Person({this.name, this.age, this.id});
 
   factory Person.fromMap(Map<String, dynamic> map) {
-    return Person(name: map['name'], age: map['age']);
+    return Person(name: map['name'], age: map['age'], id: map['id']);
   }
 
   toMap() {
-    return {'name': name, 'age': age};
+    return {'id': id, 'name': name, 'age': age};
   }
 
   @override
@@ -21,14 +21,18 @@ class Person {
         other is Person &&
             runtimeType == other.runtimeType &&
             name == other.name &&
+            id == other.id &&
             age == other.age;
   }
 
   @override
   int get hashCode => name.hashCode ^ age.hashCode;
-}
 
-Person currentUser = Person();
+  @override
+  String toString() {
+    return 'UserModel{id: $id, name: $name, age: $age}';
+  }
+}
 
 class UserModel extends Person {
   UserModel._();

@@ -1,13 +1,13 @@
+import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-import 'package:midmate/features/home/data/local_data_base/crud.dart';
+import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
+import 'package:midmate/custom_bloc_observal.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
-import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
-import 'package:midmate/utils/services/shared_prefrence_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'utils/app_fonts.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -16,10 +16,10 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-final GlobalKey _buttonKey = GlobalKey();
+
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
-
+// final GlobalKey _buttonKey = GlobalKey();
 // List<Person> users = [];
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -28,15 +28,22 @@ void main() async {
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
 
-  // await LocalNotification(
-  //   navigatorKey: navigatorKey,
-  // ).initializeDefaultNotificationSetting();
-
   SqHelper();
 
-  // users = await Crud.instance.getAllusers();
   // Crud.instance.deleteAllusers();
   // SharedPrefrenceService.instance.prefs.clear();
+  // Person? currentuser;
+
+  // Crud.instance
+  //     .getAllusers()
+  //     .then((values) {
+  //       currentuser = values.first;
+  //     })
+  //     .then((v) {
+  //       getIt<UserCubit>().setCurrentUser(currentuser!);
+  //     });
+
+  Bloc.observer = CustomBlocObserval();
   runApp(const MyApp());
 }
 
@@ -45,8 +52,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
-
     return MaterialApp(
       locale: Locale('ar'),
       localizationsDelegates: [
@@ -67,14 +72,13 @@ class MyApp extends StatelessWidget {
         iconTheme: const IconThemeData(color: AppColors.blue),
       ),
 
-      home: SplashView(),
+      home: BlocProvider(
+        create: (context) => UserCubit(),
+        child: SplashView(),
+      ),
     );
   }
 }
 
-/**
- * i should use { requestExactAlarmsPermission()}
-
- this doc to user full screen alram https://pub.dev/packages/flutter_local_notifications#full-screen-intent-notifications
-
-showsUserInterface  to get ontaped notification to open the app */
+// store the current user in sharedPreference
+// create some fun to edit the current user, delete a user from sq db

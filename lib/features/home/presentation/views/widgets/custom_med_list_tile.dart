@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/functions/get_localized_med_type.dart';
+import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/details_view.dart';
@@ -11,6 +12,7 @@ import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/image_controller.dart';
 import 'package:midmate/utils/models/med_model.dart';
+import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/text_styles.dart';
 import 'package:intl/intl.dart';
 
@@ -25,9 +27,12 @@ class CustomMedListTile extends StatefulWidget {
 }
 
 class _CustomMedListTileState extends State<CustomMedListTile> {
+  // Person currentUser =Person();
+
   @override
   void initState() {
     checkMedNextTime(widget.medModel);
+    // currentUser = getIt<UserCubit>().getCurrentUser();
     super.initState();
   }
 
@@ -46,7 +51,9 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
         BlocProvider.of<MedsCubit>(context).deleteAMed(widget.medModel.id!);
-        BlocProvider.of<MedsCubit>(context).getAllMed();
+        BlocProvider.of<MedsCubit>(
+          context,
+        ).getUserAllMeds();
         LocalNotification(
           navigatorKey: navigatorKey,
         ).cancleNotification(id: widget.medModel.id!);
