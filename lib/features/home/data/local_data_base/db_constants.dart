@@ -24,7 +24,7 @@ class DbConstants {
   static const String medsColumnCreatedAt = 'createdAt';
 
   // users column names
-  static const String usersColumnId = 'id';
+  static const String usersColumnId = 'userId';
   static const String usersColumnName = 'name';
   static const String usersColumnAge = 'age';
 }

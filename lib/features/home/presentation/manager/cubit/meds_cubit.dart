@@ -16,8 +16,8 @@ class MedsCubit extends Cubit<MedsState> {
   getUserAllMeds() async {
     emit(MedsLoading());
     try {
-      meds = await db.getAUserMeds(
-        id: currentUser != null ? currentUser!.id! : 0,
+      meds = await db.getUserAllMeds(
+        userId: currentUser != null ? currentUser!.id! : 0,
       );
       emit(GetMedsSuccess(meds: meds));
       for (var med in meds) {

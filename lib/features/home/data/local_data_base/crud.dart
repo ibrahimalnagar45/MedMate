@@ -5,6 +5,7 @@ import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'db_constants.dart';
+import 'package:path/path.dart';
 
 class Crud {
   const Crud._();
@@ -12,7 +13,6 @@ class Crud {
 
   // Future<MedModel> insertMed(MedModel med, int userId) async {
   //   Database db = await SqHelper().getMedsDbInstance();
-
   //   await db.insert(
   //     DbConstants.medTableName,
   //     med.toMap().putIfAbsent(med.id.toString(), () {
@@ -29,7 +29,8 @@ class Crud {
     // Check if the med already exists
     final existing = await db.query(
       DbConstants.medTableName,
-      where: 'id = ? AND userId = ?',
+      where:
+          '${DbConstants.medsColumnId} = ? AND ${DbConstants.usersColumnId} = ?',
       whereArgs: [med.id, userId],
     );
 
@@ -40,10 +41,10 @@ class Crud {
 
     // Insert only if it doesn't exist
     final medMap = med.toMap();
-    medMap['userId'] = userId;
+    medMap[DbConstants.usersColumnId] = userId;
 
     await db.insert(DbConstants.medTableName, medMap);
-    log('Inserted: $med');
+    log('Inserted: $med for user $userId');
     return med;
   }
 
@@ -69,11 +70,12 @@ class Crud {
   }
 
   // change the id to required
-  Future<List<MedModel>> getAUserMeds({required int id}) async {
+  Future<List<MedModel>> getUserAllMeds({required int userId}) async {
     Database db = await SqHelper().getMedsDbInstance();
     List<Map<String, dynamic>> maps = await db.query(
       DbConstants.medTableName,
-      where: "${DbConstants.usersColumnId}==$id",
+      where: "${DbConstants.usersColumnId}= ?",
+      whereArgs: [userId],
     );
     return List.generate(maps.length, (i) {
       log(maps[i].toString());
@@ -193,6 +195,30 @@ class Crud {
     Database db = await SqHelper().getMedsDbInstance();
 
     db.close();
+  }
+
+  Future<void> deleteMedsDatabaseFile() async {
+    String dbPath = await getDatabasesPath();
+    String path = join(dbPath, DbConstants.medsDbPath);
+
+    if (await databaseExists(path)) {
+      await deleteDatabase(path);
+      print('Database deleted!');
+    } else {
+      print('Database does not exist!');
+    }
+  }
+
+  Future<void> deleteUsersDatabaseFile() async {
+    String dbPath = await getDatabasesPath();
+    String path = join(dbPath, DbConstants.usersDbPath);
+
+    if (await databaseExists(path)) {
+      await deleteDatabase(path);
+      print('Database deleted!');
+    } else {
+      print('Database does not exist!');
+    }
   }
 
   Future closeUsersDb() async {

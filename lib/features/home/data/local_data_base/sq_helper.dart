@@ -8,8 +8,8 @@ import 'package:path/path.dart';
 class SqHelper {
   Database? db;
 
-  SqHelper()  {
-      getMedsDbInstance();
+  SqHelper() {
+    getMedsDbInstance();
     getUsersDbInstance();
   }
 
@@ -27,7 +27,7 @@ class SqHelper {
 
       db = await openDatabase(
         path,
-        version: 1,
+        version: 3,
         onCreate: (Database db, int version) async {
           await db.execute('''
 create table ${DbConstants.medTableName} ( 
@@ -44,7 +44,14 @@ create table ${DbConstants.medTableName} (
         },
         onOpen: _onOpen,
         onConfigure: _onConfig,
-        onUpgrade: _onUpgrade, // Fix: Add proper upgrade logic
+        onUpgrade: (db, oldVersion, newVersion) async {
+          if (oldVersion < 3) {
+            // Modify schema here
+            await db.execute(
+              "ALTER TABLE ${DbConstants.medTableName} ADD COLUMN ${DbConstants.usersColumnId} TEXT",
+            );
+          }
+        }, // Fix: Add proper upgrade logic
         onDowngrade: _onDowngrade,
       );
     } catch (e) {
@@ -72,7 +79,7 @@ create table ${DbConstants.usersTableName} (
         },
         onOpen: _onOpen,
         onConfigure: _onConfig,
-        onUpgrade: _onUpgrade, // Fix: Add proper upgrade logic
+        // / Fix: Add proper upgrade logic
         onDowngrade: _onDowngrade,
       );
     } catch (e) {

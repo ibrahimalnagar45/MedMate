@@ -31,20 +31,19 @@ class HomeViewBody extends StatelessWidget {
         backgroundColor: AppColors.blue,
         foregroundColor: AppColors.white,
         onPressed: () {
-          // showModalBottomSheet(
-          //   context: context,
-          //   isScrollControlled: true,
-          //   builder: (context) {
-          //     return BlocProvider(
-          //       create: (context) => MedsCubit(),
-          //       child: AddMedModalBottomSheet(formKey: _formKey),
-          //     );
-          //   },
-          // ).then((_) {
-
-          //   medCubit.getUserAllMeds();
-          // });
-          context.goTo(AddNewUserView());
+          showModalBottomSheet(
+            context: context,
+            isScrollControlled: true,
+            builder: (context) {
+              return BlocProvider(
+                create: (context) => MedsCubit(),
+                child: AddMedModalBottomSheet(formKey: _formKey),
+              );
+            },
+          ).then((_) {
+            medCubit.getUserAllMeds();
+          });
+          // context.goTo(AddNewUserView());
         },
         child: const Icon(Icons.add),
       ),

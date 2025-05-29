@@ -9,6 +9,7 @@ import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
 import '../../../../../utils/extension_fun.dart';
 import '../../../../../utils/models/user_model.dart';
+import '../../../../user_data/presentation/views/add_new_user_view.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -95,7 +96,9 @@ class _CustomAppBarState extends State<CustomAppBar> {
                               child: TextButton(
                                 onPressed: () {
                                   userCubit.setCurrentUser(value);
-                                  Crud.instance.getAUserMeds(id: value.id!);
+                                  Crud.instance.getUserAllMeds(
+                                    userId: value.id!,
+                                  );
                                   context.pop();
                                 },
                                 child: Text(value.name!),
@@ -115,7 +118,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
             onTap: () {
-              // Context(context).goTo(AddNewUserView());
+              Context(context).goTo(AddNewUserView());
             },
             child: CircleAvatar(
               backgroundColor: AppColors.blue,
