@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
+import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
@@ -96,9 +97,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
                               child: TextButton(
                                 onPressed: () {
                                   userCubit.setCurrentUser(value);
-                                  Crud.instance.getUserAllMeds(
-                                    userId: value.id!,
-                                  );
+
+                                  BlocProvider.of<MedsCubit>(
+                                    context,
+                                  ).getUserAllMeds();
+                                  // Crud.instance.getUserAllMeds(
+                                  //   userId: value.id!,
+                                  // );
                                   context.pop();
                                 },
                                 child: Text(value.name!),

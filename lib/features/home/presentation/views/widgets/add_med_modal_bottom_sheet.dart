@@ -197,10 +197,12 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                             'this is the time to take ur medicine ${med.name}',
                         date: med.getNextTime(),
                       );
-                      medsCubit.insert(
+                        medsCubit.insert(
                         med,
                         getIt<UserCubit>().getCurrentUser()!.id!,
                       );
+
+                      BlocProvider.of<MedsCubit>(context).getUserAllMeds();
                       Context(context).pop();
                     }
                   },

@@ -18,11 +18,11 @@ class MedsCubit extends Cubit<MedsState> {
     try {
       meds = await db.getUserAllMeds(
         userId: currentUser != null ? currentUser!.id! : 0,
+        // userId: 35,
       );
       emit(GetMedsSuccess(meds: meds));
-      for (var med in meds) {
-        log(med.toString());
-      }
+      log('the meds are ${meds.toString()}');
+      log('the user is ${currentUser.toString()}');
     } catch (e) {
       emit(GetMedsFaluire(erMessage: e.toString()));
     }

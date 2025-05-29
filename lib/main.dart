@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -32,9 +31,12 @@ void main() async {
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
 
   // Crud.instance.closeMedsDb();
+  // Crud.instance.closeUsersDb();
+
   // Crud.instance.deleteAllMeds();
+  // Crud.instance.deleteAllusers();
   // Crud.instance.deleteMedsDatabaseFile();
-  // // getIt<SharedPreferences>().clear();
+  getIt<SharedPreferences>().clear();
 
   SqHelper();
   Bloc.observer = CustomBlocObserval();

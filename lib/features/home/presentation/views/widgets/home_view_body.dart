@@ -31,6 +31,7 @@ class HomeViewBody extends StatelessWidget {
         backgroundColor: AppColors.blue,
         foregroundColor: AppColors.white,
         onPressed: () {
+          // BlocProvider.of<MedsCubit>(context).getUserAllMeds();
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
