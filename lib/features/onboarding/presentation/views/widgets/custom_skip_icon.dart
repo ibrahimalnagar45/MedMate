@@ -1,6 +1,8 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:get_it/get_it.dart';
+import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/user_data/presentation/views/user_data_view.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/user_model.dart';
@@ -33,7 +35,8 @@ class CustomSkipIcon extends StatelessWidget {
             debugPrint(
               'from custom icon the value SharedPrefrenceDb.onBoardingVisited is ${getIt<SharedPreferences>().getBool(SharedPrefrenceDb.onBoardingVisited)}',
             );
-            if (UserModel.instance.name!.isEmpty) {
+            if (getIt<UserCubit>().getCurrentUser()?.name == null ||
+                getIt<UserCubit>().getCurrentUser()?.name == '') {
               context.replaceWith(UserDataView());
             } else {
               context.replaceWith(HomeView());

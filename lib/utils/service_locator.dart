@@ -11,5 +11,7 @@ Future<void> serviceLocatorSetup() async {
 
   await prefsService.init();
   getIt.registerSingleton<SharedPreferences>(prefsService.prefs);
-  getIt.registerSingleton<UserCubit>(UserCubit());
+  getIt.registerLazySingleton<UserCubit>(() => UserCubit());
 }
+
+// getIt.registerLazySingleton<UserCubit>(() => UserCubit());

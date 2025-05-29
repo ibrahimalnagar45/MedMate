@@ -10,16 +10,40 @@ class Crud {
   const Crud._();
   static const Crud instance = Crud._();
 
-  Future<MedModel> insertMed(MedModel med, int userId) async {
-    Database db = await SqHelper().getMedsDbInstance();
+  // Future<MedModel> insertMed(MedModel med, int userId) async {
+  //   Database db = await SqHelper().getMedsDbInstance();
 
-    await db.insert(
+  //   await db.insert(
+  //     DbConstants.medTableName,
+  //     med.toMap().putIfAbsent(med.id.toString(), () {
+  //       return userId;
+  //     }),
+  //   );
+  //   log(med.toString());
+  //   return med;
+  // }
+
+  Future<MedModel> insertMed(MedModel med, int userId) async {
+    final db = await SqHelper().getMedsDbInstance();
+
+    // Check if the med already exists
+    final existing = await db.query(
       DbConstants.medTableName,
-      med.toMap().putIfAbsent(DbConstants.usersColumnId, () {
-        return userId;
-      }),
+      where: 'id = ? AND userId = ?',
+      whereArgs: [med.id, userId],
     );
-    log(med.toString());
+
+    if (existing.isNotEmpty) {
+      log('Med with id ${med.id} already exists for user $userId');
+      return med; // Don't insert again
+    }
+
+    // Insert only if it doesn't exist
+    final medMap = med.toMap();
+    medMap['userId'] = userId;
+
+    await db.insert(DbConstants.medTableName, medMap);
+    log('Inserted: $med');
     return med;
   }
 
@@ -38,7 +62,6 @@ class Crud {
     bool exist = await doesUserExist(user);
     if (!exist) {
       await db.insert(DbConstants.usersTableName, user.toMap());
-      log(user.toString());
     } else {
       showSnakBar('This User is already exist');
     }

@@ -47,6 +47,7 @@ class UserCubit extends Cubit<UserState> {
         SharedPrefrenceDb.userId,
         userModel.id.toString(),
       );
+
       _currentUser = userModel;
       log('set the current user to ${_currentUser.toString()}');
       emit(SetUserSuccess(userModel));
@@ -55,11 +56,34 @@ class UserCubit extends Cubit<UserState> {
     }
   }
 
+  Future<void> addNewUser(Person user) async {
+    emit(AddNewUserLoading());
+    log('add new user called');
+    try {
+      if (await Crud.instance.doesUserExist(user)) {
+        log('User already exists');
+        emit(AddNewUserFailure('User already exists'));
+        return;
+      }
+      Person newUser = await Crud.instance.insertUser(user);
+
+      // setCurrentUser(newUser);
+      emit(AddNewUserSuccess(newUser));
+      log('New user added successfully: ${newUser.toString()}');
+    } catch (e) {
+      emit(AddNewUserFailure(e.toString()));
+    }
+  }
+
   Future<List<Person>> getAllUsers() async {
     List<Person> users = [];
     emit(GetAllUserLoading());
     try {
       users = await Crud.instance.getAllusers();
+      log('all users');
+      users.map((user) {
+        log(' ${user.toString()}');
+      }).toList();
       emit(GetAllUserSuccess(users));
     } catch (e) {
       emit(GetAllUserFailure(e.toString()));

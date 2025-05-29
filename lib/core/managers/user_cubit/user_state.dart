@@ -39,3 +39,15 @@ final class GetAllUserFailure extends UserState {
   final String errorMessage;
   GetAllUserFailure(this.errorMessage);
 }
+
+final class AddNewUserLoading extends UserState {}
+
+final class AddNewUserSuccess extends UserState {
+  final Person user;
+  AddNewUserSuccess(this.user);
+}
+
+final class AddNewUserFailure extends UserState {
+  final String errorMessage;
+  AddNewUserFailure(this.errorMessage);
+}

@@ -1,12 +1,14 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
+import 'package:midmate/utils/service_locator.dart';
 import '../../../../../utils/extension_fun.dart';
 import '../../../../../utils/models/user_model.dart';
-import '../../../../user_data/presentation/views/add_new_user_view.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -26,15 +28,19 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 
 class _CustomAppBarState extends State<CustomAppBar> {
   Person? currentUser;
+  late UserCubit userCubit;
   final GlobalKey buttonKey = GlobalKey();
   List<Person> users = [];
   @override
   void initState() {
-    currentUser = BlocProvider.of<UserCubit>(context).getCurrentUser();
+    userCubit = getIt<UserCubit>();
 
-    BlocProvider.of<UserCubit>(context).getAllUsers().then((value) {
+    currentUser = userCubit.getCurrentUser();
+
+    userCubit.getAllUsers().then((value) {
       users = value;
     });
+
     super.initState();
   }
 
@@ -48,6 +54,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
         } else if (state is SetUserSuccess) {
           currentUser = state.user;
 
+          setState(() {});
+        } else if (state is AddNewUserSuccess) {
+          log('add new user success is fired');
+          userCubit.setCurrentUser(state.user);
+          userCubit.getAllUsers().then((value) {
+            users = value;
+          });
           setState(() {});
         }
       },
@@ -66,22 +79,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           IconButton(
             key: buttonKey,
             onPressed: () async {
-              final RenderBox button =
-                  buttonKey.currentContext!.findRenderObject() as RenderBox;
-              final RenderBox overlay =
-                  // ignore: use_build_context_synchronously
-                  Overlay.of(context).context.findRenderObject() as RenderBox;
-
-              final RelativeRect position = RelativeRect.fromRect(
-                Rect.fromPoints(
-                  button.localToGlobal(Offset.zero, ancestor: overlay),
-                  button.localToGlobal(
-                    button.size.bottomRight(Offset.zero),
-                    ancestor: overlay,
-                  ),
-                ),
-                Offset.zero & overlay.size,
-              );
+              RelativeRect position = getTheButtomPostion(context);
               final selcted = await showMenu<Person>(
                 // ignore: use_build_context_synchronously
                 context: context,
@@ -96,9 +94,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                               value: value,
                               child: TextButton(
                                 onPressed: () {
-                                  BlocProvider.of<UserCubit>(
-                                    context,
-                                  ).setCurrentUser(value);
+                                  userCubit.setCurrentUser(value);
                                   Crud.instance.getAUserMeds(id: value.id!);
                                   context.pop();
                                 },
@@ -119,7 +115,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
             onTap: () {
-              Context(context).goTo(AddNewUserView());
+              // Context(context).goTo(AddNewUserView());
             },
             child: CircleAvatar(
               backgroundColor: AppColors.blue,
@@ -133,6 +129,26 @@ class _CustomAppBarState extends State<CustomAppBar> {
         actionsPadding: const EdgeInsets.only(right: 10),
       ),
     );
+  }
+
+  RelativeRect getTheButtomPostion(BuildContext context) {
+    final RenderBox button =
+        buttonKey.currentContext!.findRenderObject() as RenderBox;
+    final RenderBox overlay =
+        // ignore: use_build_context_synchronously
+        Overlay.of(context).context.findRenderObject() as RenderBox;
+
+    final RelativeRect position = RelativeRect.fromRect(
+      Rect.fromPoints(
+        button.localToGlobal(Offset.zero, ancestor: overlay),
+        button.localToGlobal(
+          button.size.bottomRight(Offset.zero),
+          ancestor: overlay,
+        ),
+      ),
+      Offset.zero & overlay.size,
+    );
+    return position;
   }
 }
 

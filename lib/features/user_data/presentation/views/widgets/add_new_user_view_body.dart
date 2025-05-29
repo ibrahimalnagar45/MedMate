@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_button.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/user_model.dart';
+import 'package:midmate/utils/service_locator.dart';
 
+import '../../../../../core/managers/user_cubit/user_cubit.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/text_styles.dart';
 import 'age_drop_down_menu.dart';
@@ -87,9 +90,10 @@ class _AddNewUserViewBodyState extends State<AddNewUserViewBody> {
                 strColor: AppColors.blue,
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
-                    Crud.instance.insertUser(
+                    getIt<UserCubit>().addNewUser(
                       Person(name: userName!, age: age!),
                     );
+
                     context.pop();
                   }
                 },

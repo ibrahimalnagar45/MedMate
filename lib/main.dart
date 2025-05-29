@@ -4,10 +4,13 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/custom_bloc_observal.dart';
+import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
+import 'package:midmate/utils/services/shared_prefrence_service.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'utils/app_fonts.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
@@ -28,21 +31,11 @@ void main() async {
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
 
+  Crud.instance.closeUsersDb();
+  Crud.instance.deleteAllusers();
+  getIt<SharedPreferences>().clear();
+
   SqHelper();
-
-  // Crud.instance.deleteAllusers();
-  // SharedPrefrenceService.instance.prefs.clear();
-  // Person? currentuser;
-
-  // Crud.instance
-  //     .getAllusers()
-  //     .then((values) {
-  //       currentuser = values.first;
-  //     })
-  //     .then((v) {
-  //       getIt<UserCubit>().setCurrentUser(currentuser!);
-  //     });
-
   Bloc.observer = CustomBlocObserval();
   runApp(const MyApp());
 }
@@ -52,29 +45,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      locale: Locale('ar'),
-      localizationsDelegates: [
-        S.delegate,
-        GlobalMaterialLocalizations.delegate,
-        GlobalWidgetsLocalizations.delegate,
-        GlobalCupertinoLocalizations.delegate,
-      ],
-      supportedLocales: S.delegate.supportedLocales,
-      scaffoldMessengerKey: scaffoldMessengerKey,
-      navigatorKey: navigatorKey,
-      debugShowCheckedModeBanner: false,
-      title: 'Remind Me',
+    return BlocProvider(
+      create: (context) => getIt<UserCubit>(),
+      child: MaterialApp(
+        locale: Locale('ar'),
+        localizationsDelegates: [
+          S.delegate,
+          GlobalMaterialLocalizations.delegate,
+          GlobalWidgetsLocalizations.delegate,
+          GlobalCupertinoLocalizations.delegate,
+        ],
+        supportedLocales: S.delegate.supportedLocales,
+        scaffoldMessengerKey: scaffoldMessengerKey,
+        navigatorKey: navigatorKey,
+        debugShowCheckedModeBanner: false,
+        title: 'Remind Me',
+        theme: ThemeData(
+          fontFamily: AppFonts.primaryFont,
+          primaryColor: AppColors.blue,
+          iconTheme: const IconThemeData(color: AppColors.blue),
+        ),
 
-      theme: ThemeData(
-        fontFamily: AppFonts.primaryFont,
-        primaryColor: AppColors.blue,
-        iconTheme: const IconThemeData(color: AppColors.blue),
-      ),
-
-      home: BlocProvider(
-        create: (context) => UserCubit(),
-        child: SplashView(),
+        home: SplashView(),
       ),
     );
   }

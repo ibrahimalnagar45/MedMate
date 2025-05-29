@@ -5,6 +5,8 @@ import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
+import 'package:midmate/features/user_data/presentation/views/add_new_user_view.dart';
+import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/image_controller.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/service_locator.dart';
@@ -14,11 +16,11 @@ class HomeViewBody extends StatelessWidget {
   HomeViewBody({super.key});
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  // final UserCubit userCubit = UserCubit();
-  // final Person currentUser;
+
   @override
   Widget build(BuildContext context) {
     final MedsCubit medCubit = context.read<MedsCubit>();
+
     return Scaffold(
       appBar: CustomAppBar(
         screenName: 'Home',
@@ -29,18 +31,20 @@ class HomeViewBody extends StatelessWidget {
         backgroundColor: AppColors.blue,
         foregroundColor: AppColors.white,
         onPressed: () {
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) {
-              return BlocProvider(
-                create: (context) => MedsCubit(),
-                child: AddMedModalBottomSheet(formKey: _formKey),
-              );
-            },
-          ).then((_) {
-            medCubit.getUserAllMeds();
-          });
+          // showModalBottomSheet(
+          //   context: context,
+          //   isScrollControlled: true,
+          //   builder: (context) {
+          //     return BlocProvider(
+          //       create: (context) => MedsCubit(),
+          //       child: AddMedModalBottomSheet(formKey: _formKey),
+          //     );
+          //   },
+          // ).then((_) {
+
+          //   medCubit.getUserAllMeds();
+          // });
+          context.goTo(AddNewUserView());
         },
         child: const Icon(Icons.add),
       ),

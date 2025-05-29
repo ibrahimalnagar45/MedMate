@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/details_view_body.dart';
 import 'package:midmate/utils/models/med_model.dart'; 
@@ -13,8 +14,10 @@ class DetailsView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+          
     return Scaffold(
       appBar: CustomAppBar(
+
         screenName: 'Details',
         context: context,
         // currentUser: getIt<UserCubit>().getCurrentUser(),
