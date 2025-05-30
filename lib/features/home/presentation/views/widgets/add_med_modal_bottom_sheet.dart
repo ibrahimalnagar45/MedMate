@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/functions/get_localized_med_type.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/core/services/local_notification.dart';
@@ -46,7 +45,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
   late MedsCubit medsCubit;
   @override
   void initState() {
-    medsCubit = context.read<MedsCubit>();
+    medsCubit = getIt<MedsCubit>();
     doseEntries = [];
     medCreatedAt = DateTime.now();
     // medModel = MedModel.newMed();
@@ -197,12 +196,14 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                             'this is the time to take ur medicine ${med.name}',
                         date: med.getNextTime(),
                       );
-                        medsCubit.insert(
+
+                      medsCubit.insert(
                         med,
                         getIt<UserCubit>().getCurrentUser()!.id!,
                       );
 
-                      BlocProvider.of<MedsCubit>(context).getUserAllMeds();
+                      // medsCubit.getUserAllMeds();
+
                       Context(context).pop();
                     }
                   },

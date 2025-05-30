@@ -1,9 +1,12 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/custom_bloc_observal.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
+import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
@@ -17,12 +20,25 @@ import 'package:timezone/timezone.dart' as tz;
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 
+import 'dart:io';
+import 'package:path/path.dart';
+import 'package:sqflite/sqflite.dart';
+
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 // final GlobalKey _buttonKey = GlobalKey();
 // List<Person> users = [];
+Future<void> exportDatabaseToDownloads() async {
+  final dbPath = join(await getDatabasesPath(), DbConstants.medTableName);
+  final dbFile = File(dbPath);
+  final downloadPath = '/sdcard/Download/${DbConstants.medTableName}.db';
+
+  await dbFile.copy(downloadPath);
+  log('✅ Database copied to: $downloadPath');
+}
+
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterLocalization.instance.ensureInitialized();
@@ -30,13 +46,14 @@ void main() async {
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
 
+  exportDatabaseToDownloads();
+
   // Crud.instance.closeMedsDb();
   // Crud.instance.closeUsersDb();
-
   // Crud.instance.deleteAllMeds();
   // Crud.instance.deleteAllusers();
-  // Crud.instance.deleteMedsDatabaseFile();
-  getIt<SharedPreferences>().clear();
+  // // Crud.instance.deleteMedsDatabaseFile();
+  // getIt<SharedPreferences>().clear();
 
   SqHelper();
   Bloc.observer = CustomBlocObserval();

@@ -98,12 +98,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                 onPressed: () {
                                   userCubit.setCurrentUser(value);
 
-                                  BlocProvider.of<MedsCubit>(
-                                    context,
-                                  ).getUserAllMeds();
-                                  // Crud.instance.getUserAllMeds(
-                                  //   userId: value.id!,
-                                  // );
+                                  getIt<MedsCubit>().getUserAllMeds();
+
                                   context.pop();
                                 },
                                 child: Text(value.name!),
