@@ -12,9 +12,9 @@ class TextStyles {
   );
 
   static const TextStyle regGreyTextStyle = TextStyle(
-    // fontFamily: AppFonts.primaryFont,
+ 
     fontWeight: FontWeight.w400,
-    // fontSize: 20,
+   
     color: AppColors.grey,
   );
 

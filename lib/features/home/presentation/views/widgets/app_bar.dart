@@ -3,11 +3,11 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
-import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
+import 'package:midmate/utils/text_styles.dart';
 import '../../../../../utils/extension_fun.dart';
 import '../../../../../utils/models/user_model.dart';
 import '../../../../user_data/presentation/views/add_new_user_view.dart';
@@ -76,51 +76,59 @@ class _CustomAppBarState extends State<CustomAppBar> {
           ),
         ),
         centerTitle: true,
-        actions: [
-          Text(currentUser!.name!),
-          IconButton(
-            key: buttonKey,
-            onPressed: () async {
-              RelativeRect position = getTheButtomPostion(context);
-              final selcted = await showMenu<Person>(
-                // ignore: use_build_context_synchronously
-                context: context,
-                position: position,
-                items:
-                    users
-                        .asMap()
-                        .map(
-                          (key, value) => MapEntry(
-                            key,
-                            PopupMenuItem(
-                              value: value,
-                              child: TextButton(
-                                onPressed: () {
-                                  userCubit.setCurrentUser(value);
+        actions:
+            widget.screenName == 'Home'
+                ? [
+                  IconButton(
+                    onPressed: () {
+                      context.goTo(AddNewUserView());
+                    },
+                    icon: Icon(Icons.add),
+                  ),
+                  Text(currentUser!.name!, style: TextStyles.hintTextStyle),
 
-                                  getIt<MedsCubit>().getUserAllMeds();
+                  IconButton(
+                    key: buttonKey,
+                    onPressed: () async {
+                      RelativeRect position = getTheButtomPostion(context);
+                      final selcted = await showMenu<Person>(
+                        // ignore: use_build_context_synchronously
+                        context: context,
+                        position: position,
+                        items:
+                            users
+                                .asMap()
+                                .map(
+                                  (key, value) => MapEntry(
+                                    key,
+                                    PopupMenuItem(
+                                      value: value,
+                                      child: TextButton(
+                                        onPressed: () {
+                                          userCubit.setCurrentUser(value);
 
-                                  context.pop();
-                                },
-                                child: Text(value.name!),
-                              ),
-                            ),
-                          ),
-                        )
-                        .values
-                        .toList(),
-              );
-            },
-            icon: Icon(Icons.keyboard_arrow_down_rounded),
-          ),
-        ],
+                                          getIt<MedsCubit>().getUserAllMeds();
+
+                                          context.pop();
+                                        },
+                                        child: Text(value.name!),
+                                      ),
+                                    ),
+                                  ),
+                                )
+                                .values
+                                .toList(),
+                      );
+                    },
+                    icon: Icon(Icons.keyboard_arrow_down_rounded),
+                  ),
+                ]
+                : [],
 
         leading: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
-            onTap: () {
-              Context(context).goTo(AddNewUserView());
-            },
+            onTap: () {},
             child: CircleAvatar(
               backgroundColor: AppColors.blue,
               child: Text(

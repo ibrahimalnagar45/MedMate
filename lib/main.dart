@@ -21,7 +21,6 @@ import 'package:timezone/timezone.dart' as tz;
 import 'package:flutter_localizations/flutter_localizations.dart';
 
 import 'dart:io';
-import 'package:path/path.dart';
 import 'package:sqflite/sqflite.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -30,14 +29,6 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 // final GlobalKey _buttonKey = GlobalKey();
 // List<Person> users = [];
-Future<void> exportDatabaseToDownloads() async {
-  final dbPath = join(await getDatabasesPath(), DbConstants.medTableName);
-  final dbFile = File(dbPath);
-  final downloadPath = '/sdcard/Download/${DbConstants.medTableName}.db';
-
-  await dbFile.copy(downloadPath);
-  log('✅ Database copied to: $downloadPath');
-}
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,8 +36,6 @@ void main() async {
   await serviceLocatorSetup();
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
-
-  exportDatabaseToDownloads();
 
   // Crud.instance.closeMedsDb();
   // Crud.instance.closeUsersDb();
@@ -82,6 +71,9 @@ class MyApp extends StatelessWidget {
         title: 'Remind Me',
         theme: ThemeData(
           fontFamily: AppFonts.primaryFont,
+          iconButtonTheme: IconButtonThemeData(
+            style: IconButton.styleFrom(foregroundColor: AppColors.blue),
+          ),
           primaryColor: AppColors.blue,
           iconTheme: const IconThemeData(color: AppColors.blue),
         ),
