@@ -370,6 +370,11 @@ class S {
     return Intl.message('start date', name: 'startDate', desc: '', args: []);
   }
 
+  /// `created at`
+  String get createdAt {
+    return Intl.message('created at', name: 'createdAt', desc: '', args: []);
+  }
+
   /// `next dose at`
   String get nextDoseAt {
     return Intl.message('next dose at', name: 'nextDoseAt', desc: '', args: []);

@@ -50,6 +50,7 @@
   "dose": "dose",
   "frequency": "frequency",
   "startDate": "start date",
+  "createdAt": "created at",
   "nextDoseAt": "next dose at",
   "unSpecified": "unspecified",
 

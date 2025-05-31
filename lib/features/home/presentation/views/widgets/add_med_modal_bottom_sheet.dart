@@ -186,6 +186,14 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                       );
 
                       log(med.toString());
+
+                      medsCubit.insert(
+                        med,
+                        getIt<UserCubit>().getCurrentUser()!.id!,
+                      );
+
+                      // medsCubit.getUserAllMeds();
+                    
                       await LocalNotification(
                         navigatorKey: navigatorKey,
                       ).showScheduledRepeatedNotification(
@@ -196,13 +204,6 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                             'this is the time to take ur medicine ${med.name}',
                         date: med.getNextTime(),
                       );
-
-                      medsCubit.insert(
-                        med,
-                        getIt<UserCubit>().getCurrentUser()!.id!,
-                      );
-
-                      // medsCubit.getUserAllMeds();
 
                       Context(context).pop();
                     }

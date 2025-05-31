@@ -51,6 +51,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
               );
             },
           ).then((_) {
+            log('getting the meds after adding a new med \n\n');
+
             medCubit.getUserAllMeds();
           });
           /*

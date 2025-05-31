@@ -53,6 +53,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "afterADay": MessageLookupByLibrary.simpleMessage("After a Day"),
     "appBarTitle": m0,
     "cream": MessageLookupByLibrary.simpleMessage("cream"),
+    "createdAt": MessageLookupByLibrary.simpleMessage("created at"),
     "description": MessageLookupByLibrary.simpleMessage("description"),
     "dontForgetMedicine": MessageLookupByLibrary.simpleMessage(
       "Never forget your medicine again",

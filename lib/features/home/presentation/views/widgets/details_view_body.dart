@@ -67,10 +67,20 @@ class DetailsViewBody extends StatelessWidget {
                   : S.of(context).everyNumHours(med.frequency ?? 0),
               Icons.repeat,
             ),
+
+            //created at
+            _infoTile(
+              S.of(context).createdAt,
+              _formatDate(med.createdAt!),
+              Icons.date_range,
+            ),
+
             // start date
             _infoTile(
               S.of(context).startDate,
-              _formatDate(med.startDate),
+              _formatDate(
+                med.createdAt!.add(Duration(hours: med.startDate!.hour)),
+              ),
               Icons.date_range,
             ),
             // next time

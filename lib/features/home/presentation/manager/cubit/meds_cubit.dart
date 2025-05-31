@@ -10,15 +10,17 @@ part 'meds_state.dart';
 class MedsCubit extends Cubit<MedsState> {
   MedsCubit() : super(MedsInitial());
 
-  final Person? currentUser = getIt<UserCubit>().getCurrentUser();
   final Crud db = Crud.instance;
   List<MedModel> meds = [];
+
   getUserAllMeds() async {
+    final Person? currentUser = getIt<UserCubit>().getCurrentUser();
+
     emit(MedsLoading());
     try {
       meds = await db.getUserAllMeds(
-        userId: currentUser != null ? currentUser!.id! : 0,
-        // userId: 35,
+        userId: currentUser != null ? currentUser.id! : 0,
+        
       );
       emit(GetMedsSuccess(meds: meds));
       log('the meds are ${meds.toString()}');
