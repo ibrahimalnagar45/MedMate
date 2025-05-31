@@ -85,7 +85,13 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     },
                     icon: Icon(Icons.add),
                   ),
-                  Text(currentUser!.name!, style: TextStyles.hintTextStyle),
+                  Text(
+                    currentUser!.name!,
+                    style: TextStyles.hintTextStyle.copyWith(
+                      color: Colors.grey[900],
+                      fontWeight: FontWeight.normal,
+                    ),
+                  ),
 
                   IconButton(
                     key: buttonKey,
