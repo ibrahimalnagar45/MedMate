@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
@@ -29,15 +28,16 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
 }
 
 class _CustomAppBarState extends State<CustomAppBar> {
-  Person? currentUser;
-  late UserCubit userCubit;
+  final UserCubit userCubit = getIt<UserCubit>();
   final GlobalKey buttonKey = GlobalKey();
+  Person? currentUser;
+
   List<Person> users = [];
   @override
   void initState() {
-    userCubit = getIt<UserCubit>();
-
-    currentUser = userCubit.getCurrentUser();
+    Future.sync(() async {
+      await userCubit.getCurrentUser();
+    });
 
     userCubit.getAllUsers().then((value) {
       users = value;
@@ -51,18 +51,22 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return BlocListener<UserCubit, UserState>(
       listener: (context, state) {
         if (state is GetUserSuccess) {
-          currentUser = state.user;
-          setState(() {});
+          setState(() {
+            currentUser = state.user;
+          });
         } else if (state is SetUserSuccess) {
-          currentUser = state.user;
-
-          setState(() {});
+          setState(() {
+            currentUser = state.user;
+          });
         } else if (state is AddNewUserSuccess) {
           log('add new user success is fired');
           userCubit.setCurrentUser(state.user);
+
           userCubit.getAllUsers().then((value) {
             users = value;
+            getIt<MedsCubit>().getUserAllMeds();
           });
+
           setState(() {});
         }
       },
@@ -76,6 +80,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           ),
         ),
         centerTitle: true,
+
         actions:
             widget.screenName == 'Home'
                 ? [
@@ -86,7 +91,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     icon: Icon(Icons.add),
                   ),
                   Text(
-                    currentUser!.name!,
+                    currentUser == null ? '' : currentUser!.name!,
                     style: TextStyles.hintTextStyle.copyWith(
                       color: Colors.grey[900],
                       fontWeight: FontWeight.normal,
@@ -97,7 +102,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     key: buttonKey,
                     onPressed: () async {
                       RelativeRect position = getTheButtomPostion(context);
-                      final selcted = await showMenu<Person>(
+                      log('all users are ' + users.toString());
+                      await showMenu<Person>(
                         // ignore: use_build_context_synchronously
                         context: context,
                         position: position,
@@ -110,11 +116,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                     PopupMenuItem(
                                       value: value,
                                       child: TextButton(
-                                        onPressed: () {
-                                          userCubit.setCurrentUser(value);
+                                        onPressed: () async {
+                                          await userCubit.setCurrentUser(value);
 
-                                          getIt<MedsCubit>().getUserAllMeds();
-
+                                          await getIt<MedsCubit>()
+                                              .getUserAllMeds();
                                           context.pop();
                                         },
                                         child: Text(value.name!),
@@ -134,11 +140,14 @@ class _CustomAppBarState extends State<CustomAppBar> {
         leading: Padding(
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
-            onTap: () {},
+            onTap: () {
+              // Crud.instance.getAUser('ibrahim');
+              userCubit.getCurrentUser();
+            },
             child: CircleAvatar(
               backgroundColor: AppColors.blue,
               child: Text(
-                currentUser!.name![0],
+                currentUser == null ? '' : currentUser!.name![0],
                 style: TextStyle(color: AppColors.white),
               ),
             ),

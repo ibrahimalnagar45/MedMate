@@ -3,8 +3,6 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../utils/services/shared_prefrence_service.dart';
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
@@ -12,46 +10,34 @@ class UserCubit extends Cubit<UserState> {
 
   Person? _currentUser;
 
-  Person? getCurrentUser() {
+  Future<Person?> getCurrentUser() async {
     emit(GetUserLoading());
     try {
-      _currentUser = Person(
-        name: getIt<SharedPreferences>().getString(SharedPrefrenceDb.username),
-        age: getIt<SharedPreferences>().getString(SharedPrefrenceDb.userAge),
-        id: int.tryParse(
-          getIt<SharedPreferences>().getString(SharedPrefrenceDb.userId)!,
-        ),
-      );
+      log('getting current user tiggered ');
 
+      _currentUser = await Crud.instance.getCurrentUser();
+      // _currentUser = await getIt<curr>().getCurrentUser();
       log('current user from cubit ');
       log(_currentUser.toString());
       emit(GetUserSuccess(_currentUser!));
     } catch (e) {
+      log('error in getting current user ${e.toString()}');
       emit(GetUserFailure(e.toString()));
     }
     return _currentUser;
   }
 
-  void setCurrentUser(Person userModel) {
+  Future<void> setCurrentUser(Person userModel) async {
     emit(SetUserLoading());
     try {
-      getIt<SharedPreferences>().setString(
-        SharedPrefrenceDb.username,
-        userModel.name!,
-      );
-      getIt<SharedPreferences>().setString(
-        SharedPrefrenceDb.userAge,
-        userModel.age!,
-      );
-      getIt<SharedPreferences>().setString(
-        SharedPrefrenceDb.userId,
-        userModel.id.toString(),
-      );
+      Crud.instance.setCurrentUser(userModel);
+      _currentUser = await Crud.instance.getCurrentUser();
+      // await getIt<UserCubit>().setCurrentUser(userModel);
 
-      _currentUser = userModel;
       log('set the current user to ${_currentUser.toString()}');
       emit(SetUserSuccess(userModel));
     } catch (e) {
+      log('error in setting current user ${e.toString()}');
       emit(SetUserFailure(e.toString()));
     }
   }
@@ -66,7 +52,7 @@ class UserCubit extends Cubit<UserState> {
         return;
       }
       Person newUser = await Crud.instance.insertUser(user);
-
+      setCurrentUser(newUser);
       // setCurrentUser(newUser);
       emit(AddNewUserSuccess(newUser));
       log('New user added successfully: ${newUser.toString()}');

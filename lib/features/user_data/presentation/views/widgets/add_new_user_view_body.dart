@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:midmate/core/functions/get_unique_id.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
+import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_button.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/extension_fun.dart';
@@ -91,8 +93,20 @@ class _AddNewUserViewBodyState extends State<AddNewUserViewBody> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     getIt<UserCubit>().addNewUser(
-                      Person(name: userName!, age: age!),
+                      Person(name: userName!, age: age!, id: getAUniqueId()),
                     );
+
+                    Future.delayed(Duration(seconds: 1), () {
+                          getIt<UserCubit>().setCurrentUser(
+                            Person(name: userName!, age: age!),
+                          );
+                        })
+                        .then((_) {
+                          getIt<MedsCubit>().getUserAllMeds();
+                        })
+                        .then((_) {
+                          getIt<UserCubit>().getCurrentUser();
+                        });
 
                     context.pop();
                   }

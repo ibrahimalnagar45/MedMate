@@ -120,6 +120,16 @@ class S {
     return Intl.message('Age', name: 'userAge', desc: '', args: []);
   }
 
+  /// `Birth of date`
+  String get birthOfDate {
+    return Intl.message(
+      'Birth of date',
+      name: 'birthOfDate',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `You must enter your name`
   String get nameRequired {
     return Intl.message(

@@ -8,6 +8,7 @@
   "dontForgetMedicine": "Never forget your medicine again",
   "userName": "userName",
   "userAge": "Age",
+  "birthOfDate": "Birth of date",
   "nameRequired": "You must enter your name",
   
   "appBarTitle": "{appBarTitle}",

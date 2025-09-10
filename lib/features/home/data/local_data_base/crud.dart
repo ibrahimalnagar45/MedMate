@@ -71,6 +71,7 @@ class Crud {
 
   // change the id to required
   Future<List<MedModel>> getUserAllMeds({required int userId}) async {
+    print('getUserAllMeds called with userId: $userId');
     Database db = await SqHelper().getMedsDbInstance();
     List<Map<String, dynamic>> maps = await db.query(
       DbConstants.medTableName,
@@ -131,6 +132,66 @@ class Crud {
       where: '${DbConstants.usersColumnId} = ?',
       whereArgs: [id],
     );
+    if (maps.isNotEmpty) {
+      return Person.fromMap(maps.first);
+    }
+    return null;
+  }
+  
+  // Future<void> setCurrentUser(Person user) async {
+  //   Database db = await SqHelper().getCurrentUserInstance();
+  //   // First, delete any existing current user
+  //   await db.delete(DbConstants.currentUserTableName);
+  //   // Then, insert the new current user
+  //   await db.insert(
+  //     DbConstants.currentUserTableName,
+  //     user.toMap(),
+  //     conflictAlgorithm: ConflictAlgorithm.replace,
+  //   );
+  //   log('Set current user: ${user.toString()} to db  ');
+  // }
+
+  // Future<Person?> getCurrentUser() async {
+  //   log('getting the current user ');
+  //   Database db = await SqHelper().getCurrentUserInstance();
+  //   List<Map<String, dynamic>> maps = await db.query(
+  //     DbConstants.currentUserTableName,
+  //     limit: 1,
+  //   );
+  //   if (maps.isNotEmpty) {
+  //     log('the current user is ' + maps.first.toString());
+  //     return Person.fromMap(maps.first);
+  //   } else {
+  //     log('No current user found in the database.');
+  //   }
+  //   return null;
+  // }
+
+  Future<void> setCurrentUser(Person user) async {
+    final db = await SqHelper().getCurrentUserInstance();
+
+    await db.delete(DbConstants.currentUserTableName);
+    log('Deleted old current user rows');
+
+    final map = user.toMap();
+    log('Inserting user map: $map');
+
+    final id = await db.insert(
+      DbConstants.currentUserTableName,
+      map,
+      conflictAlgorithm: ConflictAlgorithm.replace,
+    );
+
+    log('Inserted row id: $id');
+  }
+
+  Future<Person?> getCurrentUser() async {
+    final db = await SqHelper().getCurrentUserInstance();
+
+    final maps = await db.query(DbConstants.currentUserTableName, limit: 1);
+
+    log('Query result: $maps');
+
     if (maps.isNotEmpty) {
       return Person.fromMap(maps.first);
     }

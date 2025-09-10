@@ -10,6 +10,7 @@ import 'package:midmate/main.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/med_model.dart';
+import 'package:midmate/utils/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../utils/service_locator.dart';
@@ -43,12 +44,15 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
   DateTime? medCreatedAt;
   String? description;
   late MedsCubit medsCubit;
+  late Person? currentUser;
   @override
   void initState() {
     medsCubit = getIt<MedsCubit>();
     doseEntries = [];
     medCreatedAt = DateTime.now();
-    // medModel = MedModel.newMed();
+    Future.sync(() async {
+      currentUser = await getIt<UserCubit>().getCurrentUser();
+    }); 
     super.initState();
   }
 
@@ -187,13 +191,10 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
 
                       log(med.toString());
 
-                      medsCubit.insert(
-                        med,
-                        getIt<UserCubit>().getCurrentUser()!.id!,
-                      );
+                      medsCubit.insert(med, currentUser!.id!);
 
                       // medsCubit.getUserAllMeds();
-                    
+
                       await LocalNotification(
                         navigatorKey: navigatorKey,
                       ).showScheduledRepeatedNotification(

@@ -1,6 +1,6 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
-import 'package:midmate/features/home/data/local_data_base/crud.dart';
+import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/utils/constants.dart';
 import 'package:midmate/utils/extension_fun.dart';
@@ -28,11 +28,17 @@ class _OnboardingViewState extends State<OnboardingView>
   int currentIndex = 0;
   SharedPreferences prefs = getIt<SharedPreferences>();
   List<Person> users = [];
+  Person? currentUser;
   @override
   void initState() {
     _pageController = PageController(initialPage: 0);
     timer = Timer.periodic(Duration(seconds: 2), (timer) => navigation());
-    Crud.instance.getAllusers().then((values) {
+
+    Future.sync(() async {
+      currentUser = await getIt<UserCubit>().getCurrentUser();
+    });
+
+    getIt<UserCubit>().getAllUsers().then((values) {
       users = values;
     });
 
@@ -54,7 +60,7 @@ class _OnboardingViewState extends State<OnboardingView>
       body: SafeArea(
         child: Column(
           children: [
-            CustomSkipIcon(),
+            CustomSkipIcon(currentUser: currentUser),
             Expanded(
               flex: 4,
               child: PageView.builder(
@@ -92,7 +98,7 @@ class _OnboardingViewState extends State<OnboardingView>
         true,
       );
 
-      if (users.isNotEmpty) {
+      if (users.isNotEmpty || currentUser == null) {
         context.replaceWith(UserDataView());
       } else {
         context.replaceWith(HomeView());

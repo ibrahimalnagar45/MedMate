@@ -9,6 +9,7 @@
   "dontForgetMedicine": "متنساش ميعاد دواءك تاني",
   "userName": "الاسم",
   "userAge": "العمر",
+  "birthOfDate": "تاريخ الميلاد",
   "nameRequired": "يجب أن تدخل اسمك",
   "Add": "اضافة", 
   "appBarTitle": "{appBarTitle}",

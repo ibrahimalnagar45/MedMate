@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
@@ -19,10 +20,11 @@ class HomeViewBody extends StatefulWidget {
 class _HomeViewBodyState extends State<HomeViewBody> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final MedsCubit medCubit = getIt<MedsCubit>();
+  final UserCubit userCubit = getIt<UserCubit>();
   @override
   void initState() {
-    log('getting the meds form home view body');
     medCubit.getUserAllMeds();
+
     super.initState();
   }
 
@@ -38,9 +40,9 @@ class _HomeViewBodyState extends State<HomeViewBody> {
         backgroundColor: AppColors.blue,
         foregroundColor: AppColors.white,
         onPressed: () {
-          // BlocProvider.of<MedsCubit>(context).getUserAllMeds();
-
+          // to get the database and export it to downloads
           // exportDatabaseToDownloads();
+
           showModalBottomSheet(
             context: context,
             isScrollControlled: true,
@@ -52,13 +54,8 @@ class _HomeViewBodyState extends State<HomeViewBody> {
             },
           ).then((_) {
             log('getting the meds after adding a new med \n\n');
-
             medCubit.getUserAllMeds();
           });
-          /*
-          .then((_) {
-            medCubit.getUserAllMeds();
-          })*/
 
           // context.goTo(AddNewUserView());
         },
@@ -76,6 +73,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
             } else if (state is GetMedsSuccess) {
               return MedsListView(meds: state.meds);
             } else if (state is GetMedsFaluire) {
+              // medCubit.getUserAllMeds();
               return Center(child: Text(state.erMessage));
             } else {
               return Center(

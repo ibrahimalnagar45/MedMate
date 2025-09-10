@@ -52,6 +52,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "after8Hours": MessageLookupByLibrary.simpleMessage("بعد 8 ساعات"),
     "afterADay": MessageLookupByLibrary.simpleMessage("بعد يوم"),
     "appBarTitle": m0,
+    "birthOfDate": MessageLookupByLibrary.simpleMessage("تاريخ الميلاد"),
     "cream": MessageLookupByLibrary.simpleMessage("كريم"),
     "createdAt": MessageLookupByLibrary.simpleMessage("تاريخ الانشاء"),
     "description": MessageLookupByLibrary.simpleMessage("الوصف"),

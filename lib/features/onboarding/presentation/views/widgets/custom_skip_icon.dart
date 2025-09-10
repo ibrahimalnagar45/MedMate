@@ -15,8 +15,8 @@ import '../../../../../utils/text_styles.dart';
 import '../../../../home/presentation/views/home_view.dart';
 
 class CustomSkipIcon extends StatelessWidget {
-  const CustomSkipIcon({super.key});
-
+  const CustomSkipIcon({super.key, required this.currentUser});
+  final Person? currentUser;
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -35,8 +35,7 @@ class CustomSkipIcon extends StatelessWidget {
             debugPrint(
               'from custom icon the value SharedPrefrenceDb.onBoardingVisited is ${getIt<SharedPreferences>().getBool(SharedPrefrenceDb.onBoardingVisited)}',
             );
-            if (getIt<UserCubit>().getCurrentUser()?.name == null ||
-                getIt<UserCubit>().getCurrentUser()?.name == '') {
+            if (currentUser == null) {
               context.replaceWith(UserDataView());
             } else {
               context.replaceWith(HomeView());

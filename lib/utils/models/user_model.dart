@@ -1,18 +1,20 @@
+import '../../features/home/data/local_data_base/db_constants.dart';
+
+int globalId = 20;
+
 class Person {
   String? name;
   String? age;
-  // // i have to add this list to manage every user's meds
-  // List<MedModel>? meds;
   int? id;
 
   Person({this.name, this.age, this.id});
 
   factory Person.fromMap(Map<String, dynamic> map) {
-    return Person(name: map['name'], age: map['age'], id: map['id']);
+    return Person(name: map['name'], age: map['age'], id: map['userId']);
   }
 
   toMap() {
-    return {'id': id, 'name': name, 'age': age};
+    return {DbConstants.usersColumnInsertedId: id, 'name': name, 'age': age};
   }
 
   @override
@@ -37,12 +39,7 @@ class Person {
 class UserModel extends Person {
   UserModel._();
   static UserModel instance = UserModel._();
-
-  // void editUser(Person user) {
-  //   instance.name = user.name;
-  //   instance.age = user.age;
-  // }
-
+ 
   Person getUser() => Person(name: instance.name, age: instance.age);
 
   @override

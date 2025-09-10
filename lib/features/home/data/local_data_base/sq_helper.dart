@@ -1,8 +1,8 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 import 'package:sqflite/sqflite.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 
 class SqHelper {
@@ -11,9 +11,10 @@ class SqHelper {
   SqHelper() {
     getMedsDbInstance();
     getUsersDbInstance();
+    getCurrentUserInstance();
   }
 
-  Future<String> _getDbPath(String dbTableName) async {
+Future<String> _getDbPath(String dbTableName) async {
     databaseFactory = databaseFactorySqflitePlugin;
     String dbPath = await getDatabasesPath();
     return join(dbPath, dbTableName);
@@ -63,22 +64,69 @@ create table ${DbConstants.medTableName} (
     return db!;
   }
 
-  Future<Database> getUsersDbInstance() async {
-    String path = await _getDbPath(DbConstants.usersTableName);
+  Future<Database> getCurrentUserInstance() async {
+    String path = await _getDbPath(DbConstants.currentUserTableName);
     try {
+      // await deleteDatabase(path);
+
       db = await openDatabase(
         path,
-        version: 1,
+        version: 5,
         onCreate: (Database db, int version) async {
           await db.execute('''
-create table ${DbConstants.usersTableName} ( 
+create table ${DbConstants.currentUserTableName}( 
   ${DbConstants.usersColumnId} integer primary key autoincrement, 
+   ${DbConstants.usersColumnInsertedId} integer,
   ${DbConstants.usersColumnName} text not null,
   ${DbConstants.usersColumnAge} text not null )
 ''');
         },
         onOpen: _onOpen,
         onConfigure: _onConfig,
+        // onUpgrade: (db, oldVersion, newVersion) async {
+        //   if (oldVersion < 6) {
+        //     // Modify schema here
+        //     await db.execute(
+        //       "ALTER TABLE ${DbConstants.currentUserTableName} ADD COLUMN ${"UserInsertedId"} TEXT",
+        //     );
+        //   }
+        // }, // Fix: Add proper upgrade logic
+        onDowngrade: _onDowngrade,
+      );
+    } catch (e) {
+      log(e.toString());
+    }
+
+    log('from onCreate  :  ${db == null}');
+
+    return db!;
+  }
+
+  Future<Database> getUsersDbInstance() async {
+    String path = await _getDbPath(DbConstants.usersTableName);
+    try {
+      db = await openDatabase(
+        path,
+        version: 5,
+        onCreate: (Database db, int version) async {
+          await db.execute('''
+create table ${DbConstants.usersTableName} ( 
+  ${DbConstants.usersColumnId} integer primary key autoincrement, 
+  'UserInsertedId' integer,
+  ${DbConstants.usersColumnName} text not null,
+  ${DbConstants.usersColumnAge} text not null )
+''');
+        },
+        onOpen: _onOpen,
+        onConfigure: _onConfig,
+        // onUpgrade: (db, oldVersion, newVersion) async {
+        //   if (oldVersion < 6) {
+        //     // Modify schema here
+        //     await db.execute(
+        //       "ALTER TABLE ${DbConstants.usersTableName} ADD COLUMN ${"UserInsertedId"}  integer",
+        //     );
+        //   }
+        // },
         // / Fix: Add proper upgrade logic
         onDowngrade: _onDowngrade,
       );

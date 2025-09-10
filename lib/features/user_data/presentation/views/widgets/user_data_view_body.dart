@@ -1,20 +1,21 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
+import 'package:midmate/features/user_data/presentation/views/widgets/custom_button.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_heart_icon.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../core/functions/get_unique_id.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/services/shared_prefrence_service.dart';
 import '../../../../../utils/text_styles.dart';
-import 'age_drop_down_menu.dart';
 import 'cusotm_label.dart';
 import 'custom_text_form_feild.dart';
 
@@ -26,7 +27,9 @@ class UserDataViewBody extends StatefulWidget {
 }
 
 class _UserDataViewBodyState extends State<UserDataViewBody> {
-  String? userName;
+  String? userName, dateOfBirth;
+  DateTime? tempDateOfBirth;
+
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   int _userIds = 0;
   @override
@@ -73,7 +76,10 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                               style: TextStyles.regGreyTextStyle,
                             ),
 
-                            CustomLabel(title: S.of(context).userName),
+                            CustomLabel(
+                              title: S.of(context).userName,
+                              isImporant: false,
+                            ),
                             CustomTextFormFeild(
                               validator: (vlaue) {
                                 if (vlaue!.isEmpty || vlaue.trim().isEmpty) {
@@ -89,52 +95,103 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                               },
                             ),
                             SizedBox(height: 15),
-                            CustomLabel(title: S.of(context).userAge),
+                            CustomLabel(
+                              title: S.of(context).birthOfDate,
+                              isImporant: false,
+                            ),
+                            GestureDetector(
+                              onTap: () async {
+                                DateTime? date = await showDatePicker(
+                                  context: context,
+                                  initialDatePickerMode: DatePickerMode.year,
 
-                            AgeDropDownMenu(
-                              onSelected: (value) {
-                                if (_formKey.currentState!.validate()) {
-                                  // UserModel.instance.editUser(
-                                  //   Person(age: value, name: userName),
-                                  // );
-                                  // SharedPrefrenceInstances.userModel =
-                                  //     UserModel.instance;
-                                  getIt<SharedPreferences>().setString(
-                                    SharedPrefrenceDb.username,
-                                    userName!,
-                                  );
-                                  getIt<SharedPreferences>().setString(
-                                    SharedPrefrenceDb.userAge,
-                                    value!,
-                                  );
-                                  getIt<SharedPreferences>().setString(
-                                    SharedPrefrenceDb.userId,
-                                    _userIds.toString(),
-                                  );
-                                  final Person currentUser = Person(
-                                    age: value,
-                                    name: userName,
-                                    id: _userIds++,
-                                  );
-                                  getIt<UserCubit>().setCurrentUser(
-                                    currentUser,
-                                  );
+                                  locale: Locale('en'),
+                                  initialDate:
+                                      tempDateOfBirth == null
+                                          ? DateTime.now()
+                                          : tempDateOfBirth!,
+                                  initialEntryMode:
+                                      DatePickerEntryMode.inputOnly,
+
+                                  firstDate: DateTime(2000),
+                                  lastDate: DateTime(DateTime.now().year + 1),
+                                  // onDatePickerModeChange: (value) {
+                                  //   log(value.toString());
+                                  //   setState(() {
+                                  //     dateOfBirth = value.toString();
+                                  //   });
+                                  // },
+                                );
+                                if (date != null) {
+                                  tempDateOfBirth = date;
+                                  dateOfBirth =
+                                      DateFormat(
+                                        'yyyy-MM-dd',
+                                      ).format(date).toString();
+                                  setState(() {});
+                                }
+                              },
+                              child: Container(
+                                margin: EdgeInsets.only(bottom: 10),
+                                padding: EdgeInsets.only(right: 10, left: 10),
+
+                                height: 60,
+                                width: context.width(),
+                                decoration: BoxDecoration(
+                                  color: AppColors.grey,
+                                  borderRadius: BorderRadius.circular(10),
+                                ),
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.start,
+                                  children: [
+                                    Text(
+                                      dateOfBirth == null
+                                          ? S.of(context).userAge
+                                          : dateOfBirth!,
+                                      style: TextStyles.hintTextStyle,
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+
+                            CustomButton(
+                              onPressed: () {
+                                if (userName != null && dateOfBirth != null) {
+                                  if (_formKey.currentState!.validate()) {
+                                    saveUser(context);
+
+                                    Navigator.of(context).push(
+                                      MaterialPageRoute(
+                                        builder: (context) => HomeView(),
+                                      ),
+                                    );
+                                  } else {
+                                    log(
+                                      userName.toString() +
+                                          dateOfBirth.toString(),
+                                    );
+                                    log('user name or date of birth is null');
+                                  }
+                                } else {
+                                  log('user name or date of birth is null');
 
                                   log(
-                                    getIt<UserCubit>()
-                                        .getCurrentUser()
-                                        .toString(),
-                                  );
-
-                                  Crud.instance.insertUser(currentUser);
-                                  Navigator.of(context).push(
-                                    MaterialPageRoute(
-                                      builder: (context) => HomeView(),
-                                    ),
+                                    userName.toString() +
+                                        dateOfBirth.toString(),
                                   );
                                 }
                               },
+                              bgColor: AppColors.white,
+                              title: S.current.Add,
                             ),
+                            // AgeDropDownMenu(
+                            //   onSelected: (value) {
+                            //     if (_formKey.currentState!.validate()) {
+                            //       saveUser(value, context);
+                            //     }
+                            //   },
+                            // ),
                             SizedBox(height: 80),
                           ],
                         ),
@@ -150,6 +207,35 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
         ),
       ),
     );
+  }
+
+  void saveUser(BuildContext thisContext) {
+    log('save user is called');
+
+    log('user name and date of birth');
+
+    log(userName!);
+    log(dateOfBirth!);
+    getIt<SharedPreferences>().setString(SharedPrefrenceDb.username, userName!);
+    getIt<SharedPreferences>().setString(
+      SharedPrefrenceDb.userAge,
+      dateOfBirth!,
+    );
+    getIt<SharedPreferences>().setString(
+      SharedPrefrenceDb.userId,
+      _userIds.toString(),
+    );
+
+    final Person currentUser = Person(
+      age: dateOfBirth,
+      name: userName,
+      id: getAUniqueId(),
+    );
+    getIt<UserCubit>().setCurrentUser(currentUser);
+
+    log(getIt<UserCubit>().getCurrentUser().toString());
+
+    Crud.instance.insertUser(currentUser);
   }
 }
 

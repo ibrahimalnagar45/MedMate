@@ -19,9 +19,7 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
-
-import 'dart:io';
-import 'package:sqflite/sqflite.dart';
+ 
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -36,18 +34,15 @@ void main() async {
   await serviceLocatorSetup();
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
-
-  // Crud.instance.closeMedsDb();
-  // Crud.instance.closeUsersDb();
-  // Crud.instance.deleteAllMeds();
-  // Crud.instance.deleteAllusers();
-  // // Crud.instance.deleteMedsDatabaseFile();
-  // getIt<SharedPreferences>().clear();
+ 
+  // delelteEverthing();
 
   SqHelper();
   Bloc.observer = CustomBlocObserval();
   runApp(const MyApp());
 }
+
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -86,3 +81,11 @@ class MyApp extends StatelessWidget {
 
 // store the current user in sharedPreference
 // create some fun to edit the current user, delete a user from sq db
+void delelteEverthing() {
+  Crud.instance.closeMedsDb();
+  Crud.instance.closeUsersDb();
+  Crud.instance.deleteAllMeds();
+  Crud.instance.deleteAllusers();
+  // Crud.instance.deleteMedsDatabaseFile();
+  getIt<SharedPreferences>().clear();
+}
