@@ -5,16 +5,27 @@ int globalId = 20;
 class Person {
   String? name;
   String? age;
+  int? insertedId;
   int? id;
 
-  Person({this.name, this.age, this.id});
+  Person({this.name, this.age, this.id, this.insertedId});
 
   factory Person.fromMap(Map<String, dynamic> map) {
-    return Person(name: map['name'], age: map['age'], id: map['userId']);
+    return Person(
+      name: map[DbConstants.usersColumnName],
+      age: map[DbConstants.usersColumnAge],
+      insertedId: map[DbConstants.usersColumnInsertedId] as int,
+      id: map[DbConstants.usersColumnId] as int,
+    );
   }
 
   toMap() {
-    return {DbConstants.usersColumnInsertedId: id, 'name': name, 'age': age};
+    return {
+      DbConstants.usersColumnInsertedId: insertedId,
+      // DbConstants.usersColumnId: id,
+      DbConstants.usersColumnName: name,
+      DbConstants.usersColumnAge: age,
+    };
   }
 
   @override
@@ -32,18 +43,18 @@ class Person {
 
   @override
   String toString() {
-    return 'UserModel{id: $id, name: $name, age: $age}';
+    return 'UserModel{id: $id, insertedId: $insertedId, name: $name, age: $age}';
   }
 }
 
 class UserModel extends Person {
   UserModel._();
   static UserModel instance = UserModel._();
- 
+
   Person getUser() => Person(name: instance.name, age: instance.age);
 
   @override
   String toString() {
-    return 'UserModel{id: $id, name: $name, age: $age}';
+    return 'UserModel{id: $id,insertedId: $insertedId, name: $name, age: $age}';
   }
 }

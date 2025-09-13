@@ -16,10 +16,9 @@ class UserCubit extends Cubit<UserState> {
       log('getting current user tiggered ');
 
       _currentUser = await Crud.instance.getCurrentUser();
-      // _currentUser = await getIt<curr>().getCurrentUser();
-      log('current user from cubit ');
-      log(_currentUser.toString());
-      emit(GetUserSuccess(_currentUser!));
+      if (_currentUser != null) {
+        emit(GetUserSuccess(_currentUser!));
+      }
     } catch (e) {
       log('error in getting current user ${e.toString()}');
       emit(GetUserFailure(e.toString()));
@@ -31,10 +30,9 @@ class UserCubit extends Cubit<UserState> {
     emit(SetUserLoading());
     try {
       Crud.instance.setCurrentUser(userModel);
-      _currentUser = await Crud.instance.getCurrentUser();
-      // await getIt<UserCubit>().setCurrentUser(userModel);
-
-      log('set the current user to ${_currentUser.toString()}');
+      // _currentUser = await Crud.instance.getCurrentUser();
+      // // await getIt<UserCubit>().setCurrentUser(userModel);
+ 
       emit(SetUserSuccess(userModel));
     } catch (e) {
       log('error in setting current user ${e.toString()}');

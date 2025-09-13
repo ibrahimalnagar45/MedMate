@@ -229,7 +229,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
     final Person currentUser = Person(
       age: dateOfBirth,
       name: userName,
-      id: getAUniqueId(),
+      insertedId: getAUniqueId(),
     );
     getIt<UserCubit>().setCurrentUser(currentUser);
 

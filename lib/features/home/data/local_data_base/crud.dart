@@ -11,18 +11,6 @@ class Crud {
   const Crud._();
   static const Crud instance = Crud._();
 
-  // Future<MedModel> insertMed(MedModel med, int userId) async {
-  //   Database db = await SqHelper().getMedsDbInstance();
-  //   await db.insert(
-  //     DbConstants.medTableName,
-  //     med.toMap().putIfAbsent(med.id.toString(), () {
-  //       return userId;
-  //     }),
-  //   );
-  //   log(med.toString());
-  //   return med;
-  // }
-
   Future<MedModel> insertMed(MedModel med, int userId) async {
     final db = await SqHelper().getMedsDbInstance();
 
@@ -137,7 +125,7 @@ class Crud {
     }
     return null;
   }
-  
+
   // Future<void> setCurrentUser(Person user) async {
   //   Database db = await SqHelper().getCurrentUserInstance();
   //   // First, delete any existing current user
@@ -174,7 +162,7 @@ class Crud {
     log('Deleted old current user rows');
 
     final map = user.toMap();
-    log('Inserting user map: $map');
+    log(' setting current user: ${user.toString()}');
 
     final id = await db.insert(
       DbConstants.currentUserTableName,
@@ -190,12 +178,14 @@ class Crud {
 
     final maps = await db.query(DbConstants.currentUserTableName, limit: 1);
 
-    log('Query result: $maps');
-
     if (maps.isNotEmpty) {
+      log('Query result: ${maps.first['userId'].runtimeType}');
+      log('Query result: ${maps.first}');
+
       return Person.fromMap(maps.first);
+    } else {
+      return null;
     }
-    return null;
   }
 
   Future<int> deleteUser(int id) async {

@@ -14,7 +14,7 @@ class SqHelper {
     getCurrentUserInstance();
   }
 
-Future<String> _getDbPath(String dbTableName) async {
+  Future<String> _getDbPath(String dbTableName) async {
     databaseFactory = databaseFactorySqflitePlugin;
     String dbPath = await getDatabasesPath();
     return join(dbPath, dbTableName);
@@ -24,8 +24,7 @@ Future<String> _getDbPath(String dbTableName) async {
   Future<Database> getMedsDbInstance() async {
     String path = await _getDbPath(DbConstants.medTableName);
     try {
-      // await deleteDatabase(path);
-
+       
       db = await openDatabase(
         path,
         version: 3,
@@ -74,12 +73,12 @@ create table ${DbConstants.medTableName} (
         version: 5,
         onCreate: (Database db, int version) async {
           await db.execute('''
-create table ${DbConstants.currentUserTableName}( 
-  ${DbConstants.usersColumnId} integer primary key autoincrement, 
-   ${DbConstants.usersColumnInsertedId} integer,
-  ${DbConstants.usersColumnName} text not null,
-  ${DbConstants.usersColumnAge} text not null )
-''');
+                          create table ${DbConstants.currentUserTableName}( 
+                            ${DbConstants.usersColumnId} integer primary key autoincrement, 
+                            ${DbConstants.usersColumnInsertedId} integer,
+                            ${DbConstants.usersColumnName} text not null,
+                            ${DbConstants.usersColumnAge} text not null )
+                          ''');
         },
         onOpen: _onOpen,
         onConfigure: _onConfig,
@@ -110,12 +109,12 @@ create table ${DbConstants.currentUserTableName}(
         version: 5,
         onCreate: (Database db, int version) async {
           await db.execute('''
-create table ${DbConstants.usersTableName} ( 
-  ${DbConstants.usersColumnId} integer primary key autoincrement, 
-  'UserInsertedId' integer,
-  ${DbConstants.usersColumnName} text not null,
-  ${DbConstants.usersColumnAge} text not null )
-''');
+                          create table ${DbConstants.usersTableName} ( 
+                          ${DbConstants.usersColumnId} integer primary key autoincrement, 
+                          ${DbConstants.usersColumnInsertedId} integer,
+                          ${DbConstants.usersColumnName} text not null,
+                          ${DbConstants.usersColumnAge} text not null )
+                          ''');
         },
         onOpen: _onOpen,
         onConfigure: _onConfig,

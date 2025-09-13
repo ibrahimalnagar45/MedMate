@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:midmate/core/functions/export_data_base_file_to_downloads.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/generated/l10n.dart';
@@ -37,6 +38,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
   void initState() {
     Future.sync(() async {
       await userCubit.getCurrentUser();
+    }).then(<Person>(value) {
+      currentUser = value;
     });
 
     userCubit.getAllUsers().then((value) {
@@ -102,7 +105,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     key: buttonKey,
                     onPressed: () async {
                       RelativeRect position = getTheButtomPostion(context);
-                      log('all users are ' + users.toString());
+
                       await showMenu<Person>(
                         // ignore: use_build_context_synchronously
                         context: context,
@@ -141,8 +144,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
             onTap: () {
+              exportDatabaseToDownloads();
               // Crud.instance.getAUser('ibrahim');
               userCubit.getCurrentUser();
+              // exportDatabaseToDownloads();
             },
             child: CircleAvatar(
               backgroundColor: AppColors.blue,
