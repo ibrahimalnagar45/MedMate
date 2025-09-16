@@ -93,7 +93,7 @@ class _AddNewUserViewBodyState extends State<AddNewUserViewBody> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     getIt<UserCubit>().addNewUser(
-                      Person(name: userName!, age: age!, id: getAUniqueId()),
+                      Person(name: userName!, age: age!, isCurrentUser: 1),
                     );
 
                     Future.delayed(Duration(seconds: 1), () {

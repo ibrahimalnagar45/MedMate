@@ -29,10 +29,8 @@ class UserCubit extends Cubit<UserState> {
   Future<void> setCurrentUser(Person userModel) async {
     emit(SetUserLoading());
     try {
-      Crud.instance.setCurrentUser(userModel);
-      // _currentUser = await Crud.instance.getCurrentUser();
-      // // await getIt<UserCubit>().setCurrentUser(userModel);
- 
+      await Crud.instance.setCurrentUser(userModel);
+      
       emit(SetUserSuccess(userModel));
     } catch (e) {
       log('error in setting current user ${e.toString()}');

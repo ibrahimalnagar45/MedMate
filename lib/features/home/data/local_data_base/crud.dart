@@ -156,30 +156,32 @@ class Crud {
   // }
 
   Future<void> setCurrentUser(Person user) async {
-    final db = await SqHelper().getCurrentUserInstance();
+    final db = await SqHelper().getUsersDbInstance();
 
-    await db.delete(DbConstants.currentUserTableName);
-    log('Deleted old current user rows');
-
-    final map = user.toMap();
-    log(' setting current user: ${user.toString()}');
-
-    final id = await db.insert(
-      DbConstants.currentUserTableName,
-      map,
-      conflictAlgorithm: ConflictAlgorithm.replace,
+    await db.update(
+      DbConstants.usersTableName,
+      {DbConstants.isCurrentUser: 0},
+      where: '${DbConstants.isCurrentUser} = ?',
+      whereArgs: [1],
     );
-
-    log('Inserted row id: $id');
+    await db.update(
+      DbConstants.usersTableName,
+      {DbConstants.isCurrentUser: 1},
+      where: '${DbConstants.usersColumnId} = ?',
+      whereArgs: [user.id],
+    );
   }
 
   Future<Person?> getCurrentUser() async {
-    final db = await SqHelper().getCurrentUserInstance();
+    final db = await SqHelper().getUsersDbInstance();
 
-    final maps = await db.query(DbConstants.currentUserTableName, limit: 1);
+    final maps = await db.query(
+      DbConstants.usersTableName,
+      where: '${DbConstants.isCurrentUser} = ?',
+      whereArgs: [1],
+    );
 
     if (maps.isNotEmpty) {
-      log('Query result: ${maps.first['userId'].runtimeType}');
       log('Query result: ${maps.first}');
 
       return Person.fromMap(maps.first);

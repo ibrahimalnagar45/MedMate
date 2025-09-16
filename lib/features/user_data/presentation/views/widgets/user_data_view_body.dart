@@ -229,11 +229,11 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
     final Person currentUser = Person(
       age: dateOfBirth,
       name: userName,
-      insertedId: getAUniqueId(),
+      isCurrentUser: 1,
     );
-    getIt<UserCubit>().setCurrentUser(currentUser);
+    // getIt<UserCubit>().setCurrentUser(currentUser);
 
-    log(getIt<UserCubit>().getCurrentUser().toString());
+    // log(getIt<UserCubit>().getCurrentUser().toString());
 
     Crud.instance.insertUser(currentUser);
   }

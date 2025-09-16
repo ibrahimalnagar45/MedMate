@@ -15,11 +15,10 @@ class MedsCubit extends Cubit<MedsState> {
 
   getUserAllMeds() async {
     final Person? currentUser = await getIt<UserCubit>().getCurrentUser();
-     
 
     emit(MedsLoading());
     try {
-      meds = await db.getUserAllMeds(userId: currentUser!.insertedId!);
+      meds = await db.getUserAllMeds(userId: currentUser!.id!);
       emit(GetMedsSuccess(meds: meds));
       log('the meds are ${meds.toString()}');
       log('the user is ${currentUser.toString()}');

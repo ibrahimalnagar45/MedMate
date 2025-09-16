@@ -144,9 +144,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
             onTap: () {
-              exportDatabaseToDownloads();
+              // exportDatabaseToDownloads();
               // Crud.instance.getAUser('ibrahim');
+              // userCubit.getAllUsers();
               userCubit.getCurrentUser();
+
               // exportDatabaseToDownloads();
             },
             child: CircleAvatar(
