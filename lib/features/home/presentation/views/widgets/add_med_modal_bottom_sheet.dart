@@ -52,7 +52,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
     medCreatedAt = DateTime.now();
     Future.sync(() async {
       currentUser = await getIt<UserCubit>().getCurrentUser();
-    }); 
+    });
     super.initState();
   }
 
@@ -203,7 +203,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                             'this is the time to take ur medicine ${getIt<SharedPreferences>().getString(SharedPrefrenceDb.username)}  ${med.name}',
                         body:
                             'this is the time to take ur medicine ${med.name}',
-                        date: med.getNextTime(),
+                        date: med.frequency,
                       );
 
                       Context(context).pop();

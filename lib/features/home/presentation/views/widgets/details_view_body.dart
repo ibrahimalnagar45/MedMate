@@ -63,7 +63,7 @@ class DetailsViewBody extends StatelessWidget {
                   ? S.of(context).everyDay
                   : med.frequency != 12
                   ? S.of(context).everyNumHour(med.frequency ?? 0)
-                  // ? '${med.frequency ?? 0} ساعات'
+            
                   : S.of(context).everyNumHours(med.frequency ?? 0),
               Icons.repeat,
             ),
@@ -79,7 +79,7 @@ class DetailsViewBody extends StatelessWidget {
             _infoTile(
               S.of(context).startDate,
               _formatDate(
-                med.createdAt!.add(Duration(hours: med.startDate!.hour)),
+                med.startDate!,
               ),
               Icons.date_range,
             ),

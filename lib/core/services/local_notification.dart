@@ -168,7 +168,7 @@ class LocalNotification {
     String? title,
     String? body,
     required int id,
-    required DateTime date,
+    required int? date,
   }) async {
     log('scheduled alarm notification called');
 
@@ -196,7 +196,7 @@ class LocalNotification {
       id,
       title,
       body,
-      Duration(hours: date.hour, minutes: date.minute, seconds: date.second),
+      Duration(hours: date!),
       platformChannelSpecifics,
       payload: 'time_to_take_medicine',
     );
@@ -262,7 +262,7 @@ class LocalNotification {
     log('sheduled notifications:\n');
 
     for (var noti in pendingNotificationRequests) {
-    log("noti id   ${noti.id}");
+      log("noti id   ${noti.id}");
       log("noti title ${noti.title}");
     }
   }

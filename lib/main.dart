@@ -1,17 +1,13 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/custom_bloc_observal.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
-import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
-import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'utils/app_fonts.dart';
@@ -25,8 +21,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
-// final GlobalKey _buttonKey = GlobalKey();
-// List<Person> users = [];
+    
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
