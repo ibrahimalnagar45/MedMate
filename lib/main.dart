@@ -15,13 +15,11 @@ import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
- 
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
-    
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -29,15 +27,13 @@ void main() async {
   await serviceLocatorSetup();
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
- 
+
   // delelteEverthing();
 
   SqHelper();
   Bloc.observer = CustomBlocObserval();
   runApp(const MyApp());
 }
-
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -60,6 +56,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Remind Me',
         theme: ThemeData(
+          scaffoldBackgroundColor: AppColors.grey,
           fontFamily: AppFonts.primaryFont,
           iconButtonTheme: IconButtonThemeData(
             style: IconButton.styleFrom(foregroundColor: AppColors.blue),

@@ -12,6 +12,7 @@ class MedsCubit extends Cubit<MedsState> {
 
   final Crud db = Crud.instance;
   List<MedModel> meds = [];
+  List<MedModel> todayMeds = [];
 
   getUserAllMeds() async {
     final Person? currentUser = await getIt<UserCubit>().getCurrentUser();
@@ -19,6 +20,7 @@ class MedsCubit extends Cubit<MedsState> {
     emit(MedsLoading());
     try {
       meds = await db.getUserAllMeds(userId: currentUser!.id!);
+
       emit(GetMedsSuccess(meds: meds));
       log('the meds are ${meds.toString()}');
       log('the user is ${currentUser.toString()}');
@@ -27,11 +29,24 @@ class MedsCubit extends Cubit<MedsState> {
     }
   }
 
-  insert(MedModel med, int userId) {
+  getTodayMeds() async {
+    emit(GetTodayMedsLoading());
+    final Person? currentUser = await getIt<UserCubit>().getCurrentUser();
+    try {
+      todayMeds = await db.getUserTodayMeds(userId: currentUser!.id!);
+      log('the today meds are ${todayMeds.toString()}');
+      emit(GetTodayMedsSuccess(meds: meds));
+    } catch (e) {
+      log('the error when getting today meds ${e.toString()}');
+      emit(GetTodayMedsFaluire(erMessage: e.toString()));
+    }
+  }
+
+  Future<void> insertMed(MedModel med, int userId) async {
     emit(MedsLoading());
 
     try {
-      db.insertMed(med, userId);
+      await db.insertMed(med, userId);
       emit(InsertMedsSuccess(med: med));
     } catch (e) {
       emit(InsertMedsFaluire(erMessage: e.toString()));

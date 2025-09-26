@@ -17,6 +17,18 @@ final class GetMedsSuccess extends MedsState {
   GetMedsSuccess({required this.meds});
 }
 
+final class GetTodayMedsLoading extends MedsState {}
+
+final class GetTodayMedsSuccess extends MedsState {
+  final List<MedModel> meds;
+  GetTodayMedsSuccess({required this.meds});
+}
+
+final class GetTodayMedsFaluire extends MedsState {
+  final String erMessage;
+  GetTodayMedsFaluire({required this.erMessage});
+}
+
 final class InsertMedsFaluire extends MedsState {
   final String erMessage;
   InsertMedsFaluire({required this.erMessage});

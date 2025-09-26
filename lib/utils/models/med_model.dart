@@ -27,7 +27,10 @@ class MedModel {
     required this.frequency,
     required this.startDate,
     this.id,
-  });
+    this.nextTime,
+  }) {
+    nextTime = getNextTime();
+  }
 
   String getFormattedNextTime() {
     checkMedNextTime(this);
@@ -46,7 +49,7 @@ class MedModel {
     }
   }
 
-  getNextTime() {
+  DateTime? getNextTime() {
     if (nextTime == null) {
       setNextTime();
       debugPrint('next time is null');
@@ -86,7 +89,7 @@ class MedModel {
 
   @override
   String toString() {
-    return 'id:$id name:$name, description:$description,  type:$type, donse:$dose, frequency:$frequency, startDate:$startDate  , nextTime:$nextTime, createdAt:$createdAt';
+    return 'id:$id name:$name, description:$description,  type:$type, donse:$dose, frequency:$frequency, createdAt:$createdAt,startDate:$startDate , nextTime:$nextTime';
   }
 
   MedType getType([String? type]) {

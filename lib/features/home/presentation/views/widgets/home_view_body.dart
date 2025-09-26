@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
+import 'package:midmate/core/widgets/bottom_bar.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
@@ -36,34 +37,37 @@ class _HomeViewBodyState extends State<HomeViewBody> {
         context: context,
         // currentUser: currentUser,
       ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: AppColors.blue,
-        foregroundColor: AppColors.white,
-        onPressed: () {
-          // to get the database and export it to downloads
-          // exportDatabaseToDownloads();
+      bottomNavigationBar: CustomBottomBar(),
 
-          showModalBottomSheet(
-            context: context,
-            isScrollControlled: true,
-            builder: (context) {
-              return BlocProvider(
-                create: (context) => getIt<MedsCubit>(),
-                child: AddMedModalBottomSheet(formKey: _formKey),
-              );
+      floatingActionButton: Align(
+        alignment: Alignment.bottomRight,
+
+        child: Padding(
+          padding: EdgeInsets.only(right: 30),
+          child: FloatingActionButton(
+            backgroundColor: AppColors.blue,
+            foregroundColor: AppColors.white,
+            onPressed: () {
+              showModalBottomSheet(
+                context: context,
+                isScrollControlled: true,
+                builder: (context) {
+                  return BlocProvider(
+                    create: (context) => getIt<MedsCubit>(),
+                    child: AddMedModalBottomSheet(formKey: _formKey),
+                  );
+                },
+              ).then((_) {
+                log('getting the meds after adding a new med \n\n');
+                medCubit.getUserAllMeds();
+              });
             },
-          ).then((_) {
-            log('getting the meds after adding a new med \n\n');
-            medCubit.getUserAllMeds();
-          });
-
-          // context.goTo(AddNewUserView());
-        },
-        child: const Icon(Icons.add),
+            child: const Icon(Icons.add),
+          ),
+        ),
       ),
 
-      backgroundColor: AppColors.grey,
-
+      // backgroundColor: AppColors.grey,
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: BlocBuilder<MedsCubit, MedsState>(

@@ -59,6 +59,7 @@ class Crud {
 
   // change the id to required
   Future<List<MedModel>> getUserAllMeds({required int userId}) async {
+    List<MedModel> todayMeds = [];
     print('getUserAllMeds called with userId: $userId');
     Database db = await SqHelper().getMedsDbInstance();
     List<Map<String, dynamic>> maps = await db.query(
@@ -66,10 +67,58 @@ class Crud {
       where: "${DbConstants.usersColumnId}= ?",
       whereArgs: [userId],
     );
+
+    DateTime todayDate = DateTime.now();
+    maps.asMap().entries.map((e) {
+      MedModel temp = MedModel.fromMap(e.value);
+      if (temp.getNextTime() == todayDate) {
+        todayMeds.add(temp);
+      }
+    });
+
     return List.generate(maps.length, (i) {
       log(maps[i].toString());
       return MedModel.fromMap(maps[i]);
     });
+  }
+
+  // Future<List<MedModel>?> getUserTodayMeds({required int userId}) async {}
+  Future<List<MedModel>> getUserTodayMeds({required int userId}) async {
+    List<MedModel> todayMeds = [];
+    print('getUserAllMeds called with userId: $userId');
+    Database db = await SqHelper().getMedsDbInstance();
+    List<Map<String, dynamic>> maps = await db.query(
+      DbConstants.medTableName,
+      where: "${DbConstants.usersColumnId}= ?",
+      whereArgs: [userId],
+    );
+
+    DateTime todayDate = DateTime.now();
+    log(maps.toList().toString());
+
+    for (var med in maps) {
+      MedModel temp = MedModel.fromMap(med);
+      log(temp.toString());
+      if (temp.getNextTime()!.day == todayDate.day) {
+        todayMeds.add(temp);
+      }
+    }
+    // maps.forEach((med) {
+    //   MedModel temp = MedModel.fromMap(med);
+    //   log(temp.toString());
+    //   if (temp.getNextTime()!.day == todayDate.day) {
+    //     todayMeds.add(temp);
+    //   }
+    // });
+    // maps.asMap().entries.map((e) {
+    //   MedModel temp = MedModel.fromMap(e.value);
+    //   log(temp.toString());
+    //   if (temp.getNextTime()!.day == todayDate.day) {
+    //     todayMeds.add(temp);
+    //   }
+    // });
+
+    return todayMeds;
   }
 
   Future<List<Person>> getAllusers() async {

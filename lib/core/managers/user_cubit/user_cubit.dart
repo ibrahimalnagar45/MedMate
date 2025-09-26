@@ -48,8 +48,8 @@ class UserCubit extends Cubit<UserState> {
         return;
       }
       Person newUser = await Crud.instance.insertUser(user);
-      setCurrentUser(newUser);
-      // setCurrentUser(newUser);
+      await setCurrentUser(newUser);
+      
       emit(AddNewUserSuccess(newUser));
       log('New user added successfully: ${newUser.toString()}');
     } catch (e) {

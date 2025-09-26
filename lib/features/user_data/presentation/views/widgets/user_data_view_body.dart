@@ -209,7 +209,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
     );
   }
 
-  void saveUser(BuildContext thisContext) {
+  void saveUser(BuildContext thisContext) async{
     log('save user is called');
 
     log('user name and date of birth');
@@ -231,11 +231,8 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
       name: userName,
       isCurrentUser: 1,
     );
-    // getIt<UserCubit>().setCurrentUser(currentUser);
-
-    // log(getIt<UserCubit>().getCurrentUser().toString());
-
-    Crud.instance.insertUser(currentUser);
+    getIt<UserCubit>().addNewUser(currentUser);
+      Crud.instance.insertUser(currentUser);
   }
 }
 
