@@ -1,7 +1,7 @@
 class DbConstants {
   // name of the database
   static const String medTableName = 'meds';
-
+  static const String logsTableName = 'logs';
   static const String usersTableName = 'users';
   static const String currentUserTableName =
       'CurrentUser'; // name of the database

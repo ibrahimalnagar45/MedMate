@@ -62,6 +62,41 @@ create table ${DbConstants.medTableName} (
     return db!;
   }
 
+  Future<Database> getLogsDbInstance() async {
+    String path = await _getDbPath(DbConstants.logsTableName);
+    try {
+      db = await openDatabase(
+        path,
+        version: 1,
+        onCreate: (Database db, int version) async {
+          await db.execute(''' create table ${DbConstants.logsTableName} (
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  medication_id INTEGER NOT NULL,
+  date TEXT NOT NULL,          -- YYYY-MM-DD
+  taken_time TEXT,             -- actual time user confirmed
+  status TEXT NOT NULL,        -- "taken", "missed", "skipped"
+  FOREIGN KEY (medication_id) REFERENCES ${DbConstants.medTableName} (${DbConstants.medsColumnId})
+         
+       )''');
+        },
+      );
+    } catch (e) {
+      log(e.toString());
+    }
+    return db!;
+  }
+
+  /*
+  THE SQL FOR THE LOGS TABLE
+
+  id INTEGER PRIMARY KEY AUTOINCREMENT,
+  medication_id INTEGER NOT NULL,
+  date TEXT NOT NULL,          -- YYYY-MM-DD
+  taken_time TEXT,             -- actual time user confirmed
+  status TEXT NOT NULL,        -- "taken", "missed", "skipped"
+  FOREIGN KEY (medication_id) REFERENCES medications (id)
+ 
+ */
   Future<Database> getCurrentUserInstance() async {
     String path = await _getDbPath(DbConstants.currentUserTableName);
     try {

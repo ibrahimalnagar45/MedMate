@@ -30,15 +30,16 @@ class _MedsTodayViewBodyState extends State<MedsTodayViewBody> {
       body: BlocBuilder<MedsCubit, MedsState>(
         builder: (context, state) {
           if (state is GetTodayMedsSuccess) {
+            if (state.meds.isEmpty) {
+              return Center(
+                child: Image.asset(ImageController.noMedAddedImage, width: 250),
+              );
+            }
             return MedsListView(meds: state.meds);
-          } else if (state is GetTodayMedsLoading) {
-            return const Center(child: CircularProgressIndicator());
           } else if (state is GetTodayMedsFaluire) {
             return Center(child: Text(state.erMessage));
           } else {
-            return Center(
-              child: Image.asset(ImageController.noMedAddedImage, width: 250),
-            );
+            return const Center(child: CircularProgressIndicator());
           }
         },
       ),
