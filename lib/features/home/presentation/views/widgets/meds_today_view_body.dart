@@ -15,10 +15,11 @@ class MedsTodayViewBody extends StatefulWidget {
 }
 
 class _MedsTodayViewBodyState extends State<MedsTodayViewBody> {
-  List<MedModel> todayMeds = [];
   @override
   void initState() {
-    MedsCubit().getTodayMeds();
+    Future.sync(() async {
+      await MedsCubit().getTodayMeds();
+    });
     super.initState();
   }
 

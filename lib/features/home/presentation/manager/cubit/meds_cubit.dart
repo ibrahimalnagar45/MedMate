@@ -29,13 +29,13 @@ class MedsCubit extends Cubit<MedsState> {
     }
   }
 
-  getTodayMeds() async {
+  Future<void> getTodayMeds() async {
     emit(GetTodayMedsLoading());
-    final Person? currentUser = await getIt<UserCubit>().getCurrentUser();
+    // final Person? currentUser = await getIt<UserCubit>().getCurrentUser();
     try {
-      todayMeds = await db.getUserTodayMeds(userId: currentUser!.id!);
+      todayMeds = await db.getUserTodayMeds(userId: 2);
       log('the today meds are ${todayMeds.toString()}');
-      emit(GetTodayMedsSuccess(meds: meds));
+      emit(GetTodayMedsSuccess(meds: todayMeds));
     } catch (e) {
       log('the error when getting today meds ${e.toString()}');
       emit(GetTodayMedsFaluire(erMessage: e.toString()));
