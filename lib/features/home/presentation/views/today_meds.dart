@@ -4,9 +4,10 @@ import 'package:midmate/core/widgets/bottom_bar.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
 import 'package:midmate/utils/models/med_model.dart';
+import 'package:midmate/utils/service_locator.dart';
 
 import '../../../../utils/image_controller.dart';
-import 'widgets/meds_today_view_body.dart';
+import 'widgets/today_meds_view_body.dart';
 
 class MedsToday extends StatefulWidget {
   const MedsToday({super.key});
@@ -26,8 +27,8 @@ class _MedsTodayState extends State<MedsToday> {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => MedsCubit(),
-      child: MedsTodayViewBody(),
+      create: (context) => getIt<MedsCubit>(),
+      child: TodayMedsViewBody(),
     );
     return Scaffold(
       bottomNavigationBar: CustomBottomBar(),
@@ -48,7 +49,5 @@ class _MedsTodayState extends State<MedsToday> {
         },
       ),
     );
- 
- 
   }
 }

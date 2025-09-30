@@ -155,6 +155,11 @@ class S {
     return Intl.message('Home', name: 'home', desc: '', args: []);
   }
 
+  /// `Today`
+  String get todayMeds {
+    return Intl.message('Today', name: 'todayMeds', desc: '', args: []);
+  }
+
   /// `Add`
   String get Add {
     return Intl.message('Add', name: 'Add', desc: '', args: []);

@@ -11,6 +11,7 @@ import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/image_controller.dart';
 import 'package:midmate/utils/models/med_model.dart';
+import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/text_styles.dart';
 import 'package:intl/intl.dart';
 
@@ -48,8 +49,8 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
       key: Key(widget.medModel.id.toString()),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
-        BlocProvider.of<MedsCubit>(context).deleteAMed(widget.medModel.id!);
-        BlocProvider.of<MedsCubit>(context).getUserAllMeds();
+        getIt<MedsCubit>().deleteAMed(widget.medModel.id!);
+       getIt<MedsCubit>().getUserAllMeds();
         LocalNotification(
           navigatorKey: navigatorKey,
         ).cancleNotification(id: widget.medModel.id!);

@@ -85,7 +85,7 @@ class Crud {
   // Future<List<MedModel>?> getUserTodayMeds({required int userId}) async {}
   Future<List<MedModel>> getUserTodayMeds({required int userId}) async {
     List<MedModel> todayMeds = [];
-    print('getUserAllMeds called with userId: $userId');
+    log('getUserAllMeds called with userId: $userId');
     Database db = await SqHelper().getMedsDbInstance();
     List<Map<String, dynamic>> maps = await db.query(
       DbConstants.medTableName,
@@ -93,7 +93,7 @@ class Crud {
       whereArgs: [userId],
     );
 
-    DateTime todayDate = DateTime.now();
+    DateTime todayDate = DateTime.now().add(Duration(days: 1));
     log(maps.toList().toString());
 
     for (var med in maps) {

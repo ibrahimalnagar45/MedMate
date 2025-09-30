@@ -76,11 +76,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
       child: AppBar(
         backgroundColor: AppColors.grey,
         title: Text(
-          S.current.appBarTitle(
-            widget.screenName == 'Home'
-                ? S.current.home
-                : S.current.description,
-          ),
+          // S.current.appBarTitle(
+          //   widget.screenName == 'Home'
+          //       ? S.current.home
+          //       : S.current.description,
+          // ),
+          S.current.appBarTitle(widget.screenName),
         ),
         centerTitle: true,
 

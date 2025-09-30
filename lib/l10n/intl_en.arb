@@ -13,6 +13,7 @@
   
   "appBarTitle": "{appBarTitle}",
   "home": "Home",
+  "todayMeds": "Today",
   "Add": "Add",
   "medName": "{medName}",
   "medDescription": "{medDescription}",

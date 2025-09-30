@@ -107,6 +107,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "startDate": MessageLookupByLibrary.simpleMessage("تاريخ البدء"),
     "syrup": MessageLookupByLibrary.simpleMessage("شراب"),
     "title": MessageLookupByLibrary.simpleMessage("اسم الدواء"),
+    "todayMeds": MessageLookupByLibrary.simpleMessage(" اليوم"),
     "type": MessageLookupByLibrary.simpleMessage("نوع الدواء"),
     "unSpecified": MessageLookupByLibrary.simpleMessage("غير محدد"),
     "userAge": MessageLookupByLibrary.simpleMessage("العمر"),

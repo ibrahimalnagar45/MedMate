@@ -5,6 +5,7 @@ import 'package:midmate/features/home/presentation/views/widgets/details_view_bo
 import 'package:midmate/utils/models/med_model.dart'; 
 
 import '../../../../core/managers/user_cubit/user_cubit.dart';
+import '../../../../generated/l10n.dart';
 
 class DetailsView extends StatelessWidget {
   DetailsView({super.key, required this.med});
@@ -18,7 +19,7 @@ class DetailsView extends StatelessWidget {
     return Scaffold(
       appBar: CustomAppBar(
 
-        screenName: 'Details',
+        screenName: S.current.description,
         context: context,
         // currentUser: getIt<UserCubit>().getCurrentUser(),
       ),

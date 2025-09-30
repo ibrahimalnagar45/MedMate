@@ -7,6 +7,7 @@ import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart
 import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
 import 'package:midmate/utils/image_controller.dart';
+import '../../../../../generated/l10n.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/service_locator.dart';
 import 'add_med_modal_bottom_sheet.dart';
@@ -33,7 +34,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: CustomAppBar(
-        screenName: 'Home',
+        screenName: S.current.home,
         context: context,
         // currentUser: currentUser,
       ),

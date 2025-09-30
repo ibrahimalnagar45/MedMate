@@ -15,7 +15,7 @@ class SqHelper {
   }
 
   Future<String> _getDbPath(String dbTableName) async {
-    databaseFactory = databaseFactorySqflitePlugin;
+    
     String dbPath = await getDatabasesPath();
     return join(dbPath, dbTableName);
   }

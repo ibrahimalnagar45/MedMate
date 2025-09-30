@@ -2,8 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:midmate/core/functions/check_med_next_time.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
-
-import '../../generated/l10n.dart';
+ 
 
 class MedModel {
   // 6 params
@@ -16,6 +15,7 @@ class MedModel {
   DateTime? nextTime;
   DateTime? createdAt;
   int? id;
+  // bool? checked = false;
   List<DateTime> logs = [];
   MedModel.newMed();
   MedModel({
