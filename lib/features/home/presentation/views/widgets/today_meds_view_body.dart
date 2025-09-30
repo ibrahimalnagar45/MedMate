@@ -33,11 +33,7 @@ class _TodayMedsViewBodyState extends State<TodayMedsViewBody> {
       body: BlocBuilder<MedsCubit, MedsState>(
         builder: (context, state) {
           if (state is GetTodayMedsSuccess) {
-            // if (state.meds.isEmpty) {
-            //   return Center(
-            //     child: Image.asset(ImageController.noMedAddedImage, width: 250),
-            //   );
-            // }
+            
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: TodayMedsListView(meds: state.meds),

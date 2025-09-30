@@ -176,8 +176,6 @@
 //   }
 // }
 
-// Refactored version following SOLID and clean code principles
-
 import 'package:flutter/material.dart';
 import 'package:midmate/core/functions/get_localized_med_type.dart';
 import 'package:midmate/features/home/presentation/views/details_view.dart';
@@ -190,17 +188,15 @@ import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/text_styles.dart';
 import 'package:intl/intl.dart';
 
-class TodayMedListTileRefactored extends StatefulWidget {
-  const TodayMedListTileRefactored({super.key, required this.medModel});
+class TodayMedListTile extends StatefulWidget {
+  const TodayMedListTile({super.key, required this.medModel});
   final MedModel medModel;
 
   @override
-  State<TodayMedListTileRefactored> createState() =>
-      _TodayMedListTileRefactoredState();
+  State<TodayMedListTile> createState() => _TodayMedListTileState();
 }
 
-class _TodayMedListTileRefactoredState
-    extends State<TodayMedListTileRefactored> {
+class _TodayMedListTileState extends State<TodayMedListTile> {
   bool checked = false;
 
   @override
@@ -209,7 +205,10 @@ class _TodayMedListTileRefactoredState
       onTap: () => context.goTo(DetailsView(med: widget.medModel)),
       child: CheckboxListTile(
         value: checked,
-        onChanged: (value) => setState(() => checked = value!),
+        onChanged: (value) {
+          setState(() => checked = value!);
+          
+        },
         contentPadding: EdgeInsets.zero,
         checkboxShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(5),
@@ -345,8 +344,6 @@ extension ImageControllerExtension on ImageController {
         return ImageController.powder;
       case MedType.drop:
         return ImageController.drop;
-      default:
-        return '';
     }
   }
 }

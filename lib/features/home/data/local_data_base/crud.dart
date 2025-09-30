@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:midmate/core/helpers/show_snak_bar.dart';
+import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/models/user_model.dart';
@@ -119,6 +120,34 @@ class Crud {
     // });
 
     return todayMeds;
+  }
+
+  Future<void> insertLog(LogsModel medLog) async {
+    final db = await SqHelper().getLogsDbInstance();
+    final bool isExist = await db
+        .query(
+          DbConstants.logsTableName,
+          where: 'id = ? AND ${DbConstants.medsColumnId} = ? AND date = ?',
+          whereArgs: [medLog.id, medLog.medicationId, medLog.date],
+        )
+        .then((value) => value.isNotEmpty);
+
+    if (!isExist) {
+      await db.insert(DbConstants.logsTableName, medLog.toMap());
+      log('Inserted log: $medLog');
+    }
+  }
+
+  Future<List<LogsModel>> getUserLogs({required int userId}) async {
+    Database db = await SqHelper().getLogsDbInstance();
+    List<Map<String, dynamic>> maps = await db.query(
+      DbConstants.logsTableName,
+      where: "${DbConstants.usersColumnId}= ?",
+      whereArgs: [userId],
+    );
+    return List.generate(maps.length, (i) {
+      return LogsModel.fromMap(maps[i]);
+    });
   }
 
   Future<List<Person>> getAllusers() async {
