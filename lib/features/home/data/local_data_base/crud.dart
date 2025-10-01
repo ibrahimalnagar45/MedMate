@@ -47,7 +47,7 @@ class Crud {
     return result.isNotEmpty;
   }
 
-  Future<Person> insertUser(Person user) async {
+  Future<void> insertUser(Person user) async {
     Database db = await SqHelper().getUsersDbInstance();
     bool exist = await doesUserExist(user);
     if (!exist) {
@@ -55,7 +55,7 @@ class Crud {
     } else {
       showSnakBar('This User is already exist');
     }
-    return user;
+    // return user;
   }
 
   // change the id to required
@@ -259,13 +259,13 @@ class Crud {
       whereArgs: [1],
     );
 
+    Person? user;
     if (maps.isNotEmpty) {
       log('Query result: ${maps.first}');
-
-      return Person.fromMap(maps.first);
-    } else {
-      return null;
+      user = Person.fromMap(maps.first);
+      // return Person.fromMap(maps.first);
     }
+    return user;
   }
 
   Future<int> deleteUser(int id) async {

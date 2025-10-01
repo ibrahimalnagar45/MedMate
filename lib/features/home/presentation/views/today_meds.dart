@@ -20,7 +20,7 @@ class _MedsTodayState extends State<MedsToday> {
   List<MedModel> todayMeds = [];
   @override
   void initState() {
-    MedsCubit().getTodayMeds();
+    getIt<MedsCubit>().getTodayMeds();
     super.initState();
   }
 

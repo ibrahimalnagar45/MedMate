@@ -208,6 +208,7 @@ class _TodayMedListTileState extends State<TodayMedListTile> {
         onChanged: (value) {
           setState(() => checked = value!);
           
+
         },
         contentPadding: EdgeInsets.zero,
         checkboxShape: RoundedRectangleBorder(

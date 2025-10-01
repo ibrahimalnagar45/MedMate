@@ -1,13 +1,12 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:midmate/features/home/data/local_data_base/crud.dart';
+import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/utils/models/user_model.dart';
-import 'package:midmate/utils/service_locator.dart';
 part 'user_state.dart';
 
 class UserCubit extends Cubit<UserState> {
-  UserCubit() : super(UserInitial());
-
+  UserCubit({required this.userRepo}) : super(UserInitial());
+  final UserRepo userRepo;
   Person? _currentUser;
 
   Future<Person?> getCurrentUser() async {
@@ -15,7 +14,7 @@ class UserCubit extends Cubit<UserState> {
     try {
       log('getting current user tiggered ');
 
-      _currentUser = await Crud.instance.getCurrentUser();
+      _currentUser = await userRepo.getCurrentUser();
       if (_currentUser != null) {
         emit(GetUserSuccess(_currentUser!));
       }
@@ -29,8 +28,8 @@ class UserCubit extends Cubit<UserState> {
   Future<void> setCurrentUser(Person userModel) async {
     emit(SetUserLoading());
     try {
-      await Crud.instance.setCurrentUser(userModel);
-      
+      await userRepo.setCurrentUser(userModel);
+
       emit(SetUserSuccess(userModel));
     } catch (e) {
       log('error in setting current user ${e.toString()}');
@@ -42,16 +41,16 @@ class UserCubit extends Cubit<UserState> {
     emit(AddNewUserLoading());
     log('add new user called');
     try {
-      if (await Crud.instance.doesUserExist(user)) {
+      if (await userRepo.isUserExist(user)) {
         log('User already exists');
         emit(AddNewUserFailure('User already exists'));
         return;
       }
-      Person newUser = await Crud.instance.insertUser(user);
-      await setCurrentUser(newUser);
-      
-      emit(AddNewUserSuccess(newUser));
-      log('New user added successfully: ${newUser.toString()}');
+      await userRepo.insertUser(user);
+      await setCurrentUser(user);
+
+      emit(AddNewUserSuccess(user));
+      log('New user added successfully: ${user.toString()}');
     } catch (e) {
       emit(AddNewUserFailure(e.toString()));
     }
@@ -61,7 +60,7 @@ class UserCubit extends Cubit<UserState> {
     List<Person> users = [];
     emit(GetAllUserLoading());
     try {
-      users = await Crud.instance.getAllusers();
+      users = await userRepo.getAllusers();
       log('all users');
       users.map((user) {
         log(' ${user.toString()}');

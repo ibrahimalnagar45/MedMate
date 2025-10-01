@@ -73,7 +73,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: BlocBuilder<MedsCubit, MedsState>(
           builder: (context, state) {
-            if (state is MedsLoading) {
+            if (state is GetMedsLoading) {
               return const Center(child: CircularProgressIndicator());
             } else if (state is GetMedsSuccess) {
               return MedsListView(meds: state.meds);
