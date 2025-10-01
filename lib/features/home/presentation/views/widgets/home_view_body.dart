@@ -54,7 +54,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
                 isScrollControlled: true,
                 builder: (context) {
                   return BlocProvider(
-                    create: (context) => getIt<MedsCubit>(),
+                    create: (context) => medCubit,
                     child: AddMedModalBottomSheet(formKey: _formKey),
                   );
                 },
