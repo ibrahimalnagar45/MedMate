@@ -27,7 +27,7 @@ class CustomMedListTile extends StatefulWidget {
 
 class _CustomMedListTileState extends State<CustomMedListTile> {
   // Person currentUser =Person();
-
+  final medsCubit = getIt<MedsCubit>();
   @override
   void initState() {
     checkMedNextTime(widget.medModel);
@@ -49,8 +49,8 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
       key: Key(widget.medModel.id.toString()),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
-        getIt<MedsCubit>().deleteAMed(widget.medModel.id!);
-       getIt<MedsCubit>().getUserAllMeds();
+        medsCubit.deleteAMed(widget.medModel.id!);
+        medsCubit.getUserAllMeds();
         LocalNotification(
           navigatorKey: navigatorKey,
         ).cancleNotification(id: widget.medModel.id!);

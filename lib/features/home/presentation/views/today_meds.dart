@@ -9,21 +9,10 @@ import 'package:midmate/utils/service_locator.dart';
 import '../../../../utils/image_controller.dart';
 import 'widgets/today_meds_view_body.dart';
 
-class MedsToday extends StatefulWidget {
+class MedsToday extends StatelessWidget {
   const MedsToday({super.key});
 
   @override
-  State<MedsToday> createState() => _MedsTodayState();
-}
-
-class _MedsTodayState extends State<MedsToday> {
-  List<MedModel> todayMeds = [];
-  @override
-  void initState() {
-    getIt<MedsCubit>().getTodayMeds();
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return BlocProvider(

@@ -1,6 +1,6 @@
 import 'package:midmate/utils/models/user_model.dart';
 
-abstract class UserRepo {
+abstract class UserRepository {
   Future<void> insertUser(Person user);
   Future<List<Person>> getAllusers();
   Future<void> setCurrentUser(Person user);

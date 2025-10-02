@@ -94,7 +94,7 @@ class Crud {
       whereArgs: [userId],
     );
 
-    DateTime todayDate = DateTime.now().add(Duration(days: 1));
+    DateTime todayDate = DateTime.now();
     log(maps.toList().toString());
 
     for (var med in maps) {
@@ -134,20 +134,23 @@ class Crud {
 
     if (!isExist) {
       await db.insert(DbConstants.logsTableName, medLog.toMap());
-      log('Inserted log: $medLog');
     }
+    log('Inserted log: ${medLog.toMap()}');
   }
 
   Future<List<LogsModel>> getUserLogs({required int userId}) async {
+    List<LogsModel> logs = [];
     Database db = await SqHelper().getLogsDbInstance();
     List<Map<String, dynamic>> maps = await db.query(
       DbConstants.logsTableName,
       where: "${DbConstants.usersColumnId}= ?",
       whereArgs: [userId],
     );
-    return List.generate(maps.length, (i) {
+    logs = List.generate(maps.length, (i) {
       return LogsModel.fromMap(maps[i]);
     });
+    log("all logs are :" + logs.toString());
+    return logs;
   }
 
   Future<List<Person>> getAllusers() async {

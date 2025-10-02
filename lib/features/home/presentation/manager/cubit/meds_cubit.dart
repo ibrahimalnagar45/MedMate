@@ -10,20 +10,20 @@ import 'package:midmate/utils/service_locator.dart';
 part 'meds_state.dart';
 
 class MedsCubit extends Cubit<MedsState> {
-  final MedsRepository repo;
-  final UserRepo userRepo;
-  MedsCubit({required this.repo, required this.userRepo})
+  final MedsRepository medsRepo;
+  final UserRepository userRepo;
+  MedsCubit({required this.medsRepo, required this.userRepo})
     : super(MedsInitial());
 
   List<MedModel> meds = [];
   List<MedModel> todayMeds = [];
   List<LogsModel> logs = [];
-  
+
   Future<void> insertMed(MedModel med, int userId) async {
     emit(InsertMedLoading());
 
     try {
-      await repo.insertMed(med, userId);
+      await medsRepo.insertMed(med, userId);
       emit(InsertMedsSuccess(med: med));
     } catch (e) {
       emit(InsertMedsFaluire(erMessage: e.toString()));
@@ -35,7 +35,7 @@ class MedsCubit extends Cubit<MedsState> {
 
     emit(GetMedsLoading());
     try {
-      meds = await repo.getAllMeds(currentUser!.id!);
+      meds = await medsRepo.getAllMeds(currentUser!.id!);
 
       emit(GetMedsSuccess(meds: meds));
       log('the meds are ${meds.toString()}');
@@ -49,7 +49,7 @@ class MedsCubit extends Cubit<MedsState> {
     emit(GetTodayMedsLoading());
     final Person? currentUser = await userRepo.getCurrentUser();
     try {
-      todayMeds = await repo.getTodayMeds(currentUser!.id!);
+      todayMeds = await medsRepo.getTodayMeds(currentUser!.id!);
       log(' today meds are: ${todayMeds.toString()}');
       emit(GetTodayMedsSuccess(meds: todayMeds));
     } catch (e) {
@@ -61,7 +61,7 @@ class MedsCubit extends Cubit<MedsState> {
   Future<void> insertLog(LogsModel log) async {
     try {
       emit(InserLogLoading());
-      await repo.insertLog(log);
+      await medsRepo.insertLog(log);
 
       emit(InsertLogSuccess(log: log));
     } catch (e) {
@@ -74,7 +74,7 @@ class MedsCubit extends Cubit<MedsState> {
     final Person? currentUser = await userRepo.getCurrentUser();
 
     try {
-      logs = await repo.getAllLogs(currentUser!.id!);
+      logs = await medsRepo.getAllLogs(currentUser!.id!);
       log(logs.toString());
       emit(GetUserLogsSuccess(logs: logs));
     } catch (e) {
@@ -86,7 +86,7 @@ class MedsCubit extends Cubit<MedsState> {
   deleteAMed(int id) async {
     emit(DeletMedLoading());
     try {
-      await repo.deleteMed(id);
+      await medsRepo.deleteMed(id);
       meds.removeWhere((med) => med.id == id);
       emit(DeleteMedSuccess());
       // emit(DeleteMedSuccess());

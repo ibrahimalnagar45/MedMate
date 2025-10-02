@@ -15,7 +15,6 @@ class SqHelper {
   }
 
   Future<String> _getDbPath(String dbTableName) async {
-    
     String dbPath = await getDatabasesPath();
     return join(dbPath, dbTableName);
   }
@@ -67,7 +66,7 @@ create table ${DbConstants.medTableName} (
     try {
       db = await openDatabase(
         path,
-        version: 1,
+        version: 4,
         onCreate: (Database db, int version) async {
           await db.execute(''' create table ${DbConstants.logsTableName} (
   id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -75,14 +74,22 @@ create table ${DbConstants.medTableName} (
   date TEXT NOT NULL,          -- YYYY-MM-DD
   taken_time TEXT,             -- actual time user confirmed
   status TEXT NOT NULL,        -- "taken", "missed", "skipped"
-  FOREIGN KEY (medication_id) REFERENCES ${DbConstants.medTableName} (${DbConstants.medsColumnId})
+  FOREIGN KEY (${DbConstants.usersColumnId}) REFERENCES ${DbConstants.usersTableName} (${DbConstants.usersColumnId})
          
        )''');
+        },
+        onUpgrade: (db, oldVersion, newversion) async {
+          if (oldVersion < 4) {
+            await db.execute(
+              "ALTER TABLE ${DbConstants.logsTableName} ADD COLUMN ${DbConstants.usersColumnId} TEXT",
+            );
+          }
         },
       );
     } catch (e) {
       log(e.toString());
     }
+
     return db!;
   }
 

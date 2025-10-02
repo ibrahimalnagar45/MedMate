@@ -178,6 +178,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:midmate/core/functions/get_localized_med_type.dart';
+import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/features/home/presentation/views/details_view.dart';
 import 'package:midmate/features/home/presentation/views/widgets/custom_med_type_icon.dart';
 import 'package:midmate/generated/l10n.dart';
@@ -185,8 +186,11 @@ import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/image_controller.dart';
 import 'package:midmate/utils/models/med_model.dart';
+import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/text_styles.dart';
 import 'package:intl/intl.dart';
+
+import '../../../doman/repository/meds_repo.dart';
 
 class TodayMedListTile extends StatefulWidget {
   const TodayMedListTile({super.key, required this.medModel});
@@ -198,6 +202,7 @@ class TodayMedListTile extends StatefulWidget {
 
 class _TodayMedListTileState extends State<TodayMedListTile> {
   bool checked = false;
+  final MedsRepository medsRepo = getIt<MedsRepository>();
 
   @override
   Widget build(BuildContext context) {
@@ -205,10 +210,26 @@ class _TodayMedListTileState extends State<TodayMedListTile> {
       onTap: () => context.goTo(DetailsView(med: widget.medModel)),
       child: CheckboxListTile(
         value: checked,
+        onFocusChange: (value) {
+          medsRepo.insertLog(
+            LogsModel(
+              medicationId: widget.medModel.id!,
+              takenTime: DateTime.now().toString(),
+              status: StatusValues.taken,
+              date: widget.medModel.getNextTime().toString(),
+            ),
+          );
+        },
         onChanged: (value) {
+          medsRepo.insertLog(
+            LogsModel(
+              medicationId: widget.medModel.id!,
+              takenTime: DateTime.now().toString(),
+              status: StatusValues.taken,
+              date: widget.medModel.getNextTime().toString(),
+            ),
+          );
           setState(() => checked = value!);
-          
-
         },
         contentPadding: EdgeInsets.zero,
         checkboxShape: RoundedRectangleBorder(

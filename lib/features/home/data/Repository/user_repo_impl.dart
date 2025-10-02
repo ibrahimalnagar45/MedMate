@@ -2,7 +2,7 @@ import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/utils/models/user_model.dart';
 
-class UserRepoImpl implements UserRepo {
+class UserRepoImpl implements UserRepository {
   final Crud crud;
 
   UserRepoImpl({required this.crud});

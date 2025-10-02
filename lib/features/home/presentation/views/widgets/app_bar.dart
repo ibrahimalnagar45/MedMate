@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/functions/export_data_base_file_to_downloads.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
+import 'package:midmate/features/home/doman/repository/meds_repo.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
@@ -145,10 +146,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
             onTap: () {
-              // exportDatabaseToDownloads();
-              // Crud.instance.getAUser('ibrahim');
-              // userCubit.getAllUsers();
-              userCubit.getCurrentUser();
+              getIt<MedsRepository>().getAllLogs(1);
 
               // exportDatabaseToDownloads();
             },
