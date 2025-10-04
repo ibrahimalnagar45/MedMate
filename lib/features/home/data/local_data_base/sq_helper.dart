@@ -11,7 +11,7 @@ class SqHelper {
   SqHelper() {
     getMedsDbInstance();
     getUsersDbInstance();
-    getCurrentUserInstance();
+    // getCurrentUserInstance();
   }
 
   Future<String> _getDbPath(String dbTableName) async {
@@ -21,23 +21,26 @@ class SqHelper {
 
   // create db or open it
   Future<Database> getMedsDbInstance() async {
-    String path = await _getDbPath(DbConstants.medTableName);
+    String path = await _getDbPath(MedsTable.path);
     try {
       db = await openDatabase(
         path,
         version: 3,
         onCreate: (Database db, int version) async {
           await db.execute('''
-create table ${DbConstants.medTableName} ( 
-  ${DbConstants.medsColumnId} integer primary key autoincrement, 
-  ${DbConstants.usersColumnId} integer, 
-  ${DbConstants.medsColumnName} text not null,
-  ${DbConstants.medsColumnDescription} text ,
-  ${DbConstants.medsColumnType} text ,
-  ${DbConstants.medsColumnAmount} double,
-  ${DbConstants.medsColumnFrequency} integer,
-  ${DbConstants.medsColumnStartDate} text ,
-  ${DbConstants.medsColumnCreatedAt} text )
+create table ${MedsTable.tableName} ( 
+  ${MedsTable.medId} integer primary key autoincrement, 
+  
+  ${MedsTable.medName} text not null,
+  ${MedsTable.medDescription} text ,
+  ${MedsTable.medType} text ,
+  ${MedsTable.medAmount} double,
+  ${MedsTable.medFrequency} integer,
+  ${MedsTable.medStartDate} text ,
+  ${MedsTable.medCreatedAt} text ,
+  Frogin Key (${UsersTable.userId}) REFERENCES ${UsersTable.tableName} (${UsersTable.userId})
+  
+  )
 ''');
         },
         onOpen: _onOpen,
@@ -45,9 +48,6 @@ create table ${DbConstants.medTableName} (
         onUpgrade: (db, oldVersion, newVersion) async {
           if (oldVersion < 3) {
             // Modify schema here
-            await db.execute(
-              "ALTER TABLE ${DbConstants.medTableName} ADD COLUMN ${DbConstants.usersColumnId} TEXT",
-            );
           }
         }, // Fix: Add proper upgrade logic
         onDowngrade: _onDowngrade,
@@ -62,29 +62,34 @@ create table ${DbConstants.medTableName} (
   }
 
   Future<Database> getLogsDbInstance() async {
-    String path = await _getDbPath(DbConstants.logsTableName);
+    String path = await _getDbPath(LogsTable.path);
     try {
+      /**
+        $colId INTEGER PRIMARY KEY AUTOINCREMENT,
+    $colDate TEXT NOT NULL,
+    $colTakeTime TEXT,
+    $colStatus TEXT NOT NULL,
+    $colUserId INTEGER,
+    $colMedId INTEGER,
+    FOREIGN KEY ($colUserId) REFERENCES ${UserTable.tableName}(${UserTable.colId}),
+    FOREIGN KEY ($colMedId) REFERENCES ${MedTable.tableName}(${MedTable.colId})
+       */
       db = await openDatabase(
         path,
         version: 4,
         onCreate: (Database db, int version) async {
-          await db.execute(''' create table ${DbConstants.logsTableName} (
-  id INTEGER PRIMARY KEY AUTOINCREMENT,
-  medication_id INTEGER NOT NULL,
-  date TEXT NOT NULL,          -- YYYY-MM-DD
-  taken_time TEXT,             -- actual time user confirmed
-  status TEXT NOT NULL,        -- "taken", "missed", "skipped"
-  FOREIGN KEY (${DbConstants.usersColumnId}) REFERENCES ${DbConstants.usersTableName} (${DbConstants.usersColumnId})
-         
+          await db.execute(''' create table ${LogsTable.tableName} (
+  ${LogsTable.logId} INTEGER PRIMARY KEY AUTOINCREMENT,
+   
+  ${LogsTable.logDateTime} TEXT NOT NULL,          -- YYYY-MM-DD
+  ${LogsTable.logTakenTime} TEXT,             -- actual time user confirmed
+  ${LogsTable.logStatus} TEXT NOT NULL,        -- "taken", "missed", "skipped"
+  FOREIGN KEY (${UsersTable.userId}) REFERENCES ${UsersTable.tableName} (${UsersTable.userId})
+  FOREIGN KEY (${MedsTable.medId}) REFERENCES ${MedsTable.tableName} (${MedsTable.medId})
+         ,
        )''');
         },
-        onUpgrade: (db, oldVersion, newversion) async {
-          if (oldVersion < 4) {
-            await db.execute(
-              "ALTER TABLE ${DbConstants.logsTableName} ADD COLUMN ${DbConstants.usersColumnId} TEXT",
-            );
-          }
-        },
+        onUpgrade: (db, oldVersion, newversion) async {},
       );
     } catch (e) {
       log(e.toString());
@@ -104,57 +109,57 @@ create table ${DbConstants.medTableName} (
   FOREIGN KEY (medication_id) REFERENCES medications (id)
  
  */
-  Future<Database> getCurrentUserInstance() async {
-    String path = await _getDbPath(DbConstants.currentUserTableName);
-    try {
-      // await deleteDatabase(path);
+  // Future<Database> getCurrentUserInstance() async {
+  //   String path = await _getDbPath(DbTables.currentUserTableName);
+  //   try {
+  //     // await deleteDatabase(path);
 
-      db = await openDatabase(
-        path,
-        version: 5,
-        onCreate: (Database db, int version) async {
-          await db.execute('''
-                          create table ${DbConstants.currentUserTableName}( 
-                            ${DbConstants.usersColumnId} integer primary key autoincrement, 
-                            ${DbConstants.isCurrentUser} integer,
-                            ${DbConstants.usersColumnName} text not null,
-                            ${DbConstants.usersColumnAge} text not null )
-                          ''');
-        },
-        onOpen: _onOpen,
-        onConfigure: _onConfig,
-        // onUpgrade: (db, oldVersion, newVersion) async {
-        //   if (oldVersion < 6) {
-        //     // Modify schema here
-        //     await db.execute(
-        //       "ALTER TABLE ${DbConstants.currentUserTableName} ADD COLUMN ${"UserInsertedId"} TEXT",
-        //     );
-        //   }
-        // }, // Fix: Add proper upgrade logic
-        onDowngrade: _onDowngrade,
-      );
-    } catch (e) {
-      log(e.toString());
-    }
+  //     db = await openDatabase(
+  //       path,
+  //       version: 5,
+  //       onCreate: (Database db, int version) async {
+  //         await db.execute('''
+  //                         create table ${DbTables.currentUserTableName}(
+  //                           ${DbTables.usersColumnId} integer primary key autoincrement,
+  //                           ${DbTables.isCurrentUser} integer,
+  //                           ${DbTables.usersColumnName} text not null,
+  //                           ${DbTables.usersColumnAge} text not null )
+  //                         ''');
+  //       },
+  //       onOpen: _onOpen,
+  //       onConfigure: _onConfig,
+  //       // onUpgrade: (db, oldVersion, newVersion) async {
+  //       //   if (oldVersion < 6) {
+  //       //     // Modify schema here
+  //       //     await db.execute(
+  //       //       "ALTER TABLE ${DbConstants.currentUserTableName} ADD COLUMN ${"UserInsertedId"} TEXT",
+  //       //     );
+  //       //   }
+  //       // }, // Fix: Add proper upgrade logic
+  //       onDowngrade: _onDowngrade,
+  //     );
+  //   } catch (e) {
+  //     log(e.toString());
+  //   }
 
-    log('from onCreate  :  ${db == null}');
+  //   log('from onCreate  :  ${db == null}');
 
-    return db!;
-  }
+  //   return db!;
+  // }
 
   Future<Database> getUsersDbInstance() async {
-    String path = await _getDbPath(DbConstants.usersTableName);
+    String path = await _getDbPath(UsersTable.path);
     try {
       db = await openDatabase(
         path,
         version: 6,
         onCreate: (Database db, int version) async {
           await db.execute('''
-                          create table ${DbConstants.usersTableName} ( 
-                          ${DbConstants.usersColumnId} integer primary key autoincrement, 
-                          ${DbConstants.isCurrentUser} integer Not NULL DEFAULT 0,
-                          ${DbConstants.usersColumnName} text not null,
-                          ${DbConstants.usersColumnAge} text not null )
+                          create table ${UsersTable.tableName} ( 
+                          ${UsersTable.userId} integer primary key autoincrement, 
+                          ${UsersTable.isCurrentUser} integer Not NULL DEFAULT 0,
+                          ${UsersTable.userName} text not null,
+                          ${UsersTable.userAge} text not null )
                           ''');
         },
         onOpen: _onOpen,
@@ -162,9 +167,6 @@ create table ${DbConstants.medTableName} (
         onUpgrade: (db, oldVersion, newVersion) async {
           if (oldVersion <= 6) {
             // Modify schema here
-            await db.execute(
-              "ALTER TABLE ${DbConstants.usersTableName} ADD COLUMN ${DbConstants.isCurrentUser}  integer Not NULL DEFAULT 0",
-            );
           }
         },
         // / Fix: Add proper upgrade logic

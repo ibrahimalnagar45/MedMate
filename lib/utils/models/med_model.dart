@@ -2,7 +2,6 @@ import 'package:flutter/widgets.dart';
 import 'package:intl/intl.dart';
 import 'package:midmate/core/functions/check_med_next_time.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
- 
 
 class MedModel {
   // 6 params
@@ -59,13 +58,15 @@ class MedModel {
 
   Map<String, dynamic> toMap() {
     final map = {
-      'name': name,
-      'description': description,
-      'type': type.toString(),
-      'amount': dose.toString(),
-      'frequency': frequency.toString(),
-      'startDate': startDate == null ? startDate : startDate!.toIso8601String(),
-      'createdAt': createdAt == null ? createdAt : createdAt!.toIso8601String(),
+      MedsTable.medName: name,
+      MedsTable.medDescription: description,
+      MedsTable.medType: type.toString(),
+      MedsTable.medAmount: dose == null ? dose : dose.toString(),
+      MedsTable.medFrequency: frequency.toString(),
+      MedsTable.medStartDate:
+          startDate == null ? startDate : startDate!.toIso8601String(),
+      MedsTable.medCreatedAt:
+          createdAt == null ? createdAt : createdAt!.toIso8601String(),
     };
 
     if (id != null) {
@@ -76,14 +77,14 @@ class MedModel {
 
   factory MedModel.fromMap(Map<String, dynamic> map) {
     return MedModel(
-      id: map[DbConstants.medsColumnId],
-      name: map[DbConstants.medsColumnName],
-      description: map[DbConstants.medsColumnDescription],
-      type: MedModel.newMed().getType(map[DbConstants.medsColumnType]),
-      dose: map[DbConstants.medsColumnAmount],
-      frequency: map[DbConstants.medsColumnFrequency],
-      startDate: DateTime.parse(map[DbConstants.medsColumnStartDate]),
-      createdAt: DateTime.parse(map[DbConstants.medsColumnCreatedAt]),
+      id: map[MedsTable.medId],
+      name: map[MedsTable.medName],
+      description: map[MedsTable.medDescription],
+      type: MedModel.newMed().getType(map[MedsTable.medType]),
+      dose: map[MedsTable.medAmount],
+      frequency: map[MedsTable.medFrequency],
+      startDate: DateTime.parse(map[MedsTable.medStartDate]),
+      createdAt: DateTime.parse(map[MedsTable.medCreatedAt]),
     );
   }
 

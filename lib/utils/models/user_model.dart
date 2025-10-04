@@ -12,19 +12,19 @@ class Person {
 
   factory Person.fromMap(Map<String, dynamic> map) {
     return Person(
-      name: map[DbConstants.usersColumnName],
-      age: map[DbConstants.usersColumnAge],
-      isCurrentUser: map[DbConstants.isCurrentUser] as int,
-      id: map[DbConstants.usersColumnId] as int,
+      name: map[UsersTable.userName],
+      age: map[UsersTable.userAge],
+      isCurrentUser: map[UsersTable.isCurrentUser] as int,
+      id: map[UsersTable.userId] as int,
     );
   }
 
   toMap() {
     return {
-      DbConstants.isCurrentUser: isCurrentUser,
-      // DbConstants.usersColumnId: id,
-      DbConstants.usersColumnName: name,
-      DbConstants.usersColumnAge: age,
+      UsersTable.isCurrentUser: isCurrentUser,
+      // DbConstants.userId: id,
+      UsersTable.userName: name,
+      UsersTable.userAge: age,
     };
   }
 

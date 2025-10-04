@@ -18,20 +18,20 @@ class LogsModel {
 
   Map<String, dynamic> toMap() {
     return {
-      'id': id,
-      'medication_id': medicationId,
-      'date': date,
-      'taken_time': takenTime,
-      'status': status,
+      LogsTable.logId: id,
+      MedsTable.medId: medicationId,
+      LogsTable.logDateTime: date,
+      LogsTable.logTakenTime: takenTime,
+      LogsTable.logStatus: status,
     };
   }
 
   LogsModel.fromMap(Map<String, dynamic> map)
-    : id = map['id'],
-      medicationId = map[DbConstants.medsColumnId],
-      date = map['date'],
-      takenTime = map['taken_time'],
-      status = map['status'];
+    : id = map[LogsTable.logId],
+      medicationId = map[MedsTable.medId],
+      date = map[LogsTable.logDateTime],
+      takenTime = map[LogsTable.logTakenTime],
+      status = map[LogsTable.logStatus];
 
   /*
     id INTEGER PRIMARY KEY AUTOINCREMENT,

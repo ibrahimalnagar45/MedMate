@@ -1,32 +1,31 @@
-class DbConstants {
-  // name of the database
-  static const String medTableName = 'meds';
-  static const String logsTableName = 'logs';
-  static const String usersTableName = 'users';
-  static const String currentUserTableName =
-      'CurrentUser'; // name of the database
+class MedsTable {
+  static const String tableName = 'meds';
+  static const String path = 'meds.db';
+  static const String medId = 'MedId';
+  static const String medName = 'name';
+  static const String medDescription = 'description';
+  static const String medType = 'type';
+  static const String medAmount = 'amount';
+  static const String medFrequency = 'frequency';
+  static const String medStartDate = 'startDate';
+  static const String medCreatedAt = 'createdAt';
+}
 
-  // path of the database
+class UsersTable {
+  static const String tableName = 'users';
+  static const String path = 'users.db';
+  static const String userId = 'userId';
+  static const String userName = 'name';
+  static const String userAge = 'age';
+  static const String isCurrentUser = 'isCurrentUser';
+}
 
-  //meds database
-  static const String medsDbPath = 'meds.db';
-  // users database
-  static const String usersDbPath = 'users.db';
+class LogsTable {
+  static const String tableName = 'logs';
+  static const String path = 'logs.db';
 
-  // column names
-  // meds column names
-  static const String medsColumnId = 'id';
-  static const String medsColumnName = 'name';
-  static const String medsColumnDescription = 'description';
-  static const String medsColumnType = 'type';
-  static const String medsColumnAmount = 'amount';
-  static const String medsColumnFrequency = 'frequency';
-  static const String medsColumnStartDate = 'startDate';
-  static const String medsColumnCreatedAt = 'createdAt';
-
-  // users column names
-  static const String usersColumnId = 'userId';
-  static const String usersColumnName = 'name';
-  static const String usersColumnAge = 'age';
-  static const String isCurrentUser = 'isCurrentUser'; // 0 or 1
+  static const String logId = 'LogId';
+  static const String logDateTime = 'dateTime';
+  static const String logStatus = 'status';
+  static const String logTakenTime = 'takenTime';
 }
