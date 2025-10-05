@@ -1,4 +1,6 @@
-import 'package:flutter/widgets.dart';
+ 
+import 'dart:developer';
+
 import 'package:intl/intl.dart';
 import 'package:midmate/core/functions/check_med_next_time.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
@@ -51,7 +53,7 @@ class MedModel {
   DateTime? getNextTime() {
     if (nextTime == null) {
       setNextTime();
-      debugPrint('next time is null');
+      log('next time is null');
     }
     return nextTime;
   }

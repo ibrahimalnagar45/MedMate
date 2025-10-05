@@ -1,5 +1,4 @@
-import 'dart:developer';
-import 'package:midmate/core/helpers/show_snak_bar.dart';
+import 'dart:developer'; 
 import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:midmate/utils/models/med_model.dart';
@@ -52,7 +51,7 @@ class Crud {
     if (!exist) {
       await db.insert(UsersTable.tableName, user.toMap());
     } else {
-      showSnakBar('This User is already exist');
+      log('This User is already exist');
     }
     // return user;
   }
@@ -126,7 +125,7 @@ class Crud {
     final bool isExist = await db
         .query(
           LogsTable.tableName,
-          where: 'id = ? AND ${MedsTable.medId} = ? AND date = ?',
+          where: '${LogsTable.logId} = ? AND ${MedsTable.medId} = ? AND ${LogsTable.logDateTime} = ?',
           whereArgs: [medLog.id, medLog.medicationId, medLog.date],
         )
         .then((value) => value.isNotEmpty);
