@@ -22,18 +22,10 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
-  await FlutterLocalization.instance.ensureInitialized();
-  await serviceLocatorSetup();
-  tz.initializeTimeZones();
-  tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
-
-  // delelteEverthing();
-
-  SqHelper();
-  Bloc.observer = CustomBlocObserval();
+  await _initializeAppServices();
   runApp(const MyApp());
 }
+
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -43,8 +35,8 @@ class MyApp extends StatelessWidget {
     return BlocProvider(
       create: (context) => getIt<UserCubit>(),
       child: MaterialApp(
-        locale: Locale('ar'),
-        localizationsDelegates: [
+        locale: const Locale('ar'),
+        localizationsDelegates: const [
           S.delegate,
           GlobalMaterialLocalizations.delegate,
           GlobalWidgetsLocalizations.delegate,
@@ -55,24 +47,36 @@ class MyApp extends StatelessWidget {
         navigatorKey: navigatorKey,
         debugShowCheckedModeBanner: false,
         title: 'Remind Me',
-        theme: ThemeData(
-          scaffoldBackgroundColor: AppColors.grey,
-          fontFamily: AppFonts.primaryFont,
-          iconButtonTheme: IconButtonThemeData(
-            style: IconButton.styleFrom(foregroundColor: AppColors.blue),
-          ),
-          primaryColor: AppColors.blue,
-          iconTheme: const IconThemeData(color: AppColors.blue),
-        ),
-
+        theme: _buildTheme(),
         home: SplashView(),
       ),
     );
   }
 }
 
-// store the current user in sharedPreference
-// create some fun to edit the current user, delete a user from sq db
+Future<void> _initializeAppServices() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await FlutterLocalization.instance.ensureInitialized();
+  await serviceLocatorSetup();
+  tz.initializeTimeZones();
+  tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
+  SqHelper();
+  Bloc.observer = CustomBlocObserval();
+  // _deleteEverything(); // Uncomment if needed
+}
+
+ThemeData _buildTheme() {
+  return ThemeData(
+    scaffoldBackgroundColor: AppColors.grey,
+    fontFamily: AppFonts.primaryFont,
+    iconButtonTheme: IconButtonThemeData(
+      style: IconButton.styleFrom(foregroundColor: AppColors.blue),
+    ),
+    primaryColor: AppColors.blue,
+    iconTheme: const IconThemeData(color: AppColors.blue),
+  );
+}
+ 
 void delelteEverthing() {
   Crud.instance.closeMedsDb();
   Crud.instance.closeUsersDb();
@@ -81,3 +85,5 @@ void delelteEverthing() {
   // Crud.instance.deleteMedsDatabaseFile();
   getIt<SharedPreferences>().clear();
 }
+
+ 

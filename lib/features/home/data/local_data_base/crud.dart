@@ -1,4 +1,4 @@
-import 'dart:developer'; 
+import 'dart:developer';
 import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:midmate/utils/models/med_model.dart';
@@ -120,34 +120,40 @@ class Crud {
     return todayMeds;
   }
 
-  Future<void> insertLog(LogsModel medLog) async {
+  Future<void> insertLog(LogModel medLog, int userId) async {
     final db = await SqHelper().getLogsDbInstance();
     final bool isExist = await db
         .query(
           LogsTable.tableName,
-          where: '${LogsTable.logId} = ? AND ${MedsTable.medId} = ? AND ${LogsTable.logDateTime} = ?',
-          whereArgs: [medLog.id, medLog.medicationId, medLog.date],
+          where:
+              '${UsersTable.userId} = ? AND  ${LogsTable.logId} = ? AND ${MedsTable.medId} = ? AND ${LogsTable.logDateTime} = ?',
+          whereArgs: [1, medLog.id, medLog.medicationId, medLog.date],
         )
         .then((value) => value.isNotEmpty);
-
+    Map<String, dynamic> medMap = medLog.toMap();
+    medMap[UsersTable.userId] = userId;
     if (!isExist) {
-      await db.insert(LogsTable.tableName, medLog.toMap());
+      await db.insert(LogsTable.tableName, medMap);
     }
     log('Inserted log: ${medLog.toMap()}');
   }
 
-  Future<List<LogsModel>> getUserLogs({required int userId}) async {
-    List<LogsModel> logs = [];
+  Future<List<LogModel>> getUserLogs({required int userId}) async {
+    List<LogModel> logs = [];
     Database db = await SqHelper().getLogsDbInstance();
     List<Map<String, dynamic>> maps = await db.query(
       LogsTable.tableName,
       where: "${UsersTable.userId}= ?",
       whereArgs: [userId],
     );
-    logs = List.generate(maps.length, (i) {
-      return LogsModel.fromMap(maps[i]);
-    });
-    log("all logs are :" + logs.toString());
+
+    log("all logs are as maps :$maps");
+    log(LogModel.fromMap(maps[0]).toString());
+    for (var logItem in maps) {
+      // log(LogModel.fromMap(logItem).toString());s
+      logs.add(LogModel.fromMap(logItem));
+    }
+    log("all logs are :${logs.toList()}");
     return logs;
   }
 

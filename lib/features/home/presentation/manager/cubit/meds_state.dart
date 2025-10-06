@@ -37,14 +37,14 @@ final class InsertLogFaluire extends MedsState {
 }
 
 final class InsertLogSuccess extends MedsState {
-  final LogsModel log;
+  final LogModel log;
   InsertLogSuccess({required this.log});
 }
 
 final class GetUserLogsLoading extends MedsState {}
 
 final class GetUserLogsSuccess extends MedsState {
-  final List<LogsModel> logs;
+  final List<LogModel> logs;
   GetUserLogsSuccess({required this.logs});
 }
 

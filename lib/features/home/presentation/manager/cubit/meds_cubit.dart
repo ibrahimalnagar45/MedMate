@@ -17,7 +17,7 @@ class MedsCubit extends Cubit<MedsState> {
 
   List<MedModel> meds = [];
   List<MedModel> todayMeds = [];
-  List<LogsModel> logs = [];
+  List<LogModel> logs = [];
 
   Future<void> insertMed(MedModel med, int userId) async {
     emit(InsertMedLoading());
@@ -58,7 +58,7 @@ class MedsCubit extends Cubit<MedsState> {
     }
   }
 
-  Future<void> insertLog(LogsModel log) async {
+  Future<void> insertLog(LogModel log) async {
     try {
       emit(InserLogLoading());
       await medsRepo.insertLog(log);
@@ -69,7 +69,7 @@ class MedsCubit extends Cubit<MedsState> {
     }
   }
 
-  Future<List<LogsModel>> getUserLogs() async {
+  Future<List<LogModel>> getUserLogs() async {
     emit(GetUserLogsLoading());
     final Person? currentUser = await userRepo.getCurrentUser();
 

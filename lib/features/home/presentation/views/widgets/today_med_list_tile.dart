@@ -212,17 +212,18 @@ class _TodayMedListTileState extends State<TodayMedListTile> {
         value: checked,
         onFocusChange: (value) {
           medsRepo.insertLog(
-            LogsModel(
+            LogModel(
               medicationId: widget.medModel.id!,
               takenTime: DateTime.now().toString(),
               status: StatusValues.taken,
               date: widget.medModel.getNextTime().toString(),
             ),
           );
+          setState(() => checked = value);
         },
         onChanged: (value) {
           medsRepo.insertLog(
-            LogsModel(
+            LogModel(
               medicationId: widget.medModel.id!,
               takenTime: DateTime.now().toString(),
               status: StatusValues.taken,

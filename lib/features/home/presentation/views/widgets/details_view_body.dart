@@ -1,20 +1,14 @@
-import 'package:flutter/material.dart';
-import 'package:intl/intl.dart';
+import 'package:flutter/material.dart'; 
 import 'package:midmate/core/functions/get_type_measured.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/models/med_model.dart';
-
+import '../../../../../core/functions/format_date.dart';
 import '../../../../../core/functions/get_localized_med_type.dart';
 
 class DetailsViewBody extends StatelessWidget {
   final MedModel med;
 
   const DetailsViewBody({super.key, required this.med});
-
-  String _formatDate(DateTime? date) {
-    if (date == null) return 'غير محدد';
-    return DateFormat('dd/MM – hh:mm a').format(date);
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -33,8 +27,7 @@ class DetailsViewBody extends StatelessWidget {
             ),
             _infoTile(
               S.of(context).description,
-              S
-                  .of(context)
+              S.of(context)
                   .medDescription(
                     med.description == null
                         ? S.of(context).NoDescription
@@ -70,14 +63,14 @@ class DetailsViewBody extends StatelessWidget {
             //created at
             _infoTile(
               S.of(context).createdAt,
-              _formatDate(med.createdAt!),
+              formatDate(med.createdAt!),
               Icons.date_range,
             ),
 
             // start date
             _infoTile(
               S.of(context).startDate,
-              _formatDate(med.startDate!),
+              formatDate(med.startDate!),
               Icons.date_range,
             ),
             // next time

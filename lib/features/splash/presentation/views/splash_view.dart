@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/core/services/local_notification.dart';
+import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:midmate/features/user_data/presentation/views/user_data_view.dart';
@@ -28,25 +29,14 @@ class _SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    // currentUser = BlocProvider.of<UserCubit>(context).getCurrentUser();
     ensureInitialized();
-    // Wait for Flutter to fully initialize
   }
-
-  @override
-  void dispose() {
-    LocalNotification(
-      navigatorKey: navigatorKey,
-    ).initializeDefaultNotificationSetting();
-
-    super.dispose();
-  }
-
+ 
   @override
   Widget build(BuildContext context) {
     if (_initialized) {
       if (onBoardingVisited) {
-        if (getIt<UserCubit>().getCurrentUser() == null) {
+        if (getIt<UserRepository>().getCurrentUser() == null) {
           return UserDataView();
         }
         return HomeView();
@@ -57,19 +47,7 @@ class _SplashViewState extends State<SplashView> {
     return Scaffold(
       backgroundColor: Colors.white,
       body: Center(
-        child: SizedBox(
-          // height: 400,
-          child: Lottie.asset(
-            ImageController.splashLottieImage,
-            // 'assets/images/splash_screen.json'whs,
-            animate: true,
-            width: 200,
-            height: 200,
-            fit: BoxFit.cover,
-            repeat: true,
-            reverse: true,
-          ),
-        ),
+        child: SpalshLottieImage(),
       ),
     );
   }
@@ -83,5 +61,37 @@ class _SplashViewState extends State<SplashView> {
         _initialized = true;
       });
     });
+  }
+
+@override
+  void dispose() {
+    LocalNotification(
+      navigatorKey: navigatorKey,
+    ).initializeDefaultNotificationSetting();
+
+    super.dispose();
+  }
+}
+
+class SpalshLottieImage extends StatelessWidget {
+  const SpalshLottieImage({
+    super.key,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+       
+      child: Lottie.asset(
+        ImageController.splashLottieImage,
+        // 'assets/images/splash_screen.json'whs,
+        animate: true,
+        width: 200,
+        height: 200,
+        fit: BoxFit.cover,
+        repeat: true,
+        reverse: true,
+      ),
+    );
   }
 }

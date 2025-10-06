@@ -161,7 +161,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                                   if (_formKey.currentState!.validate()) {
                                     saveUser(context);
 
-                                    Navigator.of(context).push(
+                                    Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
                                         builder: (context) => HomeView(),
                                       ),

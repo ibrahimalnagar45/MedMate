@@ -1,17 +1,20 @@
 import '../../features/home/data/local_data_base/db_constants.dart';
 
-class LogsModel {
+class LogModel {
   final int? id;
   final int medicationId;
-  final String date;
+  String date;
   String? takenTime;
   String? status;
+  int? userId;
+
   // final int medId;
-  LogsModel({
+  LogModel({
     this.id,
     required this.medicationId,
     required this.date,
     this.takenTime,
+    this.userId,
     required this.status,
     // required this.medId,
   });
@@ -26,13 +29,16 @@ class LogsModel {
     };
   }
 
-  LogsModel.fromMap(Map<String, dynamic> map)
-    : id = map[LogsTable.logId],
-      medicationId = map[MedsTable.medId],
-      date = map[LogsTable.logDateTime],
-      takenTime = map[LogsTable.logTakenTime],
-      status = map[LogsTable.logStatus];
-
+  factory LogModel.fromMap(Map<String, dynamic> map) {
+    return LogModel(
+      id: map[LogsTable.logId],
+      medicationId: map[MedsTable.medId],
+      date: map[LogsTable.logDateTime],
+      takenTime: map[LogsTable.logTakenTime],
+      status: map[LogsTable.logStatus],
+      userId: map[UsersTable.userId],
+    );
+  }
   /*
     id INTEGER PRIMARY KEY AUTOINCREMENT,
   medication_id INTEGER NOT NULL,

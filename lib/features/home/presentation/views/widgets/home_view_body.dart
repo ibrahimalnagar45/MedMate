@@ -11,6 +11,7 @@ import '../../../../../generated/l10n.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/service_locator.dart';
 import 'add_med_modal_bottom_sheet.dart';
+import 'custom_floating_action_button.dart';
 
 class HomeViewBody extends StatefulWidget {
   const HomeViewBody({super.key});
@@ -45,26 +46,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
 
         child: Padding(
           padding: EdgeInsets.only(right: 30),
-          child: FloatingActionButton(
-            backgroundColor: AppColors.blue,
-            foregroundColor: AppColors.white,
-            onPressed: () {
-              showModalBottomSheet(
-                context: context,
-                isScrollControlled: true,
-                builder: (context) {
-                  return BlocProvider(
-                    create: (context) => medCubit,
-                    child: AddMedModalBottomSheet(formKey: _formKey),
-                  );
-                },
-              ).then((_) {
-                log('getting the meds after adding a new med \n\n');
-                medCubit.getUserAllMeds();
-              });
-            },
-            child: const Icon(Icons.add),
-          ),
+          child: CustomFloatingActionButton(medCubit: medCubit, formKey: _formKey),
         ),
       ),
 
@@ -78,7 +60,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
             } else if (state is GetMedsSuccess) {
               return MedsListView(meds: state.meds);
             } else if (state is GetMedsFaluire) {
-              // medCubit.getUserAllMeds();
+            
               return Center(child: Text(state.erMessage));
             } else {
               return Center(
@@ -91,3 +73,4 @@ class _HomeViewBodyState extends State<HomeViewBody> {
     );
   }
 }
+

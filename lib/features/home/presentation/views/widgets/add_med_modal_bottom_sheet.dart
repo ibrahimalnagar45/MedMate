@@ -72,7 +72,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
           child: Column(
             children: [
               SizedBox(height: 20),
-              // TextFormField(),
+
               CustomLabel(title: S.of(context).title, color: AppColors.blue),
               CustomTextFormFeild(
                 hintText:
@@ -89,12 +89,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
               CustomDropDownMenu(
                 hintText:
                     '${S.of(context).example}: ${S.of(context).pill},${S.of(context).syrup}',
-                entries: List.generate(MedType.values.length, (index) {
-                  return DropdownMenuEntry(
-                    label: getLocalizedMedType(MedType.values[index], context),
-                    value: MedType.values[index],
-                  );
-                }),
+                entries: createTypesEnteries(context),
                 onSelected: (value) {
                   log(value.toString());
                   setState(() {
@@ -193,7 +188,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
 
                       await medsCubit.insertMed(med, currentUser!.id!);
 
-                      // medsCubit.getUserAllMeds();
+                       
 
                       await LocalNotification(
                         navigatorKey: navigatorKey,
@@ -216,6 +211,15 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
         ),
       ),
     );
+  }
+
+  createTypesEnteries(BuildContext context) {
+    return List.generate(MedType.values.length, (index) {
+      return DropdownMenuEntry(
+        label: getLocalizedMedType(MedType.values[index], context),
+        value: MedType.values[index],
+      );
+    });
   }
 
   getStartDateEntries() {

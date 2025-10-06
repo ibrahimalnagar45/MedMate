@@ -7,6 +7,7 @@ import 'package:midmate/features/home/doman/repository/meds_repo.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
+import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/text_styles.dart';
 import '../../../../../utils/extension_fun.dart';

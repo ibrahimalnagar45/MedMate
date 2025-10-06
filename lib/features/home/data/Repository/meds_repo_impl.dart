@@ -13,7 +13,7 @@ class MedsRepoImpl implements MedsRepository {
   }
 
   @override
-  Future<List<LogsModel>> getAllLogs(int userId) async {
+  Future<List<LogModel>> getAllLogs(int userId) async {
     var logs = await crud.getUserLogs(userId: userId);
     return logs;
   }
@@ -32,8 +32,9 @@ class MedsRepoImpl implements MedsRepository {
   }
 
   @override
-  Future<void> insertLog(LogsModel log) async {
-    await crud.insertLog(log);
+  Future<void> insertLog(LogModel log) async {
+    var currentUser = await crud.getCurrentUser();
+    await crud.insertLog(log, 1);
   }
 
   @override
