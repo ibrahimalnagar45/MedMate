@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
+import 'package:midmate/core/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/details_view_body.dart';
 import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/service_locator.dart';

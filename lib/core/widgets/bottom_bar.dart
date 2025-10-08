@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:midmate/core/models/bottom_bar_icon_model.dart';
 import 'package:midmate/features/chart/presentaion/views/chart_view.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
-import 'package:midmate/features/home/presentation/views/today_meds.dart';
+import 'package:midmate/features/today_meds/presentation/views/today_meds_view.dart';
 import 'package:midmate/utils/app_colors.dart';
 
 class CustomBottomBar extends StatefulWidget {
@@ -23,7 +23,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
     ),
     BottomBarIconModel(
       icon: Icon(Icons.today, color: AppColors.blue),
-      widget: MedsToday(),
+      widget: MedsTodayView(),
       isSelected: false,
     ),
     BottomBarIconModel(

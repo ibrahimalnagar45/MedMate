@@ -29,41 +29,6 @@ final class GetMedsFaluire extends MedsState {
   GetMedsFaluire({required this.erMessage});
 }
 
-final class InserLogLoading extends MedsState {}
-
-final class InsertLogFaluire extends MedsState {
-  final String erMessage;
-  InsertLogFaluire({required this.erMessage});
-}
-
-final class InsertLogSuccess extends MedsState {
-  final LogModel log;
-  InsertLogSuccess({required this.log});
-}
-
-final class GetUserLogsLoading extends MedsState {}
-
-final class GetUserLogsSuccess extends MedsState {
-  final List<LogModel> logs;
-  GetUserLogsSuccess({required this.logs});
-}
-
-final class GetUserLogsFaluire extends MedsState {
-  final String erMessage;
-  GetUserLogsFaluire({required this.erMessage});
-}
-
-final class GetTodayMedsLoading extends MedsState {}
-
-final class GetTodayMedsSuccess extends MedsState {
-  final List<MedModel> meds;
-  GetTodayMedsSuccess({required this.meds});
-}
-
-final class GetTodayMedsFaluire extends MedsState {
-  final String erMessage;
-  GetTodayMedsFaluire({required this.erMessage});
-}
 
 final class DeletMedLoading extends MedsState {}
 

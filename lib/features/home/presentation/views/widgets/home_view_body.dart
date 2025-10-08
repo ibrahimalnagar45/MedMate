@@ -4,7 +4,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/core/widgets/bottom_bar.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
-import 'package:midmate/features/home/presentation/views/widgets/app_bar.dart';
+import 'package:midmate/core/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
 import 'package:midmate/utils/image_controller.dart';
 import '../../../../../generated/l10n.dart';

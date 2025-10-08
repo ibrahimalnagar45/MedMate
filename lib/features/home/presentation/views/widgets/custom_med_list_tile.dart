@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:midmate/core/services/local_notification.dart';
+import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/details_view.dart';
 import 'package:midmate/features/home/presentation/views/widgets/custom_med_type_icon.dart';
@@ -47,7 +48,7 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
       key: Key(widget.medModel.id.toString()),
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
-        medsCubit.deleteAMed(widget.medModel.id!);
+        medsCubit.deleteAMed(widget.medModel.id!, MedsTable.tableName);
         medsCubit.getUserAllMeds();
         LocalNotification(
           navigatorKey: navigatorKey,

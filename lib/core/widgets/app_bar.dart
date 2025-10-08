@@ -1,18 +1,16 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:midmate/core/functions/export_data_base_file_to_downloads.dart';
-import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
-import 'package:midmate/features/home/doman/repository/meds_repo.dart';
-import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
+ import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
+ import 'package:midmate/features/home/data/local_data_base/crud.dart';
+ import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
-import 'package:midmate/utils/models/med_model.dart';
-import 'package:midmate/utils/service_locator.dart';
+ import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/text_styles.dart';
-import '../../../../../utils/extension_fun.dart';
-import '../../../../../utils/models/user_model.dart';
-import '../../../../user_data/presentation/views/add_new_user_view.dart';
+import '../../utils/extension_fun.dart';
+import '../../utils/models/user_model.dart';
+import '../../features/user_data/presentation/views/add_new_user_view.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -110,7 +108,6 @@ class _CustomAppBarState extends State<CustomAppBar> {
                       RelativeRect position = getTheButtomPostion(context);
 
                       await showMenu<Person>(
-                        // ignore: use_build_context_synchronously
                         context: context,
                         position: position,
                         items:
@@ -147,8 +144,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
             onTap: () {
-              getIt<MedsRepository>().getAllLogs(1);
-
+              // getIt<LogsRepo>().getAllLogs(currentUser!.id!);
+              Crud.instance.deleteAllLogs();
               // exportDatabaseToDownloads();
             },
             child: CircleAvatar(

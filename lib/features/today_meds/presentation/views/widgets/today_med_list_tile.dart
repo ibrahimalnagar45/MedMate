@@ -179,6 +179,8 @@
 import 'package:flutter/material.dart';
 import 'package:midmate/core/functions/get_localized_med_type.dart';
 import 'package:midmate/core/models/logs_model.dart';
+import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
+import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/details_view.dart';
 import 'package:midmate/features/home/presentation/views/widgets/custom_med_type_icon.dart';
 import 'package:midmate/generated/l10n.dart';
@@ -190,7 +192,7 @@ import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/text_styles.dart';
 import 'package:intl/intl.dart';
 
-import '../../../doman/repository/meds_repo.dart';
+import '../../../../home/doman/repository/meds_repo.dart';
 
 class TodayMedListTile extends StatefulWidget {
   const TodayMedListTile({super.key, required this.medModel});
@@ -201,44 +203,11 @@ class TodayMedListTile extends StatefulWidget {
 }
 
 class _TodayMedListTileState extends State<TodayMedListTile> {
-  bool checked = false;
-  final MedsRepository medsRepo = getIt<MedsRepository>();
+  // bool checked = false;
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
-      onTap: () => context.goTo(DetailsView(med: widget.medModel)),
-      child: CheckboxListTile(
-        value: checked,
-        onFocusChange: (value) {
-          medsRepo.insertLog(
-            LogModel(
-              medicationId: widget.medModel.id!,
-              takenTime: DateTime.now().toString(),
-              status: StatusValues.taken,
-              date: widget.medModel.getNextTime().toString(),
-            ),
-          );
-          setState(() => checked = value);
-        },
-        onChanged: (value) {
-          medsRepo.insertLog(
-            LogModel(
-              medicationId: widget.medModel.id!,
-              takenTime: DateTime.now().toString(),
-              status: StatusValues.taken,
-              date: widget.medModel.getNextTime().toString(),
-            ),
-          );
-          setState(() => checked = value!);
-        },
-        contentPadding: EdgeInsets.zero,
-        checkboxShape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(5),
-        ),
-        title: MedTileContent(medModel: widget.medModel),
-      ),
-    );
+    return MedTileContent(medModel: widget.medModel);
   }
 }
 

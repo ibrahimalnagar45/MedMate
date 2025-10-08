@@ -183,11 +183,9 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                         createdAt: medCreatedAt,
                         id: ++_notificationId,
                       );
-                      
 
                       await medsCubit.insertMed(med, currentUser!.id!);
-
-                       
+                      await medsCubit.getUserAllMeds();
 
                       await LocalNotification(
                         navigatorKey: navigatorKey,

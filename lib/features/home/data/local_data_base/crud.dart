@@ -87,11 +87,12 @@ class Crud {
 
     DateTime todayDate = DateTime.now();
     log(maps.toList().toString());
-
+    var logs = await getUserLogs(userId: userId);
     for (var med in maps) {
       MedModel temp = MedModel.fromMap(med);
       log(temp.toString());
-      if (temp.getNextTime()!.day == todayDate.day) {
+      if (temp.getNextTime()!.day == todayDate.day &&
+          !logs.any((l) => temp.id == l.medicationId)) {
         todayMeds.add(temp);
       }
     }
@@ -101,17 +102,15 @@ class Crud {
 
   Future<void> insertLog(LogModel medLog, int userId) async {
     final db = await SqHelper().getLogsDbInstance();
-    final bool isExist = await db
-        .query(
-          LogsTable.tableName,
-          where:
-              '${UsersTable.userId} = ? AND  ${LogsTable.logId} = ? AND ${MedsTable.medId} = ? AND ${LogsTable.logDateTime} = ?',
-          whereArgs: [1, medLog.id, medLog.medicationId, medLog.date],
-        )
-        .then((value) => value.isNotEmpty);
+    final List<Map<String, dynamic>> isExist = await db.query(
+      LogsTable.tableName,
+      where:
+          '${UsersTable.userId} = ? AND  ${LogsTable.logId} = ? AND ${MedsTable.medId} = ? AND ${LogsTable.logDateTime} = ?',
+      whereArgs: [1, medLog.id, medLog.medicationId, medLog.date],
+    );
     Map<String, dynamic> medMap = medLog.toMap();
     medMap[UsersTable.userId] = userId;
-    if (!isExist) {
+    if (isExist.isEmpty) {
       await db.insert(LogsTable.tableName, medMap);
     }
     log('Inserted log: ${medLog.toMap()}');
@@ -129,10 +128,9 @@ class Crud {
     log("all logs are as maps :$maps");
     log(LogModel.fromMap(maps[0]).toString());
     for (var logItem in maps) {
-      // log(LogModel.fromMap(logItem).toString());s
       logs.add(LogModel.fromMap(logItem));
     }
-    log("all logs are :${logs.toList()}");
+    log("all logs are :${logs}");
     return logs;
   }
 
@@ -233,6 +231,12 @@ class Crud {
     Database db = await SqHelper().getUsersDbInstance();
 
     db.delete(UsersTable.tableName);
+  }
+
+  Future<void> deleteAllLogs() async {
+    Database db = await SqHelper().getLogsDbInstance();
+
+    db.delete(LogsTable.tableName);
   }
 
   Future<int> deleteMedFrom({
