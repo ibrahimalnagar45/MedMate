@@ -17,7 +17,7 @@ class TodayMedsListView extends StatelessWidget {
         : ListView.builder(
           itemCount: meds.length,
           itemBuilder: (context, index) {
-          return TodayMedListTile(medModel: meds[index]);
+            return TodayMedListTile(medModel: meds[index]);
           },
         );
   }

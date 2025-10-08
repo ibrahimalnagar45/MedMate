@@ -5,6 +5,7 @@ import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:sqflite/sqflite.dart';
 import 'db_constants.dart';
+// ignore: depend_on_referenced_packages
 import 'package:path/path.dart';
 
 class Crud {
@@ -58,22 +59,14 @@ class Crud {
 
   // change the id to required
   Future<List<MedModel>> getUserAllMeds({required int userId}) async {
-    List<MedModel> todayMeds = [];
-    print('getUserAllMeds called with userId: $userId');
+    // List<MedModel> todayMeds = [];
+    log('getUserAllMeds called with userId: $userId');
     Database db = await SqHelper().getMedsDbInstance();
     List<Map<String, dynamic>> maps = await db.query(
       MedsTable.tableName,
       where: "${UsersTable.userId}= ?",
       whereArgs: [userId],
     );
-
-    DateTime todayDate = DateTime.now();
-    maps.asMap().entries.map((e) {
-      MedModel temp = MedModel.fromMap(e.value);
-      if (temp.getNextTime() == todayDate) {
-        todayMeds.add(temp);
-      }
-    });
 
     return List.generate(maps.length, (i) {
       log(maps[i].toString());
@@ -102,20 +95,6 @@ class Crud {
         todayMeds.add(temp);
       }
     }
-    // maps.forEach((med) {
-    //   MedModel temp = MedModel.fromMap(med);
-    //   log(temp.toString());
-    //   if (temp.getNextTime()!.day == todayDate.day) {
-    //     todayMeds.add(temp);
-    //   }
-    // });
-    // maps.asMap().entries.map((e) {
-    //   MedModel temp = MedModel.fromMap(e.value);
-    //   log(temp.toString());
-    //   if (temp.getNextTime()!.day == todayDate.day) {
-    //     todayMeds.add(temp);
-    //   }
-    // });
 
     return todayMeds;
   }
@@ -205,35 +184,6 @@ class Crud {
     return null;
   }
 
-  // Future<void> setCurrentUser(Person user) async {
-  //   Database db = await SqHelper().getCurrentUserInstance();
-  //   // First, delete any existing current user
-  //   await db.delete(DbConstants.currentUserTableName);
-  //   // Then, insert the new current user
-  //   await db.insert(
-  //     DbConstants.currentUserTableName,
-  //     user.toMap(),
-  //     conflictAlgorithm: ConflictAlgorithm.replace,
-  //   );
-  //   log('Set current user: ${user.toString()} to db  ');
-  // }
-
-  // Future<Person?> getCurrentUser() async {
-  //   log('getting the current user ');
-  //   Database db = await SqHelper().getCurrentUserInstance();
-  //   List<Map<String, dynamic>> maps = await db.query(
-  //     DbConstants.currentUserTableName,
-  //     limit: 1,
-  //   );
-  //   if (maps.isNotEmpty) {
-  //     log('the current user is ' + maps.first.toString());
-  //     return Person.fromMap(maps.first);
-  //   } else {
-  //     log('No current user found in the database.');
-  //   }
-  //   return null;
-  // }
-
   Future<void> setCurrentUser(Person user) async {
     final db = await SqHelper().getUsersDbInstance();
 
@@ -285,11 +235,14 @@ class Crud {
     db.delete(UsersTable.tableName);
   }
 
-  Future<int> deleteMed(int id) async {
+  Future<int> deleteMedFrom({
+    required int id,
+    required String tableName,
+  }) async {
     Database db = await SqHelper().getMedsDbInstance();
 
     return await db.delete(
-      MedsTable.tableName,
+      tableName,
       where: '${MedsTable.medId} = ?',
       whereArgs: [id],
     );
@@ -335,9 +288,9 @@ class Crud {
 
     if (await databaseExists(path)) {
       await deleteDatabase(path);
-      print('Database deleted!');
+      log('Database deleted!');
     } else {
-      print('Database does not exist!');
+      log('Database does not exist!');
     }
   }
 
@@ -347,9 +300,9 @@ class Crud {
 
     if (await databaseExists(path)) {
       await deleteDatabase(path);
-      print('Database deleted!');
+      log('Database deleted!');
     } else {
-      print('Database does not exist!');
+      log('Database does not exist!');
     }
   }
 

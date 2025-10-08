@@ -1,4 +1,3 @@
- 
 import 'dart:developer';
 
 import 'package:intl/intl.dart';
@@ -61,6 +60,7 @@ class MedModel {
   Map<String, dynamic> toMap() {
     final map = {
       MedsTable.medName: name,
+      // MedsTable.medId: id,
       MedsTable.medDescription: description,
       MedsTable.medType: type.toString(),
       MedsTable.medAmount: dose == null ? dose : dose.toString(),
@@ -72,7 +72,7 @@ class MedModel {
     };
 
     if (id != null) {
-      map['id'] = id;
+      map[MedsTable.medId] = id;
     }
     return map;
   }

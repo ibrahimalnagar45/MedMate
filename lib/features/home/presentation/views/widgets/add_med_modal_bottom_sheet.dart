@@ -183,8 +183,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                         createdAt: medCreatedAt,
                         id: ++_notificationId,
                       );
-                      log('Inserted med is :');
-                      log(med.toString());
+                      
 
                       await medsCubit.insertMed(med, currentUser!.id!);
 

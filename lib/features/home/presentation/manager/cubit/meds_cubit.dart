@@ -24,13 +24,15 @@ class MedsCubit extends Cubit<MedsState> {
 
     try {
       await medsRepo.insertMed(med, userId);
+      log('the inserted med is : ${med.toString()}');
       emit(InsertMedsSuccess(med: med));
     } catch (e) {
+      log('the error when inserting med is: ${e.toString()}');
       emit(InsertMedsFaluire(erMessage: e.toString()));
     }
   }
 
-  getUserAllMeds() async {
+  Future<void> getUserAllMeds() async {
     final Person? currentUser = await userRepo.getCurrentUser();
 
     emit(GetMedsLoading());

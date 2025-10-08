@@ -9,7 +9,7 @@ class MedsRepoImpl implements MedsRepository {
   MedsRepoImpl({required this.crud});
   @override
   Future<void> deleteMed(int id) async {
-    await crud.deleteMed(id);
+    await crud.deleteMedFrom(id);
   }
 
   @override
@@ -34,7 +34,7 @@ class MedsRepoImpl implements MedsRepository {
   @override
   Future<void> insertLog(LogModel log) async {
     var currentUser = await crud.getCurrentUser();
-    await crud.insertLog(log, 1);
+    await crud.insertLog(log, currentUser!.id!);
   }
 
   @override
