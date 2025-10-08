@@ -9,22 +9,10 @@ import 'package:midmate/features/today_meds/presentation/views/widgets/today_med
 import '../../../../../generated/l10n.dart';
 import '../../../../../utils/service_locator.dart';
 
-class TodayMedsViewBody extends StatefulWidget {
-  const TodayMedsViewBody({super.key});
+class TodayMedsViewBody extends StatelessWidget {
+  TodayMedsViewBody({super.key});
 
-  @override
-  State<TodayMedsViewBody> createState() => _TodayMedsViewBodyState();
-}
-
-class _TodayMedsViewBodyState extends State<TodayMedsViewBody> {
   final todayMedscubit = getIt<TodayMedsCubit>();
-  @override
-  void initState() {
-    Future.sync(() async {
-      await todayMedscubit.getTodayMeds();
-    });
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {

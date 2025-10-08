@@ -32,20 +32,21 @@ class _TodayMedsListViewState extends State<TodayMedsListView> {
           itemBuilder: (context, index) {
             return CheckboxListTile(
               value: checked,
-              onFocusChange: (value) async {
-                await logRepo.insertLog(
-                  LogModel(
-                    medicationId: widget.meds[index].id!,
-                    takenTime: DateTime.now().toString(),
-                    status: StatusValues.taken,
-                    date: widget.meds[index].getNextTime().toString(),
-                  ),
-                );
-                 
-                TodayMedsCubit.todayMeds.remove(widget.meds[index]);
-                // await getIt<TodayMedsCubit>().getTodayMeds();
-                setState(() => checked = value);
-              },
+              // onFocusChange: (value) async {
+              //   await logRepo.insertLog(
+              //     LogModel(
+              //       medicationId: widget.meds[index].id!,
+              //       takenTime: DateTime.now().toString(),
+              //       status: StatusValues.taken,
+              //       date: widget.meds[index].getNextTime().toString(),
+              //     ),
+              //   );
+
+              //   TodayMedsCubit.todayMeds.remove(widget.meds[index]);
+              //   // await getIt<TodayMedsCubit>().getTodayMeds();
+              //   setState(() => checked = value);
+              // },
+              
               onChanged: (value) async {
                 await logRepo.insertLog(
                   LogModel(
@@ -57,7 +58,7 @@ class _TodayMedsListViewState extends State<TodayMedsListView> {
                 );
 
                 TodayMedsCubit.todayMeds.remove(widget.meds[index]);
-                // await getIt<MedsCubit>().getTodayMeds();
+                
                 setState(() => checked = value!);
               },
               contentPadding: EdgeInsets.zero,

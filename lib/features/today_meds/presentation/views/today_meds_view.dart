@@ -11,7 +11,7 @@ class MedsTodayView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<TodayMedsCubit>(),
+      create: (context) => getIt<TodayMedsCubit>()..getTodayMeds(),
       child: TodayMedsViewBody(),
     );
   }

@@ -39,7 +39,12 @@ class LogModel {
       userId: map[UsersTable.userId],
     );
   }
+
+  @override
+  toString() =>
+      'LogModel(id: $id, medicationId: $medicationId, date: $date, takenTime: $takenTime, status: $status)';
   /*
+
     id INTEGER PRIMARY KEY AUTOINCREMENT,
   medication_id INTEGER NOT NULL,
   date TEXT NOT NULL,          -- YYYY-MM-DD

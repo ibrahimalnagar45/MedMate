@@ -126,7 +126,7 @@ class Crud {
     );
 
     log("all logs are as maps :$maps");
-    log(LogModel.fromMap(maps[0]).toString());
+    // log(LogModel.fromMap(maps[0]).toString());
     for (var logItem in maps) {
       logs.add(LogModel.fromMap(logItem));
     }
@@ -235,7 +235,7 @@ class Crud {
 
   Future<void> deleteAllLogs() async {
     Database db = await SqHelper().getLogsDbInstance();
-
+    log('deleteAllLogs');
     db.delete(LogsTable.tableName);
   }
 
