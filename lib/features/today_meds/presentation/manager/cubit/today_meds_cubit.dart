@@ -13,7 +13,8 @@ class TodayMedsCubit extends Cubit<TodayMedsState> {
   final TodayMedRepo medsRepo;
   final UserRepository userRepo;
   static List<MedModel> todayMeds = [];
-  Future<void> getTodayMeds() async {
+  static List<MedModel> takenMeds = [];
+  Future<List<MedModel>> getTodayMeds() async {
     emit(GetTodayMedsLoading());
     final Person? currentUser = await userRepo.getCurrentUser();
     try {
@@ -24,5 +25,6 @@ class TodayMedsCubit extends Cubit<TodayMedsState> {
       log('the error when getting today meds is: ${e.toString()}');
       emit(GetTodayMedsFaluire(erMessage: e.toString()));
     }
+    return todayMeds;
   }
 }

@@ -2,7 +2,7 @@ import 'dart:developer';
 import 'package:midmate/utils/models/med_model.dart';
 
 void checkMedNextTime(MedModel medModel) {
-  if (medModel.getNextTime()!.isBefore(DateTime.now())) {
+  while(medModel.getNextTime()!.isBefore(DateTime.now())) {
     log("next time is before now");
     log(medModel.nextTime.toString());
     log('now is ${DateTime.now()}');

@@ -5,10 +5,12 @@ import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/chart/presentaion/manager/cubit/logs_cubit.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
+import 'package:midmate/features/today_meds/presentation/manager/cubit/today_meds_cubit.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/text_styles.dart';
+import '../../features/chart/doman/repository/logs_repo.dart';
 import '../../utils/extension_fun.dart';
 import '../../utils/models/user_model.dart';
 import '../../features/user_data/presentation/views/add_new_user_view.dart';
@@ -145,8 +147,16 @@ class _CustomAppBarState extends State<CustomAppBar> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
             onTap: () {
-              // getIt<LogsRepo>().getAllLogs(currentUser!.id!);
-              log(LogsCubit.logs.toString());
+              
+              log(
+                Crud.instance
+                    .getUserTodayMeds(userId: currentUser!.id!)
+                    .toString(),
+              );
+              log('todayMeds ${TodayMedsCubit.todayMeds.toString()}');
+              // log();
+              log('takenMeds${TodayMedsCubit.takenMeds.toString()}');
+              // log();
               // exportDatabaseToDownloads();
             },
             child: CircleAvatar(

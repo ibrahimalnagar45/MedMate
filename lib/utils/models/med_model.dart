@@ -15,7 +15,6 @@ class MedModel {
   DateTime? nextTime;
   DateTime? createdAt;
   int? id;
-  // bool? checked = false;
   List<DateTime> logs = [];
   MedModel.newMed();
   MedModel({

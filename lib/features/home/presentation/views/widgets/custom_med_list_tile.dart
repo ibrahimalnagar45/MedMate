@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:midmate/core/services/local_notification.dart';
+import 'package:midmate/features/chart/data/repos/logs_repo_impl.dart';
+import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/home/presentation/views/details_view.dart';
 import 'package:midmate/features/home/presentation/views/widgets/custom_med_type_icon.dart';
+import 'package:midmate/features/today_meds/presentation/manager/cubit/today_meds_cubit.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/main.dart';
 import 'package:midmate/utils/app_colors.dart';
@@ -50,6 +53,8 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
       onDismissed: (direction) {
         medsCubit.deleteAMed(widget.medModel.id!, MedsTable.tableName);
         medsCubit.getUserAllMeds();
+        getIt<LogsRepo>().deleteLog(widget.medModel.id!);
+      TodayMedsCubit.takenMeds.remove(widget.medModel);
         LocalNotification(
           navigatorKey: navigatorKey,
         ).cancleNotification(id: widget.medModel.id!);

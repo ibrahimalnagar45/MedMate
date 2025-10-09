@@ -23,9 +23,10 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
 
 void main() async {
   await _initializeAppServices();
+  // _deleteEverything();
+
   runApp(const MyApp());
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -62,7 +63,7 @@ Future<void> _initializeAppServices() async {
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
   SqHelper();
   Bloc.observer = CustomBlocObserval();
-  // _deleteEverything(); // Uncomment if needed
+  delelteEverthing();
 }
 
 ThemeData _buildTheme() {
@@ -76,14 +77,12 @@ ThemeData _buildTheme() {
     iconTheme: const IconThemeData(color: AppColors.blue),
   );
 }
- 
+
 void delelteEverthing() {
-  Crud.instance.closeMedsDb();
-  Crud.instance.closeUsersDb();
   Crud.instance.deleteAllMeds();
   Crud.instance.deleteAllusers();
+  Crud.instance.closeMedsDb();
+  Crud.instance.closeUsersDb();
   // Crud.instance.deleteMedsDatabaseFile();
   getIt<SharedPreferences>().clear();
 }
-
- 

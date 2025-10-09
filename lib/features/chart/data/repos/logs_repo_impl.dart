@@ -17,4 +17,14 @@ class LogsRepoImpl extends LogsRepo {
     var currentUser = await crud.getCurrentUser();
     await crud.insertLog(log, currentUser!.id!);
   }
+
+  @override
+  Future<void> deleteLog(int medId) async {
+    await crud.deleteLog(medId);
+  }
+
+  @override
+  Future<void> deleteAllLogs() async {
+    await crud.deleteAllLogs();
+  }
 }

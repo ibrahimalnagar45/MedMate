@@ -18,8 +18,9 @@ class Crud {
     // Check if the med already exists
     final existing = await db.query(
       MedsTable.tableName,
-      where: '${MedsTable.medId} = ? AND ${UsersTable.userId} = ?',
-      whereArgs: [med.id, userId],
+      where:
+          '${MedsTable.medId} = ? AND ${UsersTable.userId} = ?AND ${MedsTable.medName} = ?',
+      whereArgs: [med.id, userId, med.name],
     );
 
     if (existing.isNotEmpty) {
@@ -77,7 +78,6 @@ class Crud {
   // Future<List<MedModel>?> getUserTodayMeds({required int userId}) async {}
   Future<List<MedModel>> getUserTodayMeds({required int userId}) async {
     List<MedModel> todayMeds = [];
-    log('getUserAllMeds called with userId: $userId');
     Database db = await SqHelper().getMedsDbInstance();
     List<Map<String, dynamic>> maps = await db.query(
       MedsTable.tableName,
@@ -86,11 +86,10 @@ class Crud {
     );
 
     DateTime todayDate = DateTime.now();
-    log(maps.toList().toString());
     var logs = await getUserLogs(userId: userId);
     for (var med in maps) {
       MedModel temp = MedModel.fromMap(med);
-      log(temp.toString());
+      // log(temp.toString());
       if (temp.getNextTime()!.day == todayDate.day &&
           !logs.any((l) => temp.id == l.medicationId)) {
         todayMeds.add(temp);
@@ -125,13 +124,20 @@ class Crud {
       whereArgs: [userId],
     );
 
-    log("all logs are as maps :$maps");
     // log(LogModel.fromMap(maps[0]).toString());
     for (var logItem in maps) {
       logs.add(LogModel.fromMap(logItem));
     }
-    log("all logs are :${logs}");
     return logs;
+  }
+
+  Future<void> deleteLog(int medId) async {
+    Database db = await SqHelper().getLogsDbInstance();
+    await db.delete(
+      LogsTable.tableName,
+      where: '${MedsTable.medId} = ?',
+      whereArgs: [medId],
+    );
   }
 
   Future<List<Person>> getAllusers() async {
@@ -235,7 +241,7 @@ class Crud {
 
   Future<void> deleteAllLogs() async {
     Database db = await SqHelper().getLogsDbInstance();
-    log('deleteAllLogs');
+     
     db.delete(LogsTable.tableName);
   }
 
