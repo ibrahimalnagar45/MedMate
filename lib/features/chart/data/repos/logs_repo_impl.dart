@@ -27,4 +27,14 @@ class LogsRepoImpl extends LogsRepo {
   Future<void> deleteAllLogs() async {
     await crud.deleteAllLogs();
   }
+
+  @override
+  Future<List<LogModel>> getTodayLogs(int userId) async {
+    List<LogModel> logs = await crud.getUserLogs(userId: userId);
+    List<LogModel> todayLogs =
+        logs
+            .where((log) => log.date.contains(DateTime.now().day.toString()))
+            .toList();
+    return todayLogs;
+  }
 }

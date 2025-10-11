@@ -22,8 +22,7 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
 void main() async {
-  await _initializeAppServices();
-  // _deleteEverything();
+  await _initializeAppServices(); 
 
   runApp(const MyApp());
 }
@@ -63,7 +62,7 @@ Future<void> _initializeAppServices() async {
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
   SqHelper();
   Bloc.observer = CustomBlocObserval();
-  delelteEverthing();
+  // delelteEverthing();
 }
 
 ThemeData _buildTheme() {

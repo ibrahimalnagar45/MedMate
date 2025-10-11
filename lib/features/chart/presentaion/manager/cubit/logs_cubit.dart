@@ -1,7 +1,6 @@
 import 'dart:developer';
 
-import 'package:bloc/bloc.dart';
-import 'package:meta/meta.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
 import 'package:midmate/features/home/doman/repository/user_repo.dart';
 
@@ -38,6 +37,22 @@ class LogsCubit extends Cubit<LogsState> {
       emit(GetUserLogsSuccess(logs: logs));
     } catch (e) {
       emit(GetUserLogsFaluire(erMessage: e.toString()));
+    }
+    return logs;
+  }
+
+  // ToDo
+  // create a fun to get today logs
+
+  Future<List<LogModel>> getTodayLogs() async {
+    emit(GetTodayLogsLoading());
+    final Person? currentUser = await userRepo.getCurrentUser();
+    try {
+      logs = await logsRepo.getTodayLogs(currentUser!.id!);
+      log(logs.toString());
+      emit(GetTodayLogsSuccess(logs: logs));
+    } catch (e) {
+      emit(GetTodayLogsFaluire(erMessage: e.toString()));
     }
     return logs;
   }

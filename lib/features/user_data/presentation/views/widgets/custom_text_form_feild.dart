@@ -8,15 +8,17 @@ class CustomTextFormFeild extends StatelessWidget {
     this.onSubmitted,
     this.validator,
     this.hintText,
+    this.autofocus = false,
   });
   final void Function(String?)? onSubmitted;
   final String? Function(String?)? validator;
   final String? hintText;
+  final bool autofocus ;
   @override
   Widget build(BuildContext context) {
     return TextFormField(
       validator: validator,
-
+autofocus: autofocus,
       onChanged: onSubmitted,
       onSaved: onSubmitted,
 
@@ -29,7 +31,6 @@ class CustomTextFormFeild extends StatelessWidget {
         filled: true,
         errorStyle: TextStyle(color: Colors.amber),
         fillColor: AppColors.grey,
-
         border: OutlineInputBorder(
           borderRadius: BorderRadius.circular(10),
           borderSide: BorderSide.none,

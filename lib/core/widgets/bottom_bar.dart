@@ -55,11 +55,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
               icon: bottomBarIcons[index].icon,
               isSelected: false,
               onPressed: () {
-                // currentIndex = index;
-                // setState(() {});
-                // bottomBarIcons[index].isSelected =
-                //     !bottomBarIcons[index].isSelected!;
-                // setState(() {});
+                
                 goTo(context, bottomBarIcons[index].widget);
               },
             ),

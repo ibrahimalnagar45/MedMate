@@ -77,7 +77,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
               CustomTextFormFeild(
                 hintText:
                     "${S.of(context).example}: ${S.of(context).medNameExample}",
-
+                autofocus: true,
                 onSubmitted: (vale) {
                   setState(() {
                     medName = vale;

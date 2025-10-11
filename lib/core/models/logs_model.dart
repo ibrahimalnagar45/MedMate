@@ -1,5 +1,10 @@
 import '../../features/home/data/local_data_base/db_constants.dart';
 
+
+// toDo
+// create a method to retun a map of string int {'day name ':'the value'} to use it in chart view
+
+
 class LogModel {
   final int? id;
   final int medicationId;
@@ -43,15 +48,7 @@ class LogModel {
   @override
   toString() =>
       'LogModel(id: $id, medicationId: $medicationId, date: $date, takenTime: $takenTime, status: $status)';
-  /*
-
-    id INTEGER PRIMARY KEY AUTOINCREMENT,
-  medication_id INTEGER NOT NULL,
-  date TEXT NOT NULL,          -- YYYY-MM-DD
-  taken_time TEXT,             -- actual time user confirmed
-  status TEXT NOT NULL,        -- "taken", "missed", "skipped"
-  FOREIGN KEY (medication_id) REFERENCES ${DbConstants.medTableName} (${DbConstants.medsColumnId})
-         */
+  
 }
 
 mixin StatusValues {

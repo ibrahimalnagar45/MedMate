@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/widgets/bottom_bar.dart';
-import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/core/widgets/app_bar.dart';
-import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
 import 'package:midmate/features/today_meds/presentation/manager/cubit/today_meds_cubit.dart';
 import 'package:midmate/features/today_meds/presentation/views/widgets/today_meds_list_view.dart';
 import '../../../../../generated/l10n.dart';
@@ -24,9 +22,9 @@ class TodayMedsViewBody extends StatelessWidget {
         builder: (context, state) {
           if (state is GetTodayMedsSuccess) {
             if (state.meds.isEmpty) {
-              return Center(
-                child: Image.asset(ImageController.noMedAddedImage, width: 250),
-              );
+              return Center();
+              //toDo
+              // build a screen to show all logs if exists
             }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -34,8 +32,12 @@ class TodayMedsViewBody extends StatelessWidget {
             );
           } else if (state is GetTodayMedsFaluire) {
             return Center(child: Text(state.erMessage));
-          } else {
+          } else if (state is GetTodayMedsLoading) {
             return const Center(child: CircularProgressIndicator());
+          } else {
+            return Center(
+              child: Image.asset(ImageController.noMedAddedImage, width: 250),
+            );
           }
         },
       ),

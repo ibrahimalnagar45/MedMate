@@ -185,13 +185,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                               bgColor: AppColors.white,
                               title: S.current.Add,
                             ),
-                            // AgeDropDownMenu(
-                            //   onSelected: (value) {
-                            //     if (_formKey.currentState!.validate()) {
-                            //       saveUser(value, context);
-                            //     }
-                            //   },
-                            // ),
+                           
                             SizedBox(height: 80),
                           ],
                         ),
@@ -231,7 +225,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
       name: userName,
       isCurrentUser: 1,
     );
-    getIt<UserCubit>().addNewUser(currentUser);
+   await  getIt<UserCubit>().addNewUser(currentUser);
       Crud.instance.insertUser(currentUser);
   }
 }

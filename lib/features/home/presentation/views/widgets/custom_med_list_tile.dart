@@ -54,7 +54,7 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
         medsCubit.deleteAMed(widget.medModel.id!, MedsTable.tableName);
         medsCubit.getUserAllMeds();
         getIt<LogsRepo>().deleteLog(widget.medModel.id!);
-      TodayMedsCubit.takenMeds.remove(widget.medModel);
+        TodayMedsCubit.takenMeds.remove(widget.medModel);
         LocalNotification(
           navigatorKey: navigatorKey,
         ).cancleNotification(id: widget.medModel.id!);
@@ -77,8 +77,8 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
               SizedBox(width: 10),
 
               MedInfo(medModel: widget.medModel),
-
-              Expanded(
+              Spacer(),
+              Flexible(
                 child: Text(
                   widget.medModel.startDate == null
                       ? ''

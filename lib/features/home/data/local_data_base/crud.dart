@@ -60,7 +60,6 @@ class Crud {
 
   // change the id to required
   Future<List<MedModel>> getUserAllMeds({required int userId}) async {
-    // List<MedModel> todayMeds = [];
     log('getUserAllMeds called with userId: $userId');
     Database db = await SqHelper().getMedsDbInstance();
     List<Map<String, dynamic>> maps = await db.query(
@@ -93,6 +92,15 @@ class Crud {
       if (temp.getNextTime()!.day == todayDate.day &&
           !logs.any((l) => temp.id == l.medicationId)) {
         todayMeds.add(temp);
+
+        await insertLog(
+          LogModel(
+            medicationId: temp.id!,
+            date: DateTime.now().toString(),
+            status: StatusValues.pending,
+          ),
+          userId,
+        );
       }
     }
 
@@ -241,7 +249,7 @@ class Crud {
 
   Future<void> deleteAllLogs() async {
     Database db = await SqHelper().getLogsDbInstance();
-     
+
     db.delete(LogsTable.tableName);
   }
 
@@ -258,12 +266,12 @@ class Crud {
     );
   }
 
-  Future<int> updateMed(MedModel todo) async {
+  Future<int> updateMed(MedModel med) async {
     Database db = await SqHelper().getMedsDbInstance();
 
     return await db.update(
       MedsTable.tableName,
-      todo.toMap(),
+      med.toMap(),
       where: '${MedsTable.medId} = ?',
       whereArgs: [MedModel.newMed().id],
     );

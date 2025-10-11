@@ -1,6 +1,5 @@
 part of 'logs_cubit.dart';
 
-@immutable
 sealed class LogsState {}
 
 final class LogsInitial extends LogsState {}
@@ -27,4 +26,16 @@ final class GetUserLogsSuccess extends LogsState {
 final class GetUserLogsFaluire extends LogsState {
   final String erMessage;
   GetUserLogsFaluire({required this.erMessage});
+}
+
+final class GetTodayLogsLoading extends LogsState {}
+
+final class GetTodayLogsSuccess extends LogsState {
+  final List<LogModel> logs;
+  GetTodayLogsSuccess({required this.logs});
+}
+
+final class GetTodayLogsFaluire extends LogsState {
+  final String erMessage;
+  GetTodayLogsFaluire({required this.erMessage});
 }

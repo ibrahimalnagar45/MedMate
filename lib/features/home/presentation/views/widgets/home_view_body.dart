@@ -25,12 +25,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   final MedsCubit medCubit = getIt<MedsCubit>();
   final UserCubit userCubit = getIt<UserCubit>();
   @override
-  void initState() {
-    medCubit.getUserAllMeds();
-
-    super.initState();
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -46,7 +40,10 @@ class _HomeViewBodyState extends State<HomeViewBody> {
 
         child: Padding(
           padding: EdgeInsets.only(right: 30),
-          child: CustomFloatingActionButton(medCubit: medCubit, formKey: _formKey),
+          child: CustomFloatingActionButton(
+            medCubit: medCubit,
+            formKey: _formKey,
+          ),
         ),
       ),
 
@@ -60,7 +57,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
             } else if (state is GetMedsSuccess) {
               return MedsListView(meds: state.meds);
             } else if (state is GetMedsFaluire) {
-            
               return Center(child: Text(state.erMessage));
             } else {
               return Center(
@@ -73,4 +69,6 @@ class _HomeViewBodyState extends State<HomeViewBody> {
     );
   }
 }
+
+
 
