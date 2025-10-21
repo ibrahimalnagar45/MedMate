@@ -32,9 +32,9 @@ class MedModel {
   }
 
   String getFormattedNextTime() {
-    checkMedNextTime(this);
+    // checkMedNextTime(this);
 
-    if (nextTime == null) {
+    if (nextTime == null || nextTime!.isBefore(DateTime.now())) {
       checkMedNextTime(this);
     }
     return DateFormat('dd/MM-hh:mm a').format(nextTime!);
@@ -52,6 +52,8 @@ class MedModel {
     if (nextTime == null) {
       setNextTime();
       log('next time is null');
+    } else if (nextTime!.isBefore(DateTime.now())) {
+      checkMedNextTime(this);
     }
     return nextTime;
   }

@@ -1,11 +1,10 @@
 import 'dart:developer';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/core/widgets/bottom_bar.dart';
 import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
- import 'package:midmate/features/home/doman/repository/user_repo.dart';
+import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/features/today_meds/presentation/manager/cubit/today_meds_cubit.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/models/med_model.dart';
@@ -20,81 +19,76 @@ class ChartViewBody extends StatefulWidget {
 }
 
 class _ChartViewBodyState extends State<ChartViewBody> {
-  // final Person? currentUser =
+   
   final List<MedModel> today = TodayMedsCubit.todayMeds;
-
   final List<MedModel> taken = TodayMedsCubit.takenMeds;
   List<LogModel> logs = [];
-  @override
-  void initState() {
-    _getLogs();
-    super.initState();
-  }
-
-  void _getLogs() async {
-    final Person? currentUser = await getIt<UserRepository>().getCurrentUser();
-    logs = await getIt<LogsRepo>().getAllLogs(currentUser!.id!);
-    log('all logs : $logs');
-  }
-
-  // final List<LogModel> logs = getIt<LogsRepo>().getAllLogs();
-  final Map<String, int> takenPerDay = {
-    'Sat': 4,
-    'Sun': 3,
-    'Mon': 2,
-    'Tue': 8,
-    'Wed': 6,
-    'Thu': 4,
-    'Fri': 2,
-  };
-
-  final Map<String, int> missedPerDay = {
-    'Sat': 1,
-    'Sun': 1,
+    Map<String, int> takenMap = {
     'Mon': 0,
     'Tue': 0,
     'Wed': 0,
     'Thu': 0,
     'Fri': 0,
+    'Sat': 0,
+    'Sun': 0,
   };
+  Map<String, int> notTakenMap = {
+    'Mon': 0,
+    'Tue': 0,
+    'Wed': 0,
+    'Thu': 0,
+    'Fri': 0,
+    'Sat': 0,
+    'Sun': 0,
+  };
+ 
 
-  int takenLength = 0;
+  @override
+  void initState() {
+    _getData();
+     super.initState();
+  }
 
-  int notTakenLength = 0;
+  void _getData() async {
+    final Person? currentUser = await getIt<UserRepository>().getCurrentUser();
+    logs = await getIt<LogsRepo>().getAllLogs(currentUser!.id!);
+    for (var log in logs) {
+      setState(() {
+        if (isDateInCurrentWeek(DateTime.parse(log.date))) {
+          if (log.status == StatusValues.taken) {
+            takenMap[log.getWeekDay()] = takenMap[log.getWeekDay()]! + 1;
+          } else {
+            notTakenMap[log.getWeekDay()] = notTakenMap[log.getWeekDay()]! + 1;
+          }
+        }
+      });
+    }
+    log('all logs : $logs');
+  }
 
   @override
   Widget build(BuildContext context) {
-    for (var log in logs) {
-      if (log.status == StatusValues.taken) {
-        takenLength++;
-      } else {
-        notTakenLength++;
-      }
-    }
     return Scaffold(
       bottomNavigationBar: CustomBottomBar(),
-      body: MedsBarChart(
-        takenPerDay: {
-          'Sat': takenLength,
-          'Sun': 3,
-          'Mon': 2,
-          'Tue': 8,
-          'Wed': 6,
-          'Thu': 4,
-          'Fri': 2,
-        },
-        missedPerDay: {
-          'Sat': notTakenLength,
-          'Sun': 1,
-          'Mon': 0,
-          'Tue': 0,
-          'Wed': 0,
-          'Thu': 0,
-          'Fri': 0,
-        },
-      ),
+      body: MedsBarChart(takenPerDay: takenMap, missedPerDay: notTakenMap),
     );
   }
+}
+
+bool isDateInCurrentWeek(DateTime date) {
+  DateTime now = DateTime.now();
+
+  // Start of this week (Monday)
+  DateTime startOfWeek = now.subtract(Duration(days: now.weekday - 1));
+  startOfWeek = DateTime(startOfWeek.year, startOfWeek.month, startOfWeek.day);
+
+  // End of this week (Sunday)
+  DateTime endOfWeek = startOfWeek.add(
+    const Duration(days: 6, hours: 23, minutes: 59, seconds: 59),
+  );
+
+  return date.isAfter(startOfWeek.subtract(const Duration(seconds: 1))) &&
+      date.isBefore(endOfWeek.add(const Duration(seconds: 1)));
 }
 
 class MedsBarChart extends StatelessWidget {

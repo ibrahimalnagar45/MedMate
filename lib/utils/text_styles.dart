@@ -12,9 +12,8 @@ class TextStyles {
   );
 
   static const TextStyle regGreyTextStyle = TextStyle(
- 
     fontWeight: FontWeight.w400,
-   
+
     color: AppColors.grey,
   );
 
@@ -32,9 +31,9 @@ class TextStyles {
   );
 
   static const TextStyle onBoardingTextStyle = TextStyle(
-    fontSize: 20,
-    fontWeight: FontWeight.w700,
-    color: AppColors.blue,
+    fontSize: 15,
+    fontWeight: FontWeight.w500,
+    color: Colors.black,
     fontStyle: FontStyle.italic,
   );
   static const TextStyle hintTextStyle = TextStyle(

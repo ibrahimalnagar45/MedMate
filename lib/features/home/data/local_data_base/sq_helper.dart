@@ -18,7 +18,7 @@ class SqHelper {
     String path = await _getDbPath(MedsTable.path);
     return openDatabase(
       path,
-      version: 4,
+      version: 5,
       onCreate: (Database db, int version) async {
         await db.execute('''
 CREATE TABLE ${MedsTable.tableName} ( 
@@ -36,7 +36,7 @@ CREATE TABLE ${MedsTable.tableName} (
 ''');
       },
       onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 4) {
+        if (oldVersion < 5) {
           await db.execute('DROP TABLE IF EXISTS ${MedsTable.tableName}');
           await db.execute('''
 CREATE TABLE ${MedsTable.tableName} ( 
@@ -48,6 +48,8 @@ CREATE TABLE ${MedsTable.tableName} (
   ${MedsTable.medFrequency} INTEGER,
   ${MedsTable.medStartDate} TEXT,
   ${MedsTable.medCreatedAt} TEXT,
+  ${MedsTable.mednextTime} TEXT,
+
   ${UsersTable.userId} INTEGER,
   FOREIGN KEY (${UsersTable.userId}) REFERENCES ${UsersTable.tableName} (${UsersTable.userId})
 );
@@ -56,7 +58,7 @@ CREATE TABLE ${MedsTable.tableName} (
       },
       onOpen: _onOpen,
       onConfigure: _onConfig,
-    );
+      );
   }
 
   // ✅ LOGS DB

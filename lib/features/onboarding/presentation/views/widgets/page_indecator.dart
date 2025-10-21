@@ -5,13 +5,12 @@ import '../../../../../utils/app_colors.dart';
 class PageIndecator extends StatelessWidget {
   const PageIndecator({
     super.key,
-    
+
     required this.currentIndex,
     required this.length,
-
   });
 
-  final int  currentIndex, length;
+  final int currentIndex, length;
 
   @override
   Widget build(BuildContext context) {
@@ -19,14 +18,21 @@ class PageIndecator extends StatelessWidget {
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(
         length,
-        (index) => AnimatedContainer(
-          duration: const Duration(milliseconds: 300),
-          width: 10,
-          height: 10,
-          margin: const EdgeInsets.only(right: 10),
-          decoration: BoxDecoration(
-              shape: BoxShape.circle,
-              color: index == currentIndex ? AppColors.blue : AppColors.white),
+        (index) => Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(3),
+            child: AnimatedContainer(
+              duration: const Duration(milliseconds: 300),
+              width: 12,
+              height: 10,
+              // margin: const EdgeInsets.only(right: 10),
+              decoration: BoxDecoration(
+                shape: BoxShape.rectangle,
+                color: index == currentIndex ? AppColors.blue : AppColors.white,
+              ),
+            ),
+          ),
         ),
       ),
     );

@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:midmate/core/services/local_notification.dart';
 import 'package:midmate/features/chart/data/repos/logs_repo_impl.dart';
@@ -60,7 +62,7 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
         ).cancleNotification(id: widget.medModel.id!);
       },
       child: GestureDetector(
-        onTap: () {
+        onTap: () { 
           context.goTo(DetailsView(med: widget.medModel));
         },
         child: Container(

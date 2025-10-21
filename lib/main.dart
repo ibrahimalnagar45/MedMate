@@ -4,6 +4,7 @@ import 'package:flutter_localization/flutter_localization.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/custom_bloc_observal.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
+import 'package:midmate/features/onboarding/presentation/views/onboarding_view.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
@@ -22,7 +23,7 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 
 void main() async {
-  await _initializeAppServices(); 
+  await _initializeAppServices();
 
   runApp(const MyApp());
 }
@@ -48,7 +49,7 @@ class MyApp extends StatelessWidget {
         debugShowCheckedModeBanner: false,
         title: 'Remind Me',
         theme: _buildTheme(),
-        home: SplashView(),
+        home: OnboardingView(),
       ),
     );
   }
@@ -79,9 +80,11 @@ ThemeData _buildTheme() {
 
 void delelteEverthing() {
   Crud.instance.deleteAllMeds();
-  Crud.instance.deleteAllusers();
+  // Crud.instance.deleteAllusers();
   Crud.instance.closeMedsDb();
-  Crud.instance.closeUsersDb();
+  // Crud.instance.closeUsersDb();
+  Crud.instance.deleteAllLogs();
+  Crud.instance.closeLogsDb();
   // Crud.instance.deleteMedsDatabaseFile();
-  getIt<SharedPreferences>().clear();
+  // getIt<SharedPreferences>().clear();
 }

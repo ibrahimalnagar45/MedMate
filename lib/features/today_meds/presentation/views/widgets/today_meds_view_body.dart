@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/widgets/bottom_bar.dart';
 import 'package:midmate/core/widgets/app_bar.dart';
 import 'package:midmate/features/today_meds/presentation/manager/cubit/today_meds_cubit.dart';
+import 'package:midmate/features/today_meds/presentation/views/widgets/all_logs_list_view.dart';
 import 'package:midmate/features/today_meds/presentation/views/widgets/today_meds_list_view.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../utils/image_controller.dart';
@@ -22,9 +23,8 @@ class TodayMedsViewBody extends StatelessWidget {
         builder: (context, state) {
           if (state is GetTodayMedsSuccess) {
             if (state.meds.isEmpty) {
-              return Center();
-              //toDo
-              // build a screen to show all logs if exists
+              return AllLogsListView();
+               
             }
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),

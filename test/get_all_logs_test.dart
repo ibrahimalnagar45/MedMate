@@ -10,10 +10,7 @@ void main() {
   // initialize sqflite for Dart
 
   setUpAll(() {
-    // await serviceLocatorSetup();/
-    // delelteEverthing();
-
-    sqfliteFfiInit();
+     sqfliteFfiInit();
     databaseFactory = databaseFactoryFfi;
     SqHelper();
   });

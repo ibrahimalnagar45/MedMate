@@ -9,6 +9,7 @@ class MedsTable {
   static const String medFrequency = 'frequency';
   static const String medStartDate = 'startDate';
   static const String medCreatedAt = 'createdAt';
+  static const String mednextTime = 'nextTime';
 }
 
 class UsersTable {
@@ -28,4 +29,5 @@ class LogsTable {
   static const String logDateTime = 'dateTime';
   static const String logStatus = 'status';
   static const String logTakenTime = 'takenTime';
+
 }

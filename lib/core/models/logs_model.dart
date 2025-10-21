@@ -1,9 +1,7 @@
 import '../../features/home/data/local_data_base/db_constants.dart';
 
-
 // toDo
 // create a method to retun a map of string int {'day name ':'the value'} to use it in chart view
-
 
 class LogModel {
   final int? id;
@@ -11,6 +9,7 @@ class LogModel {
   String date;
   String? takenTime;
   String? status;
+  String? nextTime;
   int? userId;
 
   // final int medId;
@@ -20,6 +19,7 @@ class LogModel {
     required this.date,
     this.takenTime,
     this.userId,
+    this.nextTime,
     required this.status,
     // required this.medId,
   });
@@ -31,6 +31,7 @@ class LogModel {
       LogsTable.logDateTime: date,
       LogsTable.logTakenTime: takenTime,
       LogsTable.logStatus: status,
+      // MedsTable.mednextTime: nextTime
     };
   }
 
@@ -42,13 +43,24 @@ class LogModel {
       takenTime: map[LogsTable.logTakenTime],
       status: map[LogsTable.logStatus],
       userId: map[UsersTable.userId],
+      nextTime: map[MedsTable.mednextTime],
     );
   }
 
   @override
   toString() =>
-      'LogModel(id: $id, medicationId: $medicationId, date: $date, takenTime: $takenTime, status: $status)';
-  
+      'LogModel(id: $id, medicationId: $medicationId, date: $date, takenTime: $takenTime, status: $status, nextTime: $nextTime )';
+
+  Map<String, int> toBarCharData() {
+    const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+    return {names[DateTime.parse(date).weekday - 1]: 1};
+  }
+
+  String getWeekDay() {
+    const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+
+    return names[DateTime.parse(date).weekday - 1];
+  }
 }
 
 mixin StatusValues {

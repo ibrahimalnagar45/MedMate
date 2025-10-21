@@ -55,14 +55,15 @@ class _OnboardingViewState extends State<OnboardingView>
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
+
     return Scaffold(
-      backgroundColor: AppColors.teal.withOpacity(.999),
+      backgroundColor: const Color(0xFFA7CDCC),
       body: SafeArea(
         child: Column(
           children: [
             CustomSkipIcon(currentUser: currentUser),
             Expanded(
-              flex: 4,
               child: PageView.builder(
                 controller: _pageController,
                 onPageChanged: (value) {
@@ -81,14 +82,15 @@ class _OnboardingViewState extends State<OnboardingView>
               length: OnBoardingConstants.onBoardings(context).length,
               currentIndex: currentIndex,
             ),
-            const Expanded(flex: 1, child: SizedBox()),
+            SizedBox(height: size.height * .1),
+            // const Expanded(child: SizedBox()),
           ],
         ),
       ),
     );
   }
 
-  navigation() {
+  void navigation() {
     if (currentIndex < OnBoardingConstants.onBoardings(context).length - 1) {
       currentIndex++;
     } else if (currentIndex ==

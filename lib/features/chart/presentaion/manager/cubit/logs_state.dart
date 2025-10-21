@@ -39,3 +39,16 @@ final class GetTodayLogsFaluire extends LogsState {
   final String erMessage;
   GetTodayLogsFaluire({required this.erMessage});
 }
+
+final class UpdateLogLoading extends LogsState {}
+
+final class UpdateLogSuccess extends LogsState {
+  final int flag;
+  UpdateLogSuccess({required this.flag});
+}
+
+final class UpdateLogFaluire extends LogsState {
+  final String errorMessage;
+
+  UpdateLogFaluire({required this.errorMessage});
+}

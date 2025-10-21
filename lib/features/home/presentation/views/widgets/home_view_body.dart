@@ -8,9 +8,7 @@ import 'package:midmate/core/widgets/app_bar.dart';
 import 'package:midmate/features/home/presentation/views/widgets/meds_list_view.dart';
 import 'package:midmate/utils/image_controller.dart';
 import '../../../../../generated/l10n.dart';
-import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/service_locator.dart';
-import 'add_med_modal_bottom_sheet.dart';
 import 'custom_floating_action_button.dart';
 
 class HomeViewBody extends StatefulWidget {
@@ -23,8 +21,12 @@ class HomeViewBody extends StatefulWidget {
 class _HomeViewBodyState extends State<HomeViewBody> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
   final MedsCubit medCubit = getIt<MedsCubit>();
-  final UserCubit userCubit = getIt<UserCubit>();
   @override
+  void initState() {
+    medCubit.getUserAllMeds();
+    super.initState();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -69,6 +71,3 @@ class _HomeViewBodyState extends State<HomeViewBody> {
     );
   }
 }
-
-
-

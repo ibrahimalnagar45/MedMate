@@ -9,13 +9,17 @@ class OnBoardingViewWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.sizeOf(context);
     return Column(
       children: [
-        ClipRRect(
-          borderRadius: BorderRadius.circular(12),
-          child: Image.asset(onboardingModel.image),
+        SizedBox(
+          height: size.height * .5,
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(20),
+            child: Image.asset(onboardingModel.image),
+          ),
         ),
-        const SizedBox(height: 50),
+        // SizedBox(height: size.height * .02),
         Padding(
           padding: const EdgeInsets.symmetric(vertical: 20.0),
           child: Text(

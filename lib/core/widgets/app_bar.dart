@@ -4,8 +4,10 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/chart/presentaion/manager/cubit/logs_cubit.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
+import 'package:midmate/features/home/doman/repository/meds_repo.dart';
 import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
+import 'package:midmate/features/today_meds/doman/today_meds_repo.dart';
 import 'package:midmate/features/today_meds/presentation/manager/cubit/today_meds_cubit.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
@@ -140,7 +142,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
             onTap: () async {
-              log('All users logs  are : ${LogsCubit.logs}()}');
+              await getIt<MedsRepository>().getAllMeds(currentUser!.id!);
+              var logs = await getIt<LogsRepo>().getAllLogs(currentUser!.id!);
+              log('logs ${logs}');
+
+              // log(logs.toString());
 
               // log(
               //   Crud.instance

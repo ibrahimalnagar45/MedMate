@@ -1,8 +1,5 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-
 import '../../../../../utils/app_colors.dart';
 import '../../manager/cubit/meds_cubit.dart';
 import 'add_med_modal_bottom_sheet.dart';
@@ -34,10 +31,7 @@ class CustomFloatingActionButton extends StatelessWidget {
               child: AddMedModalBottomSheet(formKey: _formKey),
             );
           },
-        ).then((_) {
-          log('getting the meds after adding a new med \n\n');
-          medCubit.getUserAllMeds();
-        });
+        );
       },
       child: const Icon(Icons.add),
     );

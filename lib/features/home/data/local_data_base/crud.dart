@@ -1,8 +1,10 @@
 import 'dart:developer';
 import 'package:midmate/core/models/logs_model.dart';
+import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/models/user_model.dart';
+import 'package:midmate/utils/service_locator.dart';
 import 'package:sqflite/sqflite.dart';
 import 'db_constants.dart';
 // ignore: depend_on_referenced_packages
@@ -85,23 +87,18 @@ class Crud {
     );
 
     DateTime todayDate = DateTime.now();
-    var logs = await getUserLogs(userId: userId);
+    var logs = await getIt<LogsRepo>().getTodayLogs(userId);
     for (var med in maps) {
       MedModel temp = MedModel.fromMap(med);
-      // log(temp.toString());
-      if (temp.getNextTime()!.day == todayDate.day &&
-          !logs.any((l) => temp.id == l.medicationId)) {
-        todayMeds.add(temp);
-
-        await insertLog(
-          LogModel(
-            medicationId: temp.id!,
-            date: DateTime.now().toString(),
-            status: StatusValues.pending,
-          ),
-          userId,
-        );
-      }
+      if (temp.getNextTime()?.day == todayDate.day)
+      {  if (logs.any((l) {
+          if (l.status != StatusValues.taken) {
+            return temp.id == l.medicationId;
+          }
+          return false;
+        })) {
+          todayMeds.add(temp);
+        }}
     }
 
     return todayMeds;
@@ -113,7 +110,7 @@ class Crud {
       LogsTable.tableName,
       where:
           '${UsersTable.userId} = ? AND  ${LogsTable.logId} = ? AND ${MedsTable.medId} = ? AND ${LogsTable.logDateTime} = ?',
-      whereArgs: [1, medLog.id, medLog.medicationId, medLog.date],
+      whereArgs: [userId, medLog.id, medLog.medicationId, medLog.date],
     );
     Map<String, dynamic> medMap = medLog.toMap();
     medMap[UsersTable.userId] = userId;
@@ -137,6 +134,43 @@ class Crud {
       logs.add(LogModel.fromMap(logItem));
     }
     return logs;
+  }
+
+  Future<LogModel?> getLog({required int logId}) async {
+    Database db = await SqHelper().getLogsDbInstance();
+    Person? user = await getCurrentUser();
+    List<LogModel> logs = await getUserLogs(userId: user!.id!);
+
+    LogModel log = logs.firstWhere((log) => log.id == logId);
+    return log;
+  }
+
+  Future<LogModel?> getLogByMed({required MedModel med}) async {
+    Database db = await SqHelper().getLogsDbInstance();
+    Person? user = await getCurrentUser();
+    List<LogModel> logs = await getUserLogs(userId: user!.id!);
+
+    LogModel log = logs.firstWhere(
+      (log) =>
+          log.medicationId == med.id &&
+          DateTime.parse(log.date).isBefore(med.nextTime!),
+    );
+    return log;
+  }
+
+  Future<int> updateLog({required int logId, required String newStatus}) async {
+    final db = await SqHelper().getLogsDbInstance();
+
+    int done;
+
+    done = await db.update(
+      LogsTable.tableName,
+      {LogsTable.logStatus: newStatus},
+      where: '$logId = ? ',
+      whereArgs: [logId],
+    );
+
+    return done;
   }
 
   Future<void> deleteLog(int medId) async {
@@ -296,6 +330,12 @@ class Crud {
 
   Future closeMedsDb() async {
     Database db = await SqHelper().getMedsDbInstance();
+
+    db.close();
+  }
+
+  Future<void> closeLogsDb() async {
+    Database db = await SqHelper().getLogsDbInstance();
 
     db.close();
   }

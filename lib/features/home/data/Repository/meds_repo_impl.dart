@@ -12,7 +12,6 @@ class MedsRepoImpl implements MedsRepository {
     await crud.deleteMedFrom(id: id, tableName: tableName);
   }
 
-  
   @override
   Future<List<MedModel>> getAllMeds(int userId) async {
     var meds = await crud.getUserAllMeds(userId: userId);
@@ -20,7 +19,6 @@ class MedsRepoImpl implements MedsRepository {
     return meds;
   }
 
- 
   @override
   Future<void> insertMed(MedModel med, int userId) async {
     await crud.insertMed(med, userId);
@@ -30,5 +28,11 @@ class MedsRepoImpl implements MedsRepository {
   Future<void> updateMed(MedModel med) {
     // TODO: implement updateMed
     throw UnimplementedError();
+  }
+
+  @override
+  Future<MedModel?> getMed(int id) async {
+    MedModel? med = await crud.getMed(id);
+    return med;
   }
 }

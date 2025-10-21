@@ -1,6 +1,7 @@
 import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
+import 'package:midmate/utils/models/med_model.dart';
 
 class LogsRepoImpl extends LogsRepo {
   final Crud crud;
@@ -36,5 +37,24 @@ class LogsRepoImpl extends LogsRepo {
             .where((log) => log.date.contains(DateTime.now().day.toString()))
             .toList();
     return todayLogs;
+  }
+
+  @override
+  Future<int> updateLog({required int logId, required String newStatus}) async {
+    
+    int flag = await crud.updateLog(logId: logId, newStatus: newStatus);
+    return flag;
+  }
+
+  @override
+  Future<LogModel?> getLog({required int logId}) async {
+    LogModel? log = await crud.getLog(logId: logId);
+    return log;
+  }
+
+  @override
+  Future<LogModel?> getlogByMed({required MedModel med}) async {
+    LogModel? log = await crud.getLogByMed(med: med);
+    return log;
   }
 }

@@ -1,8 +1,4 @@
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
-import 'package:get_it/get_it.dart';
-import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/user_data/presentation/views/user_data_view.dart';
 import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/user_model.dart';
@@ -23,29 +19,32 @@ class CustomSkipIcon extends StatelessWidget {
       padding: EdgeInsets.symmetric(horizontal: 8.0, vertical: 10),
       child: Align(
         alignment: Alignment.topRight,
-        child: TextButton(
-          style: ButtonStyle(
-            backgroundColor: WidgetStatePropertyAll(AppColors.green),
-          ),
-          onPressed: () {
-            getIt<SharedPreferences>().setBool(
-              SharedPrefrenceDb.onBoardingVisited,
-              true,
-            );
-            debugPrint(
-              'from custom icon the value SharedPrefrenceDb.onBoardingVisited is ${getIt<SharedPreferences>().getBool(SharedPrefrenceDb.onBoardingVisited)}',
-            );
-            if (currentUser == null) {
-              context.replaceWith(UserDataView());
-            } else {
-              context.replaceWith(HomeView());
-            }
-          },
-          child: Text(
-            S.of(context).skip,
-            style: TextStyles.regGreyTextStyle.copyWith(
-              fontSize: 20,
-              color: AppColors.blue,
+        child: SizedBox(
+          width: 70,
+          height: 35,
+          child: TextButton(
+            style: ButtonStyle(
+              backgroundColor: WidgetStatePropertyAll(AppColors.blue),
+            ),
+            onPressed: () {
+              getIt<SharedPreferences>().setBool(
+                SharedPrefrenceDb.onBoardingVisited,
+                true,
+              );
+
+              if (currentUser == null) {
+                context.replaceWith(UserDataView());
+              } else {
+                context.replaceWith(HomeView());
+              }
+            },
+            child: Text(
+              S.of(context).skip,
+
+              style: TextStyles.regGreyTextStyle.copyWith(
+                fontSize: 15,
+                color: AppColors.green,
+              ),
             ),
           ),
         ),

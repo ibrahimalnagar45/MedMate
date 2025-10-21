@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:midmate/core/functions/get_localized_med_type.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/core/services/local_notification.dart';
+import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/cusotm_label.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_button.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_text_form_feild.dart';
@@ -12,6 +13,7 @@ import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import '../../../../../core/models/logs_model.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../utils/service_locator.dart';
 import '../../../../../utils/services/shared_prefrence_service.dart';
@@ -181,10 +183,18 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                         frequency: medFrequency,
                         startDate: medStartDate,
                         createdAt: medCreatedAt,
+
                         id: ++_notificationId,
                       );
 
                       await medsCubit.insertMed(med, currentUser!.id!);
+                      await getIt<LogsRepo>().insertLog(
+                        LogModel(
+                          medicationId: med.id!,
+                          date: DateTime.now().toString(),
+                          status: StatusValues.pending,
+                        ),
+                      );
                       await medsCubit.getUserAllMeds();
 
                       await LocalNotification(

@@ -1,6 +1,5 @@
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/features/home/doman/repository/meds_repo.dart';
 import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/utils/models/med_model.dart';
@@ -36,15 +35,12 @@ class MedsCubit extends Cubit<MedsState> {
       meds = await medsRepo.getAllMeds(currentUser!.id!);
 
       emit(GetMedsSuccess(meds: meds));
-      log('the meds are ${meds.toString()}');
-      log('the user is ${currentUser.toString()}');
     } catch (e) {
       emit(GetMedsFaluire(erMessage: e.toString()));
     }
   }
 
-   
-//  
+  //
   Future<void> deleteAMed(int id, String tableName) async {
     emit(DeletMedLoading());
     try {

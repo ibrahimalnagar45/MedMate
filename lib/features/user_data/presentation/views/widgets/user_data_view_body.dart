@@ -8,10 +8,10 @@ import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_button.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_heart_icon.dart';
 import 'package:midmate/utils/extension_fun.dart';
+import 'package:midmate/utils/image_controller.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../../core/functions/get_unique_id.dart';
 import '../../../../../generated/l10n.dart';
 import '../../../../../utils/app_colors.dart';
 import '../../../../../utils/services/shared_prefrence_service.dart';
@@ -31,9 +31,10 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
   DateTime? tempDateOfBirth;
 
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  int _userIds = 0;
+  final int _userIds = 0;
   @override
   Widget build(BuildContext context) {
+    var size = MediaQuery.sizeOf(context);
     // log(UserModel.instance.toString());
     return Form(
       key: _formKey,
@@ -45,7 +46,8 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
               // SvgPicture.asset('assets/images/image 1.svg'),
               UpperImage(),
               Positioned(
-                bottom: 40,
+                top: size.height * .2,
+                bottom: 0,
                 left: 0,
                 right: 0,
                 child: Column(
@@ -115,12 +117,6 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
 
                                   firstDate: DateTime(2000),
                                   lastDate: DateTime(DateTime.now().year + 1),
-                                  // onDatePickerModeChange: (value) {
-                                  //   log(value.toString());
-                                  //   setState(() {
-                                  //     dateOfBirth = value.toString();
-                                  //   });
-                                  // },
                                 );
                                 if (date != null) {
                                   tempDateOfBirth = date;
@@ -185,7 +181,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                               bgColor: AppColors.white,
                               title: S.current.Add,
                             ),
-                           
+
                             SizedBox(height: 80),
                           ],
                         ),
@@ -203,11 +199,9 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
     );
   }
 
-  void saveUser(BuildContext thisContext) async{
+  void saveUser(BuildContext thisContext) async {
     log('save user is called');
-
     log('user name and date of birth');
-
     log(userName!);
     log(dateOfBirth!);
     getIt<SharedPreferences>().setString(SharedPrefrenceDb.username, userName!);
@@ -225,8 +219,8 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
       name: userName,
       isCurrentUser: 1,
     );
-   await  getIt<UserCubit>().addNewUser(currentUser);
-      Crud.instance.insertUser(currentUser);
+    await getIt<UserCubit>().addNewUser(currentUser);
+    Crud.instance.insertUser(currentUser);
   }
 }
 
@@ -235,9 +229,16 @@ class UpperImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AspectRatio(
-      aspectRatio: 11 / 12,
-      child: Image.asset('assets/images/image 1.png', fit: BoxFit.cover),
+    final size = MediaQuery.sizeOf(context);
+    return SizedBox(
+      height: size.height * .3,
+      child: AspectRatio(
+        aspectRatio: 2,
+        child: Image.asset(
+          ImageController.userDateViewImage,
+          fit: BoxFit.cover,
+        ),
+      ),
     );
   }
 }

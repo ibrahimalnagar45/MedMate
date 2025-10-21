@@ -34,19 +34,22 @@ Future<void> serviceLocatorSetup() async {
   getIt.registerLazySingleton<UserCubit>(
     () => UserCubit(userRepo: getIt<UserRepository>()),
   );
-  getIt.registerLazySingleton<MedsCubit>(
+  getIt.registerFactory<MedsCubit>(
     () => MedsCubit(
       medsRepo: getIt<MedsRepository>(),
       userRepo: getIt<UserRepository>(),
     ),
   );
-  getIt.registerLazySingleton<TodayMedsCubit>(
+  getIt.registerFactory<TodayMedsCubit>(
     () => TodayMedsCubit(
       medsRepo: getIt<TodayMedRepo>(),
       userRepo: getIt<UserRepository>(),
     ),
   );
-  getIt.registerSingleton<LogsCubit>(
-    LogsCubit(userRepo: getIt<UserRepository>(), logsRepo: getIt<LogsRepo>()),
+  getIt.registerFactory<LogsCubit>(
+    () => LogsCubit(
+      userRepo: getIt<UserRepository>(),
+      logsRepo: getIt<LogsRepo>(),
+    ),
   );
 }
