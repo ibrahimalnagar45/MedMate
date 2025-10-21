@@ -90,15 +90,16 @@ class Crud {
     var logs = await getIt<LogsRepo>().getTodayLogs(userId);
     for (var med in maps) {
       MedModel temp = MedModel.fromMap(med);
-      if (temp.getNextTime()?.day == todayDate.day)
-      {  if (logs.any((l) {
+      if (temp.getNextTime()?.day == todayDate.day) {
+        if (logs.any((l) {
           if (l.status != StatusValues.taken) {
             return temp.id == l.medicationId;
           }
           return false;
         })) {
           todayMeds.add(temp);
-        }}
+        }
+      }
     }
 
     return todayMeds;
@@ -309,6 +310,15 @@ class Crud {
       where: '${MedsTable.medId} = ?',
       whereArgs: [MedModel.newMed().id],
     );
+  }
+
+  Future<void> updateNextTime(MedModel med) async {
+    final Database db = await SqHelper().getMedsDbInstance();
+    await db.update(MedsTable.tableName, {
+      MedsTable.mednextTime: med.nextTime?.add(
+        Duration(hours: med.frequency!.toInt()),
+      ),
+    });
   }
 
   Future<int> updateUserInfo(MedModel todo) async {
