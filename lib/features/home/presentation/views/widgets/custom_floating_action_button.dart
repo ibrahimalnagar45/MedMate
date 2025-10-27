@@ -22,12 +22,12 @@ class CustomFloatingActionButton extends StatelessWidget {
       onPressed: () {
         showModalBottomSheet(
           context: context,
-          isDismissible: false ,
-          
+          isDismissible: false,
+
           isScrollControlled: true,
           builder: (context) {
-            return BlocProvider(
-              create: (context) => medCubit,
+            return BlocProvider.value(
+              value: medCubit,
               child: AddMedModalBottomSheet(formKey: _formKey),
             );
           },

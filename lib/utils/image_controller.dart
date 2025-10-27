@@ -5,7 +5,7 @@ class ImageController {
   static const String heartIcon = 'assets/icons/heart.svg';
 
   static const String onBoardingImage1 = 'assets/images/onboardingImage1.png';
-  static const String onBoardingImage2 = 'assets/images/onBoardingImage2.png';
+  static const String onBoardingImage2 = 'assets/images/onBoardingImage2.jpg';
   static const String onBoardingImage3 = 'assets/images/onBoardingImage3.jpg';
   static const String splashLottieImage = 'assets/images/splash_screen.json';
 

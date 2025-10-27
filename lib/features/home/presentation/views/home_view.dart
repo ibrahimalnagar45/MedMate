@@ -10,7 +10,7 @@ class HomeView extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
-      create: (context) => getIt<MedsCubit>()..getUserAllMeds(),
+      create: (context) => getIt<MedsCubit>(),
 
       child: HomeViewBody(),
     );

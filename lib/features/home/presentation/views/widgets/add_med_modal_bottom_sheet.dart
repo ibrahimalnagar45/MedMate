@@ -1,5 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/functions/get_localized_med_type.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/core/services/local_notification.dart';
@@ -49,7 +50,8 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
   late Person? currentUser;
   @override
   void initState() {
-    medsCubit = getIt<MedsCubit>();
+    medsCubit = context.read<MedsCubit>(); 
+
     doseEntries = [];
     medCreatedAt = DateTime.now();
     Future.sync(() async {
@@ -163,7 +165,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
 
                   title: S.of(context).AddMedicine,
                   strColor: AppColors.white,
-                  onPressed: () async {
+                  onPressed: () {
                     if (widget._formKey.currentState!.validate()) {
                       if (medType == null ||
                           medName == null ||
@@ -186,27 +188,28 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
 
                         id: ++_notificationId,
                       );
+                      Future.sync(() async {
+                        await medsCubit.insertMed(med, currentUser!.id!);
+                        await getIt<LogsRepo>().insertLog(
+                          LogModel(
+                            medicationId: med.id!,
+                            date: DateTime.now().toString(),
+                            status: StatusValues.pending,
+                          ),
+                        );
+                        await medsCubit.getUserAllMeds();
 
-                      await medsCubit.insertMed(med, currentUser!.id!);
-                      await getIt<LogsRepo>().insertLog(
-                        LogModel(
-                          medicationId: med.id!,
-                          date: DateTime.now().toString(),
-                          status: StatusValues.pending,
-                        ),
-                      );
-                      await medsCubit.getUserAllMeds();
-
-                      await LocalNotification(
-                        navigatorKey: navigatorKey,
-                      ).showScheduledRepeatedNotification(
-                        id: med.id!,
-                        title:
-                            'this is the time to take ur medicine ${getIt<SharedPreferences>().getString(SharedPrefrenceDb.username)}  ${med.name}',
-                        body:
-                            'this is the time to take ur medicine ${med.name}',
-                        date: med.frequency,
-                      );
+                        await LocalNotification(
+                          navigatorKey: navigatorKey,
+                        ).showScheduledRepeatedNotification(
+                          id: med.id!,
+                          title:
+                              'this is the time to take ur medicine ${getIt<SharedPreferences>().getString(SharedPrefrenceDb.username)}  ${med.name}',
+                          body:
+                              'this is the time to take ur medicine ${med.name}',
+                          date: med.frequency,
+                        );
+                      });
 
                       Context(context).pop();
                     }

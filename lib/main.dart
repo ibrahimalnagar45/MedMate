@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
- import 'package:flutter_localization/flutter_localization.dart';
+import 'package:flutter_localization/flutter_localization.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/custom_bloc_observal.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
@@ -10,6 +10,7 @@ import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:workmanager/workmanager.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'utils/app_fonts.dart';
@@ -26,7 +27,6 @@ final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
-    
     WidgetsFlutterBinding.ensureInitialized();
     await serviceLocatorSetup();
     Person? currentUser = await getIt<UserRepository>().getCurrentUser();
@@ -86,7 +86,7 @@ Future<void> _initializeAppServices() async {
   Workmanager().registerOneOffTask("firt_task", "Update_Med_Dates");
 
   Bloc.observer = CustomBlocObserval();
-  // delelteEverthing();
+  delelteEverthing();
 }
 
 ThemeData _buildTheme() {
@@ -103,11 +103,11 @@ ThemeData _buildTheme() {
 
 void delelteEverthing() {
   Crud.instance.deleteAllMeds();
-  // Crud.instance.deleteAllusers();
+  Crud.instance.deleteAllusers();
   Crud.instance.closeMedsDb();
-  // Crud.instance.closeUsersDb();
+  Crud.instance.closeUsersDb();
   Crud.instance.deleteAllLogs();
   Crud.instance.closeLogsDb();
-  // Crud.instance.deleteMedsDatabaseFile();
-  // getIt<SharedPreferences>().clear();
+  Crud.instance.deleteMedsDatabaseFile();
+  getIt<SharedPreferences>().clear();
 }

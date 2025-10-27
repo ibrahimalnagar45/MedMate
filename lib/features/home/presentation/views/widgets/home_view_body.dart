@@ -20,10 +20,13 @@ class HomeViewBody extends StatefulWidget {
 
 class _HomeViewBodyState extends State<HomeViewBody> {
   final GlobalKey<FormState> _formKey = GlobalKey<FormState>();
-  final MedsCubit medCubit = getIt<MedsCubit>();
+  late MedsCubit medCubit;
   @override
   void initState() {
-    medCubit.getUserAllMeds();
+    medCubit = context.read<MedsCubit>();
+    Future.sync(() async {
+      await medCubit.getUserAllMeds();
+    });
     super.initState();
   }
 

@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
+import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/utils/constants.dart';
 import 'package:midmate/utils/extension_fun.dart';
@@ -35,10 +36,10 @@ class _OnboardingViewState extends State<OnboardingView>
     timer = Timer.periodic(Duration(seconds: 2), (timer) => navigation());
 
     Future.sync(() async {
-      currentUser = await getIt<UserCubit>().getCurrentUser();
+      currentUser = await getIt<UserRepository>().getCurrentUser();
     });
 
-    getIt<UserCubit>().getAllUsers().then((values) {
+    getIt<UserRepository>().getAllusers().then((values) {
       users = values;
     });
 

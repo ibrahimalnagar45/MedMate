@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
+import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_button.dart';
 import 'package:midmate/features/user_data/presentation/views/widgets/custom_heart_icon.dart';
@@ -152,10 +153,10 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                             ),
 
                             CustomButton(
-                              onPressed: () {
+                              onPressed: () async {
                                 if (userName != null && dateOfBirth != null) {
                                   if (_formKey.currentState!.validate()) {
-                                    saveUser(context);
+                                    await saveUser(context);
 
                                     Navigator.of(context).pushReplacement(
                                       MaterialPageRoute(
@@ -199,7 +200,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
     );
   }
 
-  void saveUser(BuildContext thisContext) async {
+  Future<void> saveUser(BuildContext thisContext) async {
     log('save user is called');
     log('user name and date of birth');
     log(userName!);
@@ -219,8 +220,8 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
       name: userName,
       isCurrentUser: 1,
     );
-    await getIt<UserCubit>().addNewUser(currentUser);
-    Crud.instance.insertUser(currentUser);
+    await getIt<UserRepository>().insertUser(currentUser);
+    // await Crud.instance.insertUser(currentUser);
   }
 }
 
