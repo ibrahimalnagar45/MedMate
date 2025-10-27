@@ -14,6 +14,7 @@
   "appBarTitle": "{appBarTitle}",
   "home": "Home",
   "todayMeds": "Today",
+  "todayLogs": "Today Logs",
   "Add": "Add",
   "medName": "{medName}",
   "medDescription": "{medDescription}",

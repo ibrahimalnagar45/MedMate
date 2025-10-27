@@ -50,7 +50,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
   late Person? currentUser;
   @override
   void initState() {
-    medsCubit = context.read<MedsCubit>(); 
+    medsCubit = context.read<MedsCubit>();
 
     doseEntries = [];
     medCreatedAt = DateTime.now();
@@ -223,35 +223,30 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
     );
   }
 
-  createTypesEnteries(BuildContext context) {
-    return List.generate(MedType.values.length, (index) {
-      return DropdownMenuEntry(
-        label: getLocalizedMedType(MedType.values[index], context),
-        value: MedType.values[index],
-      );
-    });
-  }
+  List<DropdownMenuEntry<MedType>> createTypesEnteries(BuildContext context) =>
+      List.generate(MedType.values.length, (index) {
+        return DropdownMenuEntry(
+          label: getLocalizedMedType(MedType.values[index], context),
+          value: MedType.values[index],
+        );
+      });
 
-  getStartDateEntries() {
-    return [
-      DropdownMenuEntry(label: S.of(context).now, value: 0),
-      DropdownMenuEntry(label: S.of(context).after6Hours, value: 6),
-      DropdownMenuEntry(label: S.of(context).after8Hours, value: 8),
-      DropdownMenuEntry(label: S.of(context).after12Hours, value: 12),
-      DropdownMenuEntry(label: S.of(context).afterADay, value: 24),
-    ];
-  }
+  List<DropdownMenuEntry<int>> getStartDateEntries() => [
+    DropdownMenuEntry(label: S.of(context).now, value: 0),
+    DropdownMenuEntry(label: S.of(context).after6Hours, value: 6),
+    DropdownMenuEntry(label: S.of(context).after8Hours, value: 8),
+    DropdownMenuEntry(label: S.of(context).after12Hours, value: 12),
+    DropdownMenuEntry(label: S.of(context).afterADay, value: 24),
+  ];
 
-  getDurationEntries(context) {
-    return [
-      DropdownMenuEntry(value: 6, label: S.of(context).every6Hours),
-      DropdownMenuEntry(value: 8, label: S.of(context).every8Hours),
-      DropdownMenuEntry(value: 12, label: S.of(context).every12Hours),
-      DropdownMenuEntry(value: 24, label: S.of(context).everyDay),
-    ];
-  }
+  List<DropdownMenuEntry<int>> getDurationEntries(BuildContext context) => [
+    DropdownMenuEntry(value: 6, label: S.of(context).every6Hours),
+    DropdownMenuEntry(value: 8, label: S.of(context).every8Hours),
+    DropdownMenuEntry(value: 12, label: S.of(context).every12Hours),
+    DropdownMenuEntry(value: 24, label: S.of(context).everyDay),
+  ];
 
-  getMedDoseEntries(MedType? medType) {
+  List<DropdownMenuEntry<int>> getMedDoseEntries(MedType? medType) {
     if (medType == MedType.pill) {
       return List.generate(4, (index) {
         return DropdownMenuEntry(

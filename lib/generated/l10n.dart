@@ -160,6 +160,11 @@ class S {
     return Intl.message('Today', name: 'todayMeds', desc: '', args: []);
   }
 
+  /// `Today Logs`
+  String get todayLogs {
+    return Intl.message('Today Logs', name: 'todayLogs', desc: '', args: []);
+  }
+
   /// `Add`
   String get Add {
     return Intl.message('Add', name: 'Add', desc: '', args: []);

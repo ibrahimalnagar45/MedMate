@@ -20,7 +20,9 @@ class _AllLogsListViewState extends State<AllLogsListView> {
   Person? currentUser;
   @override
   void initState() {
-    getTodayLogs();
+    Future.sync(() async {
+      await getTodayLogs();
+    });
 
     super.initState();
   }
@@ -32,14 +34,14 @@ class _AllLogsListViewState extends State<AllLogsListView> {
       itemBuilder: (context, index) {
         return Center(
           child: Text(
-            "${todayLogs[index].date} \t ${todayLogs[index].status} ",
+            "${todayLogs[index].date} \t ${todayLogs[index].status}  \t ${todayLogs[index].medicationId} ",
           ),
         );
       },
     );
   }
 
-  void getTodayLogs() async {
+  Future<void> getTodayLogs() async {
     currentUser = await getIt<UserRepository>().getCurrentUser();
     todayLogs = await getIt<LogsRepo>().getTodayLogs(currentUser!.id!);
     for (var log in todayLogs) {

@@ -15,6 +15,7 @@
   "appBarTitle": "{appBarTitle}",
   "home": "الرئيسية", 
   "todayMeds": " اليوم",
+  "todayLogs": "سجلات اليوم",
   "medName": "{medName}",
   "medDescription": "{medDescription}",
   "medType": "{medType}",
