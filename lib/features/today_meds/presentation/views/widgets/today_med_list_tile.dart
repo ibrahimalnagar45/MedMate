@@ -1,4 +1,3 @@
-
 import 'package:flutter/material.dart';
 import 'package:midmate/core/functions/get_localized_med_type.dart';
 import 'package:midmate/features/home/presentation/views/widgets/custom_med_type_icon.dart';
@@ -34,6 +33,7 @@ class MedTileContent extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       height: 60,
+      // width: 100,
       decoration: BoxDecoration(
         color: AppColors.blue,
         borderRadius: BorderRadius.circular(10),
@@ -49,7 +49,7 @@ class MedTileContent extends StatelessWidget {
             child: Text(
               medModel.startDate == null
                   ? ''
-                  : " ${medModel.getFormattedNextTime()}",
+                  : "     ${medModel.getFormattedNextTime()}",
               style: TextStyles.regWhtieTextStyle,
               textAlign:
                   LocaleUtils.isArabic() ? TextAlign.left : TextAlign.right,

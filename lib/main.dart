@@ -76,6 +76,7 @@ class MyApp extends StatelessWidget {
 }
 
 Future<void> _initializeAppServices() async {
+
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterLocalization.instance.ensureInitialized();
   await serviceLocatorSetup();
@@ -86,7 +87,9 @@ Future<void> _initializeAppServices() async {
   Workmanager().registerOneOffTask("firt_task", "Update_Med_Dates");
 
   Bloc.observer = CustomBlocObserval();
+
   delelteEverthing();
+
 }
 
 ThemeData _buildTheme() {

@@ -142,20 +142,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
             onTap: () async {
-              await getIt<MedsRepository>().getAllMeds(currentUser!.id!);
-              var logs = await getIt<LogsRepo>().getAllLogs(currentUser!.id!);
-              log('logs ${logs}');
-
-              // log(logs.toString());
-
-              // log(
-              //   Crud.instance
-              //       .getUserTodayMeds(userId: currentUser!.id!)
-              //       .toString(),
-              // );
-              // log('todayMeds ${TodayMedsCubit.todayMeds.toString()}');
-
-              // log('takenMeds${TodayMedsCubit.takenMeds.toString()}');
+              var logs = await getIt<LogsCubit>().getUserLogs();
+              log(logs.toString());
             },
             child: CircleAvatar(
               backgroundColor: AppColors.blue,

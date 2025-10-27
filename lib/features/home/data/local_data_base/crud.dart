@@ -134,6 +134,7 @@ class Crud {
     for (var logItem in maps) {
       logs.add(LogModel.fromMap(logItem));
     }
+
     return logs;
   }
 
@@ -161,13 +162,13 @@ class Crud {
 
   Future<int> updateLog({required int logId, required String newStatus}) async {
     final db = await SqHelper().getLogsDbInstance();
-
+    log('the log is passed is ${logId}');
     int done;
 
     done = await db.update(
       LogsTable.tableName,
       {LogsTable.logStatus: newStatus},
-      where: '$logId = ? ',
+      where: '${LogsTable.logId} = ?  ',
       whereArgs: [logId],
     );
 

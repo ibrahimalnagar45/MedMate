@@ -19,11 +19,10 @@ class ChartViewBody extends StatefulWidget {
 }
 
 class _ChartViewBodyState extends State<ChartViewBody> {
-   
   final List<MedModel> today = TodayMedsCubit.todayMeds;
   final List<MedModel> taken = TodayMedsCubit.takenMeds;
   List<LogModel> logs = [];
-    Map<String, int> takenMap = {
+  Map<String, int> takenMap = {
     'Mon': 0,
     'Tue': 0,
     'Wed': 0,
@@ -41,12 +40,11 @@ class _ChartViewBodyState extends State<ChartViewBody> {
     'Sat': 0,
     'Sun': 0,
   };
- 
 
   @override
   void initState() {
     _getData();
-     super.initState();
+    super.initState();
   }
 
   void _getData() async {
@@ -105,45 +103,56 @@ class MedsBarChart extends StatelessWidget {
   Widget build(BuildContext context) {
     final days = takenPerDay.keys.toList();
 
-    return BarChart(
-      curve: Curves.bounceIn,
-      BarChartData(
-        alignment: BarChartAlignment.spaceAround,
-        maxY: _getMaxY(),
-        barGroups: _buildBarGroups(days),
+    return SafeArea(
+      child: Padding(
+        padding: const EdgeInsets.only(top: 20),
+        child: BarChart(
+          curve: Curves.bounceIn,
+          BarChartData(
+            alignment: BarChartAlignment.spaceAround,
+            maxY: _getMaxY(),
+            barGroups: _buildBarGroups(days),
 
-        // ✅ Remove all borders
-        borderData: FlBorderData(show: false),
+            // ✅ Remove all borders
+            borderData: FlBorderData(show: false),
 
-        // ✅ Hide background grid
-        gridData: FlGridData(show: false),
+            // ✅ Hide background grid
+            gridData: FlGridData(show: false),
 
-        // ✅ Hide all titles except bottom (days)
-        titlesData: FlTitlesData(
-          leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          rightTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
-          bottomTitles: AxisTitles(
-            sideTitles: SideTitles(
-              showTitles: true,
-              getTitlesWidget: (value, meta) {
-                int index = value.toInt();
-                if (index < 0 || index >= days.length) return const SizedBox();
-                return Padding(
-                  padding: const EdgeInsets.only(top: 6.0),
-                  child: Text(
-                    days[index],
-                    style: const TextStyle(fontSize: 10, color: Colors.grey),
-                  ),
-                );
-              },
+            // ✅ Hide all titles except bottom (days)
+            titlesData: FlTitlesData(
+              leftTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              rightTitles: AxisTitles(
+                sideTitles: SideTitles(showTitles: false),
+              ),
+              topTitles: AxisTitles(sideTitles: SideTitles(showTitles: false)),
+              bottomTitles: AxisTitles(
+                sideTitles: SideTitles(
+                  showTitles: true,
+                  getTitlesWidget: (value, meta) {
+                    int index = value.toInt();
+                    if (index < 0 || index >= days.length)
+                      return const SizedBox();
+                    return Padding(
+                      padding: const EdgeInsets.only(top: 6.0),
+                      child: Text(
+                        days[index],
+                        style: const TextStyle(
+                          fontSize: 10,
+                          color: Colors.grey,
+                        ),
+                      ),
+                    );
+                  },
+                ),
+              ),
             ),
+
+            // ✅ Disable touch tooltips if you want a static display
+            barTouchData: BarTouchData(enabled: true),
+            backgroundColor: AppColors.grey,
           ),
         ),
-
-        // ✅ Disable touch tooltips if you want a static display
-        barTouchData: BarTouchData(enabled: true),
-        backgroundColor: AppColors.grey,
       ),
     );
   }
@@ -158,14 +167,14 @@ class MedsBarChart extends StatelessWidget {
         barsSpace: 2,
         barRods: [
           BarChartRodData(
-            toY: taken.toDouble(),
-            color: Colors.green,
+            toY: taken.toDouble() + missed.toDouble(),
+            color: Colors.yellow,
             width: 12,
             borderRadius: BorderRadius.circular(4),
           ),
           BarChartRodData(
-            toY: missed.toDouble(),
-            color: Colors.red,
+            toY: taken.toDouble(),
+            color: Colors.green,
             width: 12,
             borderRadius: BorderRadius.circular(4),
           ),

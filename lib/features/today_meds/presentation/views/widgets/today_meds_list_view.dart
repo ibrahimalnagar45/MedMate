@@ -64,9 +64,8 @@ class _TodayMedListState extends State<TodayMedList> {
   }
 
   Future<void> markAsTaken(MedModel med) async {
-    // List<LogModel> allLogs = await logRepo.getAllLogs(currentUser!.id!);
     LogModel? logModel = await logRepo.getlogByMed(med: med);
-
+    log('log id: ${logModel?.id}');
     await logRepo.updateLog(
       logId: logModel!.id!,
       newStatus: StatusValues.taken,
