@@ -19,7 +19,7 @@ class Person {
     );
   }
 
-  toMap() {
+Map<String,dynamic>  toMap() {
     return {
       UsersTable.isCurrentUser: isCurrentUser,
       // DbConstants.userId: id,

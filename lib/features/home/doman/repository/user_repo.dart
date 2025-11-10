@@ -6,4 +6,5 @@ abstract class UserRepository {
   Future<void> setCurrentUser(Person user);
   Future<Person?> getCurrentUser();
   Future<bool> isUserExist(Person user);
+  Future<void> updateUserInfo(UserModel user);
 }

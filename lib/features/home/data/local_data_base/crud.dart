@@ -310,7 +310,7 @@ class Crud {
       MedsTable.tableName,
       med.toMap(),
       where: '${MedsTable.medId} = ?',
-      whereArgs: [MedModel.newMed().id],
+      whereArgs: [med.id],
     );
   }
 
@@ -323,14 +323,14 @@ class Crud {
     });
   }
 
-  Future<int> updateUserInfo(MedModel todo) async {
+  Future<int> updateUserInfo(UserModel user) async {
     Database db = await SqHelper().getUsersDbInstance();
 
     return await db.update(
       UsersTable.tableName,
-      todo.toMap(),
+      user.toMap(),
       where: '${UsersTable.userId} = ?',
-      whereArgs: [Person().id],
+      whereArgs: [user.id],
     );
   }
 

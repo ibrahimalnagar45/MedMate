@@ -34,4 +34,9 @@ class UserRepoImpl implements UserRepository {
   Future<void> setCurrentUser(Person user) async {
     await crud.setCurrentUser(user);
   }
+
+  @override
+  Future<void> updateUserInfo(UserModel user) async {
+    await crud.updateUserInfo(user);
+  }
 }
