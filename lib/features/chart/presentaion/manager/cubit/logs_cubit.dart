@@ -44,13 +44,16 @@ class LogsCubit extends Cubit<LogsState> {
   // ToDo
   // create a fun to get today logs
   Future<void> updateLog({
-    required int logId,
+    required LogModel logModel,
     required String newStatus,
   }) async {
     emit(UpdateLogLoading());
 
     try {
-      int flag = await logsRepo.updateLog(logId: logId, newStatus: newStatus);
+      int flag = await logsRepo.updateLog(
+        logModel: logModel,
+        newStatus: newStatus,
+      );
       emit(UpdateLogSuccess(flag: flag));
     } catch (e) {
       emit(UpdateLogFaluire(errorMessage: e.toString()));

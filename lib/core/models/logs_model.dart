@@ -59,7 +59,7 @@ class LogModel {
   String getWeekDay() {
     const names = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
 
-    return names[DateTime.parse(date).weekday - 1];
+    return names[DateTime.parse(takenTime?? date).weekday - 1];
   }
 }
 

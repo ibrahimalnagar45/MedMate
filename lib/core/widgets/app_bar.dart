@@ -3,20 +3,16 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/chart/presentaion/manager/cubit/logs_cubit.dart';
-import 'package:midmate/features/home/data/local_data_base/crud.dart';
-import 'package:midmate/features/home/doman/repository/meds_repo.dart';
-import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
-import 'package:midmate/features/today_meds/doman/today_meds_repo.dart';
-import 'package:midmate/features/today_meds/presentation/manager/cubit/today_meds_cubit.dart';
+import 'package:midmate/features/settings/presentaion/views/settings_view.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/text_styles.dart';
-import '../../features/chart/doman/repository/logs_repo.dart';
 import '../../utils/extension_fun.dart';
 import '../../utils/models/user_model.dart';
 import '../../features/user_data/presentation/views/add_new_user_view.dart';
+import 'user_account_image.dart';
 
 class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
   const CustomAppBar({
@@ -142,16 +138,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
             onTap: () async {
-              var logs = await getIt<LogsCubit>().getUserLogs();
-              log(logs.toString());
+              // var logs = await getIt<LogsCubit>().getUserLogs();
+              // log(logs.toString());
+
+              context.goTo(SettingsView());
             },
-            child: CircleAvatar(
-              backgroundColor: AppColors.blue,
-              child: Text(
-                currentUser == null ? '' : currentUser!.name![0],
-                style: TextStyle(color: AppColors.white),
-              ),
-            ),
+            child: UserAccountImage(currentUser: currentUser),
           ),
         ),
         actionsPadding: const EdgeInsets.only(right: 10),
@@ -184,3 +176,4 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return position;
   }
 }
+

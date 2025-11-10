@@ -216,7 +216,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
     );
 
     final Person currentUser = Person(
-      age: dateOfBirth,
+      birthDayDate: dateOfBirth,
       name: userName,
       isCurrentUser: 1,
     );

@@ -40,9 +40,11 @@ class LogsRepoImpl extends LogsRepo {
   }
 
   @override
-  Future<int> updateLog({required int logId, required String newStatus}) async {
-    
-    int flag = await crud.updateLog(logId: logId, newStatus: newStatus);
+  Future<int> updateLog({
+    required LogModel logModel,
+    required String newStatus,
+  }) async {
+    int flag = await crud.updateLog(logModel: logModel, newStatus: newStatus);
     return flag;
   }
 

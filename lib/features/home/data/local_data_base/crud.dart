@@ -44,7 +44,7 @@ class Crud {
     final result = await db.query(
       UsersTable.tableName,
       where: 'name = ? AND age = ?',
-      whereArgs: [user.name, user.age],
+      whereArgs: [user.name, user.birthDayDate],
     );
     return result.isNotEmpty;
   }
@@ -139,7 +139,6 @@ class Crud {
   }
 
   Future<LogModel?> getLog({required int logId}) async {
-    Database db = await SqHelper().getLogsDbInstance();
     Person? user = await getCurrentUser();
     List<LogModel> logs = await getUserLogs(userId: user!.id!);
 
@@ -148,7 +147,6 @@ class Crud {
   }
 
   Future<LogModel?> getLogByMed({required MedModel med}) async {
-    Database db = await SqHelper().getLogsDbInstance();
     Person? user = await getCurrentUser();
     List<LogModel> logs = await getUserLogs(userId: user!.id!);
 
@@ -160,16 +158,19 @@ class Crud {
     return log;
   }
 
-  Future<int> updateLog({required int logId, required String newStatus}) async {
+  Future<int> updateLog({
+    required LogModel logModel,
+    required String newStatus,
+  }) async {
     final db = await SqHelper().getLogsDbInstance();
-    log('the log is passed is ${logId}');
+    log('the log is passed is $logModel');
     int done;
 
     done = await db.update(
       LogsTable.tableName,
       {LogsTable.logStatus: newStatus},
-      where: '${LogsTable.logId} = ?  ',
-      whereArgs: [logId],
+      where: '${LogsTable.logId} = ? And ${MedsTable.medId} = ?',
+      whereArgs: [logModel.id, logModel.medicationId],
     );
 
     return done;

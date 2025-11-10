@@ -54,20 +54,19 @@ class _TodayMedListState extends State<TodayMedList> {
     Future.sync(() async {
       currentUser = await userRepo.getCurrentUser();
     });
-    // medsCubit.getTodayMeds();
+
     todayMeds = List.from(TodayMedsCubit.todayMeds);
     takenMeds = List.from(TodayMedsCubit.takenMeds);
 
     log('today meds length: ${todayMeds.length}');
     log('taken meds length: ${takenMeds.length}');
-    // for (var log in ) {}
   }
 
   Future<void> markAsTaken(MedModel med) async {
     LogModel? logModel = await logRepo.getlogByMed(med: med);
     log('log id: ${logModel?.id}');
     await logRepo.updateLog(
-      logId: logModel!.id!,
+      logModel: logModel!,
       newStatus: StatusValues.taken,
     );
     setState(() {
@@ -81,7 +80,7 @@ class _TodayMedListState extends State<TodayMedList> {
   Future<void> undoTaken(MedModel med) async {
     LogModel? logModel = await logRepo.getlogByMed(med: med);
     await logRepo.updateLog(
-      logId: logModel!.id!,
+      logModel: logModel !,
       newStatus: StatusValues.pending,
     );
     setState(() {

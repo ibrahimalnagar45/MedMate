@@ -18,6 +18,7 @@ class DetailsView extends StatelessWidget {
       appBar: CustomAppBar(
         screenName: S.current.description,
         context: context,
+        
         // currentUser: getIt<UserCubit>().getCurrentUser(),
       ),
       body: SafeArea(child: DetailsViewBody(med: med)),

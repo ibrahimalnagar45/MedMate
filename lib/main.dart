@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:midmate/core/managers/mode_cubit/mode_cubit.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/custom_bloc_observal.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
@@ -45,7 +46,15 @@ void callbackDispatcher() {
 void main() async {
   await _initializeAppServices();
 
-  runApp(const MyApp());
+  runApp(
+    MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (context) => ModeCubit()..getMode()),
+        BlocProvider(create: (context) => getIt<UserCubit>()),
+      ],
+      child: const MyApp(),
+    ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -53,30 +62,67 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => getIt<UserCubit>(),
-      child: MaterialApp(
-        locale: const Locale('ar'),
-        localizationsDelegates: const [
-          S.delegate,
-          GlobalMaterialLocalizations.delegate,
-          GlobalWidgetsLocalizations.delegate,
-          GlobalCupertinoLocalizations.delegate,
-        ],
-        supportedLocales: S.delegate.supportedLocales,
-        scaffoldMessengerKey: scaffoldMessengerKey,
-        navigatorKey: navigatorKey,
-        debugShowCheckedModeBanner: false,
-        title: 'Remind Me',
-        theme: _buildTheme(),
-        home: SplashView(),
+    return BlocBuilder<ModeCubit, ModeState>(
+      builder: (context, state) {
+        if (state is Modechanged) {
+          return MaterialApp(
+            locale: const Locale('ar'),
+            localizationsDelegates: const [
+              S.delegate,
+              GlobalMaterialLocalizations.delegate,
+              GlobalWidgetsLocalizations.delegate,
+              GlobalCupertinoLocalizations.delegate,
+            ],
+            supportedLocales: S.delegate.supportedLocales,
+            scaffoldMessengerKey: scaffoldMessengerKey,
+            navigatorKey: navigatorKey,
+            debugShowCheckedModeBanner: false,
+            title: 'Remind Me',
+            theme: _buildTheme(),
+            darkTheme: _buildDarkTheme(),
+            themeMode: state.mode == 'light' ? ThemeMode.light : ThemeMode.dark,
+            home: SplashView(),
+          );
+        }
+        return MaterialApp(
+          locale: const Locale('ar'),
+          localizationsDelegates: const [
+            S.delegate,
+            GlobalMaterialLocalizations.delegate,
+            GlobalWidgetsLocalizations.delegate,
+            GlobalCupertinoLocalizations.delegate,
+          ],
+          supportedLocales: S.delegate.supportedLocales,
+          scaffoldMessengerKey: scaffoldMessengerKey,
+          navigatorKey: navigatorKey,
+          debugShowCheckedModeBanner: false,
+          title: 'Remind Me',
+          theme: _buildTheme(),
+          themeMode: ThemeMode.light,
+          home: SplashView(),
+        );
+      },
+    );
+  }
+
+  ThemeData? _buildDarkTheme() {
+    return ThemeData(
+      brightness: Brightness.dark,
+
+      appBarTheme: AppBarTheme(
+        backgroundColor: Colors.blueGrey,
+        // data: AppBarThemeData(backgroundColor: Colors.blueGrey),
+        iconTheme: IconThemeData(color: Colors.black),
       ),
+      scaffoldBackgroundColor: Colors.grey,
+      primaryColor: AppColors.blue,
+      iconTheme: const IconThemeData(color: Colors.black),
+      textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.black)),
     );
   }
 }
 
 Future<void> _initializeAppServices() async {
-
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterLocalization.instance.ensureInitialized();
   await serviceLocatorSetup();
@@ -88,8 +134,7 @@ Future<void> _initializeAppServices() async {
 
   Bloc.observer = CustomBlocObserval();
 
-  delelteEverthing();
-
+  // delelteEverthing();
 }
 
 ThemeData _buildTheme() {

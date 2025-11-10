@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:intl/intl.dart';
 import 'package:midmate/core/functions/get_unique_id.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
@@ -24,8 +25,9 @@ class AddNewUserViewBody extends StatefulWidget {
 }
 
 class _AddNewUserViewBodyState extends State<AddNewUserViewBody> {
-  String? userName;
-  String? age;
+  String? userName, dateOfBirth;
+  DateTime? tempDateOfBirth;
+
   final _formKey = GlobalKey<FormState>();
   @override
   Widget build(BuildContext context) {
@@ -78,12 +80,59 @@ class _AddNewUserViewBodyState extends State<AddNewUserViewBody> {
               SizedBox(height: 15),
               CustomLabel(title: S.of(context).userAge),
 
-              AgeDropDownMenu(
-                onSelected: (value) {
-                  age = value;
-                  setState(() {});
+              GestureDetector(
+                onTap: () async {
+                  DateTime? date = await showDatePicker(
+                    context: context,
+                    initialDatePickerMode: DatePickerMode.year,
+
+                    locale: Locale('en'),
+                    initialDate:
+                        tempDateOfBirth == null
+                            ? DateTime.now()
+                            : tempDateOfBirth!,
+                    initialEntryMode: DatePickerEntryMode.inputOnly,
+
+                    firstDate: DateTime(2000),
+                    lastDate: DateTime(DateTime.now().year + 1),
+                  );
+                  if (date != null) {
+                    tempDateOfBirth = date;
+                    dateOfBirth =
+                        DateFormat('yyyy-MM-dd').format(date).toString();
+                    setState(() {});
+                  }
                 },
+                child: Container(
+                  margin: EdgeInsets.only(bottom: 10),
+                  padding: EdgeInsets.only(right: 10, left: 10),
+
+                  height: 60,
+                  width: context.width(),
+                  decoration: BoxDecoration(
+                    color: AppColors.grey,
+                    borderRadius: BorderRadius.circular(10),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Text(
+                        dateOfBirth == null
+                            ? S.of(context).userAge
+                            : dateOfBirth!,
+                        style: TextStyles.hintTextStyle,
+                      ),
+                    ],
+                  ),
+                ),
               ),
+
+              // AgeDropDownMenu(
+              //   onSelected: (value) {
+              //     age = value;
+              //     setState(() {});
+              //   },
+              // ),
               SizedBox(height: 80),
 
               CustomButton(
@@ -93,12 +142,16 @@ class _AddNewUserViewBodyState extends State<AddNewUserViewBody> {
                 onPressed: () {
                   if (_formKey.currentState!.validate()) {
                     getIt<UserCubit>().addNewUser(
-                      Person(name: userName!, age: age!, isCurrentUser: 1),
+                      Person(
+                        name: userName!,
+                        birthDayDate: dateOfBirth!,
+                        isCurrentUser: 1,
+                      ),
                     );
 
                     Future.delayed(Duration(seconds: 1), () {
                           getIt<UserCubit>().setCurrentUser(
-                            Person(name: userName!, age: age!),
+                            Person(name: userName!, birthDayDate: dateOfBirth!),
                           );
                         })
                         .then((_) {
