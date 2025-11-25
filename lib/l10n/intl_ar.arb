@@ -61,6 +61,13 @@
 
   "pleaseAddAllInfo": " يرجى ادخال جميع المعلومات",
 
+  "AboutSection": "حول التطبيق",
+  "TermsAndPolicySection": "الشروط والسياسات",
+  "NotificationSound":" صوت الاشعارات",
+  "theme": "السطوع",  
+
+
+
 
   "pill": "قرص",
   "powder": "مسحوق",

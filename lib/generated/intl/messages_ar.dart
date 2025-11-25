@@ -44,9 +44,14 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "AboutSection": MessageLookupByLibrary.simpleMessage("حول التطبيق"),
     "Add": MessageLookupByLibrary.simpleMessage("اضافة"),
     "AddMedicine": MessageLookupByLibrary.simpleMessage("اضافة الدواء"),
     "NoDescription": MessageLookupByLibrary.simpleMessage("لا يوجد وصف"),
+    "NotificationSound": MessageLookupByLibrary.simpleMessage(" صوت الاشعارات"),
+    "TermsAndPolicySection": MessageLookupByLibrary.simpleMessage(
+      "الشروط والسياسات",
+    ),
     "after12Hours": MessageLookupByLibrary.simpleMessage("بعد 12 ساعة"),
     "after6Hours": MessageLookupByLibrary.simpleMessage("بعد 6 ساعات"),
     "after8Hours": MessageLookupByLibrary.simpleMessage("بعد 8 ساعات"),
@@ -106,6 +111,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("تخطي"),
     "startDate": MessageLookupByLibrary.simpleMessage("تاريخ البدء"),
     "syrup": MessageLookupByLibrary.simpleMessage("شراب"),
+    "theme": MessageLookupByLibrary.simpleMessage("السطوع"),
     "title": MessageLookupByLibrary.simpleMessage("اسم الدواء"),
     "todayLogs": MessageLookupByLibrary.simpleMessage("سجلات اليوم"),
     "todayMeds": MessageLookupByLibrary.simpleMessage(" اليوم"),

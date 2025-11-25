@@ -8,6 +8,8 @@ import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
 
+import '../../../../../generated/l10n.dart';
+
 /*
  User info (photo, name, birthday, edit)       Done 
 
@@ -62,9 +64,8 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
               ),
               leading: IconButton(
                 padding: EdgeInsets.all(0),
-               
-                onPressed: () {
-                },
+
+                onPressed: () {},
                 icon: Icon(Icons.edit),
               ),
             ),
@@ -73,7 +74,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
 
             ListTile(
               title: SettingItemWidget(
-                child: Text('Theme', textAlign: TextAlign.center),
+                child: Text(S.current.theme, textAlign: TextAlign.center),
               ),
               leading: Switch(
                 activeThumbColor: AppColors.teal,
@@ -85,7 +86,10 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
             // add notification sound picker
             ListTile(
               title: SettingItemWidget(
-                child: Text('Notification Sound', textAlign: TextAlign.center),
+                child: Text(
+                  S.current.NotificationSound,
+                  textAlign: TextAlign.center,
+                ),
               ),
               leading: IconButton(
                 padding: EdgeInsets.all(0),
@@ -98,12 +102,15 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
 
             // terms and policy
             SettingItemWidget(
-              child: Text('Terms and Policy', textAlign: TextAlign.center),
+              child: Text(
+                S.current.TermsAndPolicySection,
+                textAlign: TextAlign.left,
+              ),
             ),
 
             // about section
             SettingItemWidget(
-              child: Text('About', textAlign: TextAlign.center),
+              child: Text(S.current.AboutSection, textAlign: TextAlign.left),
             ),
             //
           ],

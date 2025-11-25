@@ -44,9 +44,16 @@ class MessageLookup extends MessageLookupByLibrary {
 
   final messages = _notInlinedMessages(_notInlinedMessages);
   static Map<String, Function> _notInlinedMessages(_) => <String, Function>{
+    "AboutSection": MessageLookupByLibrary.simpleMessage("About the App"),
     "Add": MessageLookupByLibrary.simpleMessage("Add"),
     "AddMedicine": MessageLookupByLibrary.simpleMessage("Add Medicine"),
     "NoDescription": MessageLookupByLibrary.simpleMessage("No description"),
+    "NotificationSound": MessageLookupByLibrary.simpleMessage(
+      "Notification Sound",
+    ),
+    "TermsAndPolicySection": MessageLookupByLibrary.simpleMessage(
+      "Terms and Policy",
+    ),
     "after12Hours": MessageLookupByLibrary.simpleMessage("After 12 Hours"),
     "after6Hours": MessageLookupByLibrary.simpleMessage("After 6 Hours"),
     "after8Hours": MessageLookupByLibrary.simpleMessage("After 8 Hours"),
@@ -108,6 +115,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "skip": MessageLookupByLibrary.simpleMessage("Skip"),
     "startDate": MessageLookupByLibrary.simpleMessage("start date"),
     "syrup": MessageLookupByLibrary.simpleMessage("syrup"),
+    "theme": MessageLookupByLibrary.simpleMessage("Theme"),
     "title": MessageLookupByLibrary.simpleMessage("medicine name"),
     "todayLogs": MessageLookupByLibrary.simpleMessage("Today Logs"),
     "todayMeds": MessageLookupByLibrary.simpleMessage("Today"),

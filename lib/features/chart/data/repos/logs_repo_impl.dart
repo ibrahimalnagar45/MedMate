@@ -34,7 +34,7 @@ class LogsRepoImpl extends LogsRepo {
     List<LogModel> logs = await crud.getUserLogs(userId: userId);
     List<LogModel> todayLogs =
         logs
-            .where((log) => log.date.contains(DateTime.now().day.toString()))
+            .where((log) =>    log.date.contains(DateTime.now().day.toString()))
             .toList();
     return todayLogs;
   }

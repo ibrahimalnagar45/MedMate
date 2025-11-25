@@ -63,6 +63,11 @@
   "AddMedicine":"Add Medicine",
 
 
+  "AboutSection": "About the App",
+  "TermsAndPolicySection": "Terms and Policy",
+  "NotificationSound":"Notification Sound",
+  "theme": "Theme",  
+
 
   "pill": "pill",
   "powder": "powder",

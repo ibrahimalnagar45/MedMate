@@ -440,6 +440,41 @@ class S {
     );
   }
 
+  /// `About the App`
+  String get AboutSection {
+    return Intl.message(
+      'About the App',
+      name: 'AboutSection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Terms and Policy`
+  String get TermsAndPolicySection {
+    return Intl.message(
+      'Terms and Policy',
+      name: 'TermsAndPolicySection',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Notification Sound`
+  String get NotificationSound {
+    return Intl.message(
+      'Notification Sound',
+      name: 'NotificationSound',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Theme`
+  String get theme {
+    return Intl.message('Theme', name: 'theme', desc: '', args: []);
+  }
+
   /// `pill`
   String get pill {
     return Intl.message('pill', name: 'pill', desc: '', args: []);
