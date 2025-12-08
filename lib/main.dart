@@ -3,6 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:midmate/core/managers/mode_cubit/mode_cubit.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
+import 'package:midmate/core/themes/app_bar_themes.dart';
+import 'package:midmate/core/themes/icon_button_themes.dart';
+import 'package:midmate/core/themes/icon_themes.dart';
+import 'package:midmate/core/themes/switch_themes.dart';
+import 'package:midmate/core/themes/text_themes.dart';
 import 'package:midmate/custom_bloc_observal.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/home/doman/repository/user_repo.dart';
@@ -78,7 +83,8 @@ class MyApp extends StatelessWidget {
             navigatorKey: navigatorKey,
             debugShowCheckedModeBanner: false,
             title: 'Remind Me',
-            theme: _buildTheme(),
+            theme:
+                state.mode == 'light' ? _buildLightTheme() : _buildDarkTheme(),
             darkTheme: _buildDarkTheme(),
             themeMode: state.mode == 'light' ? ThemeMode.light : ThemeMode.dark,
             home: SplashView(),
@@ -97,29 +103,68 @@ class MyApp extends StatelessWidget {
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           title: 'Remind Me',
-          theme: _buildTheme(),
+          theme: _buildLightTheme(),
           themeMode: ThemeMode.light,
           home: SplashView(),
         );
       },
     );
   }
+}
 
-  ThemeData? _buildDarkTheme() {
-    return ThemeData(
-      brightness: Brightness.dark,
+// ThemeData? _buildDarkTheme() {
+//   return ThemeData(
+//     brightness: Brightness.dark,
 
-      appBarTheme: AppBarTheme(
-        backgroundColor: Colors.blueGrey,
-        // data: AppBarThemeData(backgroundColor: Colors.blueGrey),
-        iconTheme: IconThemeData(color: Colors.black),
-      ),
-      scaffoldBackgroundColor: Colors.grey,
-      primaryColor: AppColors.blue,
-      iconTheme: const IconThemeData(color: Colors.black),
-      textTheme: const TextTheme(bodyMedium: TextStyle(color: Colors.black)),
-    );
-  }
+//     appBarTheme: AppBarThemes.darkAppBarTheme,
+
+//     scaffoldBackgroundColor: AppColors.scaffoldDarkBgColor,
+//     primaryColor: AppColors.blue,
+//     iconButtonTheme: IconButtonThemes.darkIconButtonTheme,
+//     iconTheme: IconThemes.darkIconTheme,
+//     switchTheme: AppSwitchTheme.darkSwitchTheme,
+
+//     primaryTextTheme: TextThemes.darkTextTheme,
+//     textTheme: TextThemes.darkTextTheme,
+//   );
+// }
+
+ThemeData _buildDarkTheme() {
+  final base = ThemeData.dark();
+
+  return base.copyWith(
+    // 1️⃣ Text colors
+    textTheme: base.textTheme.apply(
+      bodyColor: Colors.black,
+      displayColor: Colors.black,
+    ),
+    primaryTextTheme: base.primaryTextTheme.apply(
+      bodyColor: Colors.black,
+      displayColor: Colors.black,
+    ),
+
+   
+    scaffoldBackgroundColor: AppColors.scaffoldDarkBgColor,
+    primaryColor: AppColors.blue,
+    appBarTheme: AppBarThemes.darkAppBarTheme,
+    iconTheme: IconThemes.darkIconTheme,
+    iconButtonTheme: IconButtonThemes.darkIconButtonTheme,
+    switchTheme: AppSwitchTheme.darkSwitchTheme,
+    // cardColor, dividerColor, bottomNavigationBarTheme, etc.
+  );
+}
+
+
+ThemeData _buildLightTheme() {
+  return ThemeData(
+    scaffoldBackgroundColor: AppColors.scaffoldLightBgColor,
+    fontFamily: AppFonts.primaryFont,
+    iconButtonTheme: IconButtonThemes.lightIconButtonTheme,
+    appBarTheme: AppBarThemes.ligthAppBarTheme,
+    switchTheme: AppSwitchTheme.ligthSwitchTheme,
+    primaryColor: AppColors.blue,
+    iconTheme: IconThemes.lightIconTheme,
+  );
 }
 
 Future<void> _initializeAppServices() async {
@@ -135,18 +180,6 @@ Future<void> _initializeAppServices() async {
   Bloc.observer = CustomBlocObserval();
 
   // delelteEverthing();
-}
-
-ThemeData _buildTheme() {
-  return ThemeData(
-    scaffoldBackgroundColor: AppColors.grey,
-    fontFamily: AppFonts.primaryFont,
-    iconButtonTheme: IconButtonThemeData(
-      style: IconButton.styleFrom(foregroundColor: AppColors.blue),
-    ),
-    primaryColor: AppColors.blue,
-    iconTheme: const IconThemeData(color: AppColors.blue),
-  );
 }
 
 void delelteEverthing() {

@@ -5,6 +5,7 @@ import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/chart/presentaion/manager/cubit/logs_cubit.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/settings/presentaion/views/settings_view.dart';
+import 'package:midmate/features/today_meds/presentation/manager/cubit/today_meds_cubit.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
@@ -19,10 +20,11 @@ class CustomAppBar extends StatefulWidget implements PreferredSizeWidget {
     super.key,
     required this.screenName,
     required this.context,
+    this.autoleading = false,
   });
   final String screenName;
   final BuildContext context;
-
+  final bool? autoleading;
   @override
   State<CustomAppBar> createState() => _CustomAppBarState();
 
@@ -68,9 +70,14 @@ class _CustomAppBarState extends State<CustomAppBar> {
         }
       },
       child: AppBar(
-        backgroundColor: AppColors.grey,
-        title: Text(S.current.appBarTitle(widget.screenName)),
+        // backgroundColor: AppColors.grey,
+        backgroundColor: Colors.transparent,
+        title: Text(
+          S.current.appBarTitle(widget.screenName),
+          style: TextStyle(color: Colors.black),
+        ),
         centerTitle: true,
+        automaticallyImplyLeading: widget.autoleading!,
 
         actions:
             widget.screenName == 'Home' || widget.screenName == 'الرئيسية'
@@ -138,10 +145,10 @@ class _CustomAppBarState extends State<CustomAppBar> {
           padding: const EdgeInsets.symmetric(vertical: 5),
           child: GestureDetector(
             onTap: () async {
-              // var logs = await getIt<LogsCubit>().getUserLogs();
-              // log(logs.toString());
+              var logs = await getIt<LogsCubit>().getTodayLogs();
+              log(logs.toString());
 
-              context.goTo(SettingsView());
+              Context(context).goTo(SettingsView());
             },
             child: UserAccountImage(currentUser: currentUser),
           ),
@@ -176,4 +183,3 @@ class _CustomAppBarState extends State<CustomAppBar> {
     return position;
   }
 }
-

@@ -80,18 +80,18 @@ class Crud {
   Future<List<MedModel>> getUserTodayMeds({required int userId}) async {
     List<MedModel> todayMeds = [];
     Database db = await SqHelper().getMedsDbInstance();
-    List<Map<String, dynamic>> maps = await db.query(
+    List<Map<String, dynamic>> todayMap = await db.query(
       MedsTable.tableName,
       where: "${UsersTable.userId}= ?",
       whereArgs: [userId],
     );
 
     DateTime todayDate = DateTime.now();
-    var logs = await getIt<LogsRepo>().getTodayLogs(userId);
-    for (var med in maps) {
+    var todayLogs = await getIt<LogsRepo>().getTodayLogs(userId);
+    for (var med in todayMap) {
       MedModel temp = MedModel.fromMap(med);
       if (temp.getNextTime()?.day == todayDate.day) {
-        if (logs.any((l) {
+        if (todayLogs.any((l) {
           if (l.status != StatusValues.taken) {
             return temp.id == l.medicationId;
           }

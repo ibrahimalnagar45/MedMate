@@ -51,8 +51,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           ),
         ),
       ),
-
-      // backgroundColor: AppColors.grey,
+ 
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
         child: BlocBuilder<MedsCubit, MedsState>(

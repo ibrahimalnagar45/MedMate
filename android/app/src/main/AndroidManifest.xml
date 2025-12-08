@@ -6,7 +6,7 @@
     <application
         android:label="midmate"
         android:name="${applicationName}"
-        android:icon="@drawable/ic_notification">
+        android:icon="@drawable/ic_launcher">
         <!-- android:icon="@drawable/ic_notification" -->
         
         <receiver android:exported="false" android:name="com.dexterous.flutterlocalnotifications.ScheduledNotificationReceiver" />

@@ -99,7 +99,7 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
   }
 }
 
-_medIcon(MedType medType) {
+ Widget _medIcon(MedType medType) {
   switch (medType) {
     case MedType.pill:
       return CustomMedTypeIcon(icon: ImageController.pill);

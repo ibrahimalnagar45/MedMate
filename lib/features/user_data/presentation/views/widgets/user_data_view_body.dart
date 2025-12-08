@@ -157,12 +157,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                                 if (userName != null && dateOfBirth != null) {
                                   if (_formKey.currentState!.validate()) {
                                     await saveUser(context);
-
-                                    Navigator.of(context).pushReplacement(
-                                      MaterialPageRoute(
-                                        builder: (context) => HomeView(),
-                                      ),
-                                    );
+                                    Context(context).replaceWith(HomeView());
                                   } else {
                                     log(
                                       userName.toString() +

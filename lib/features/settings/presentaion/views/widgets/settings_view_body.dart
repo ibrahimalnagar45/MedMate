@@ -40,6 +40,8 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
     super.initState();
   }
 
+  bool focused = false;
+
   @override
   Widget build(BuildContext context) {
     var size = MediaQuery.sizeOf(context);
@@ -55,26 +57,61 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
               radius: size.height * .05,
             ),
             SizedBox(height: size.height * .04),
+
+            // name and birthday section
             ListTile(
-              title: SettingItemWidget(
-                child: Text(
-                  '${currentUser?.name ?? 'No User'}\t\t\t\t\t\t${currentUser?.birthDayDate ?? ''} ',
-                  textAlign: TextAlign.center,
+              title: Center(
+                child: TextField(
+                  canRequestFocus: focused,
+                  autofocus: focused,
+                  selectAllOnFocus: focused,
+                  decoration: InputDecoration(
+                    border: OutlineInputBorder(borderSide: BorderSide.none),
+                    fillColor: AppColors.white,
+                    focusColor: AppColors.white,
+                    hoverColor: AppColors.white,
+                    hint: Text(
+                      '${currentUser?.name ?? 'No User'}\t\t\t\t\t\t${currentUser?.birthDayDate ?? ''} ',
+                      textAlign: TextAlign.center,
+                      style: TextStyle(color: Colors.black),
+                    ),
+                  ),
                 ),
               ),
               leading: IconButton(
                 padding: EdgeInsets.all(0),
 
-                onPressed: () {},
-                icon: Icon(Icons.edit),
+                onPressed: () {
+                  setState(() {
+                    focused = true;
+                  });
+                },
+                icon: Icon(Icons.edit, color: AppColors.blue),
               ),
             ),
 
+            // ListTile(
+            //   title: SettingItemWidget(
+            //     child: Text(
+            //       '${currentUser?.name ?? 'No User'}\t\t\t\t\t\t${currentUser?.birthDayDate ?? ''} ',
+            //       textAlign: TextAlign.center,
+            //     ),
+            //   ),
+            //   leading: IconButton(
+            //     padding: EdgeInsets.all(0),
+            //     onPressed: () {},
+            //     icon: Icon(Icons.edit),
+            //   ),
+            // ),
             Divider(endIndent: 20, indent: 20, color: Colors.black),
 
             ListTile(
               title: SettingItemWidget(
-                child: Text(S.current.theme, textAlign: TextAlign.center),
+                child: Text(
+                  S.current.theme,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
               leading: Switch(
                 activeThumbColor: AppColors.teal,
@@ -89,12 +126,13 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
                 child: Text(
                   S.current.NotificationSound,
                   textAlign: TextAlign.center,
+                  style: TextStyle(color: Colors.black),
                 ),
               ),
               leading: IconButton(
                 padding: EdgeInsets.all(0),
                 onPressed: () {},
-                icon: Icon(Icons.queue_music),
+                icon: Icon(Icons.queue_music, color: AppColors.blue),
               ),
             ),
 
