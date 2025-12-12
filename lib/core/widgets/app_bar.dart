@@ -142,18 +142,21 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   // ),
                 ],
 
-        leading: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 5),
-          child: GestureDetector(
-            onTap: () async {
-              var logs = await getIt<LogsCubit>().getTodayLogs();
-              log(logs.toString());
+        leading:
+            widget.autoleading == true
+                ? null
+                : Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 5),
+                  child: GestureDetector(
+                    onTap: () async {
+                      var logs = await getIt<LogsCubit>().getTodayLogs();
+                      log(logs.toString());
 
-              Context(context).goTo(SettingsView());
-            },
-            child: UserAccountImage(currentUser: currentUser),
-          ),
-        ),
+                      Context(context).goTo(SettingsView());
+                    },
+                    child: UserAccountImage(currentUser: currentUser),
+                  ),
+                ),
         actionsPadding: const EdgeInsets.only(right: 10),
       ),
     );

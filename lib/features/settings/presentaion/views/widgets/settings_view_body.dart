@@ -4,11 +4,13 @@ import 'package:midmate/core/managers/mode_cubit/mode_cubit.dart';
 import 'package:midmate/core/widgets/user_account_image.dart';
 import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/features/settings/presentaion/views/widgets/setting_item_widget.dart';
+import 'package:midmate/features/settings/presentaion/views/widgets/terms_view.dart';
 import 'package:midmate/utils/app_colors.dart';
+import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
-import 'package:ringtone_player/ringtone_player.dart';
 import '../../../../../generated/l10n.dart';
+import 'about_me_view.dart';
 
 /*
  User info (photo, name, birthday, edit)       Done 
@@ -122,10 +124,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
             SettingItemWidget(
               icon: IconButton(
                 padding: EdgeInsets.all(0),
-                onPressed: () {
-
-                   
-                },
+                onPressed: () {},
                 icon: Icon(Icons.queue_music, color: AppColors.blue),
               ),
               child: Text(
@@ -139,6 +138,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
 
             // terms and policy
             SettingItemWidget(
+              onTap: () => Context(context).goTo(TermView()),
               icon: Icon(Icons.list_alt_rounded, color: AppColors.blue),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),
@@ -152,6 +152,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
 
             // about section
             SettingItemWidget(
+              onTap: () => Context(context).goTo(AboutMeView()),
               icon: Icon(Icons.info_outline_rounded, color: AppColors.blue),
               child: Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 10.0),

@@ -7,29 +7,33 @@ class SettingItemWidget extends StatelessWidget {
     super.key,
     required this.child,
     this.hPadding,
-    this.icon,
+    this.icon, this.onTap,
   });
 
   final Widget child;
   final Widget? icon;
+  final void Function()? onTap;
 
   final double? hPadding;
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: double.infinity,
-
-      // height: 35,
-      margin: EdgeInsets.symmetric(horizontal: hPadding ?? 22, vertical: 5),
-      decoration: BoxDecoration(
-        color: AppColors.white,
-        borderRadius: BorderRadius.circular(8),
-      ),
-      child: ListTile(
-        // dense: true,
-        minTileHeight: 20,
-        leading: icon,
-        title: child,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        width: double.infinity,
+      
+        // height: 35,
+        margin: EdgeInsets.symmetric(horizontal: hPadding ?? 22, vertical: 5),
+        decoration: BoxDecoration(
+          color: AppColors.white,
+          borderRadius: BorderRadius.circular(8),
+        ),
+        child: ListTile(
+          // dense: true,
+          minTileHeight: 20,
+          leading: icon,
+          title: child,
+        ),
       ),
     );
   }
