@@ -6,13 +6,16 @@ abstract class AppBarThemes {
   static const darkAppBarTheme = AppBarTheme(
     elevation: 0,
     shadowColor: Colors.black,
+
     scrolledUnderElevation: 0,
-    backgroundColor: Colors.black,
-    foregroundColor: Colors.black,
-    iconTheme: IconThemeData(color: Colors.white),
-    actionsIconTheme: IconThemeData(color: Colors.white),
+    backgroundColor: Colors.transparent,
+    foregroundColor: Colors.transparent,
+    iconTheme: IconThemeData(color: AppColors.blue),
+    actionsIconTheme: IconThemeData(color: AppColors.blue),
     titleTextStyle: TextStyle(color: AppColors.white),
   );
 
-  static const ligthAppBarTheme = AppBarTheme(backgroundColor: AppColors.grey);
+  static const ligthAppBarTheme = AppBarTheme(
+    backgroundColor: Colors.transparent,
+  );
 }

@@ -137,13 +137,13 @@ ThemeData _buildDarkTheme() {
     textTheme: base.textTheme.apply(
       bodyColor: Colors.black,
       displayColor: Colors.black,
+      decorationColor: Colors.black,
     ),
     primaryTextTheme: base.primaryTextTheme.apply(
       bodyColor: Colors.black,
       displayColor: Colors.black,
     ),
 
-   
     scaffoldBackgroundColor: AppColors.scaffoldDarkBgColor,
     primaryColor: AppColors.blue,
     appBarTheme: AppBarThemes.darkAppBarTheme,
@@ -153,7 +153,6 @@ ThemeData _buildDarkTheme() {
     // cardColor, dividerColor, bottomNavigationBarTheme, etc.
   );
 }
-
 
 ThemeData _buildLightTheme() {
   return ThemeData(

@@ -71,14 +71,15 @@ class _CustomAppBarState extends State<CustomAppBar> {
       },
       child: AppBar(
         // backgroundColor: AppColors.grey,
-        backgroundColor: Colors.transparent,
+        // backgroundColor: Colors.transparent,
         title: Text(
           S.current.appBarTitle(widget.screenName),
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
         automaticallyImplyLeading: widget.autoleading!,
-
+        actionsIconTheme: IconThemeData(color: AppColors.blue),
+        iconTheme: IconThemeData(color: AppColors.blue),
         actions:
             widget.screenName == 'Home' || widget.screenName == 'الرئيسية'
                 ? [

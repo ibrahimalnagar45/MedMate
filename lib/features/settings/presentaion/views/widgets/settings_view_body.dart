@@ -7,7 +7,7 @@ import 'package:midmate/features/settings/presentaion/views/widgets/setting_item
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
-
+import 'package:ringtone_player/ringtone_player.dart';
 import '../../../../../generated/l10n.dart';
 
 /*
@@ -105,34 +105,33 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
             // ),
             Divider(endIndent: 20, indent: 20, color: Colors.black),
 
-            ListTile(
-              title: SettingItemWidget(
-                child: Text(
-                  S.current.theme,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              leading: Switch(
+            SettingItemWidget(
+              icon: Switch(
                 activeThumbColor: AppColors.teal,
                 value: isDarkMode,
                 onChanged: (_) => context.read<ModeCubit>().toggleMode(),
               ),
+              child: Text(
+                S.current.theme,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black),
+              ),
             ),
 
             // add notification sound picker
-            ListTile(
-              title: SettingItemWidget(
-                child: Text(
-                  S.current.NotificationSound,
-                  textAlign: TextAlign.center,
-                  style: TextStyle(color: Colors.black),
-                ),
-              ),
-              leading: IconButton(
+            SettingItemWidget(
+              icon: IconButton(
                 padding: EdgeInsets.all(0),
-                onPressed: () {},
+                onPressed: () {
+
+                   
+                },
                 icon: Icon(Icons.queue_music, color: AppColors.blue),
+              ),
+              child: Text(
+                S.current.NotificationSound,
+                textAlign: TextAlign.center,
+                style: TextStyle(color: Colors.black),
               ),
             ),
 
@@ -140,15 +139,29 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
 
             // terms and policy
             SettingItemWidget(
-              child: Text(
-                S.current.TermsAndPolicySection,
-                textAlign: TextAlign.left,
+              icon: Icon(Icons.list_alt_rounded, color: AppColors.blue),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+                child: Text(
+                  S.current.TermsAndPolicySection,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.black),
+                ),
               ),
             ),
 
             // about section
             SettingItemWidget(
-              child: Text(S.current.AboutSection, textAlign: TextAlign.left),
+              icon: Icon(Icons.info_outline_rounded, color: AppColors.blue),
+              child: Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 10.0),
+
+                child: Text(
+                  S.current.AboutSection,
+                  textAlign: TextAlign.left,
+                  style: TextStyle(color: Colors.black),
+                ),
+              ),
             ),
             //
           ],
