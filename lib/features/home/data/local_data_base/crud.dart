@@ -77,7 +77,7 @@ class Crud {
   }
 
   // Future<List<MedModel>?> getUserTodayMeds({required int userId}) async {}
-  Future<List<MedModel>> getUserTodayMeds({required int userId}) async {
+  Future<List<MedModel>> getTodayMeds({required int userId}) async {
     List<MedModel> todayMeds = [];
     Database db = await SqHelper().getMedsDbInstance();
     List<Map<String, dynamic>> todayMap = await db.query(

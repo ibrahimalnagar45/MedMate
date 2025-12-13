@@ -9,7 +9,7 @@ class TodayMedsRepoImpl extends TodayMedRepo {
   TodayMedsRepoImpl({required this.crud});
   @override
   Future<List<MedModel>> getTodayMeds(int userId) async {
-    var todayMeds = await crud.getUserTodayMeds(userId: userId);
+    var todayMeds = await crud.getTodayMeds(userId: userId);
     return todayMeds;
   }
 
