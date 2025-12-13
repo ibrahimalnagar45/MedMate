@@ -27,7 +27,7 @@ class MedsCubit extends Cubit<MedsState> {
     }
   }
 
-  Future<void> getUserAllMeds() async {
+  Future<void> getAllMeds() async {
     final Person? currentUser = await userRepo.getCurrentUser();
 
     emit(GetMedsLoading());

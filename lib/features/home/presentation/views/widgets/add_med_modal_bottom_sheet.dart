@@ -197,7 +197,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                             status: StatusValues.pending,
                           ),
                         );
-                        await medsCubit.getUserAllMeds();
+                        await medsCubit.getAllMeds();
 
                         await LocalNotification(
                           navigatorKey: navigatorKey,

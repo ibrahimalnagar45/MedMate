@@ -54,7 +54,7 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
       direction: DismissDirection.endToStart,
       onDismissed: (direction) {
         medsCubit.deleteAMed(widget.medModel.id!, MedsTable.tableName);
-        medsCubit.getUserAllMeds();
+        medsCubit.getAllMeds();
         getIt<LogsRepo>().deleteLog(widget.medModel.id!);
         TodayMedsCubit.takenMeds.remove(widget.medModel);
         LocalNotification(
@@ -62,7 +62,7 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
         ).cancleNotification(id: widget.medModel.id!);
       },
       child: GestureDetector(
-        onTap: () { 
+        onTap: () {
           context.goTo(DetailsView(med: widget.medModel));
         },
         child: Container(
@@ -99,7 +99,7 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
   }
 }
 
- Widget _medIcon(MedType medType) {
+Widget _medIcon(MedType medType) {
   switch (medType) {
     case MedType.pill:
       return CustomMedTypeIcon(icon: ImageController.pill);

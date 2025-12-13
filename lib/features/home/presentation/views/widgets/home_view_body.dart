@@ -25,7 +25,7 @@ class _HomeViewBodyState extends State<HomeViewBody> {
   void initState() {
     medCubit = context.read<MedsCubit>();
     Future.sync(() async {
-      await medCubit.getUserAllMeds();
+      await medCubit.getAllMeds();
     });
     super.initState();
   }
@@ -51,23 +51,33 @@ class _HomeViewBodyState extends State<HomeViewBody> {
           ),
         ),
       ),
- 
+
       body: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 10.0),
-        child: BlocBuilder<MedsCubit, MedsState>(
-          builder: (context, state) {
-            if (state is GetMedsLoading) {
-              return const Center(child: CircularProgressIndicator());
-            } else if (state is GetMedsSuccess) {
-              return MedsListView(meds: state.meds);
-            } else if (state is GetMedsFaluire) {
-              return Center(child: Text(state.erMessage));
-            } else {
-              return Center(
-                child: Image.asset(ImageController.noMedAddedImage, width: 250),
-              );
+        child: BlocListener<UserCubit, UserState>(
+          listener: (context, state) {
+            if (state is SetUserSuccess) {
+              medCubit.getAllMeds();
             }
           },
+          child: BlocBuilder<MedsCubit, MedsState>(
+            builder: (context, state) {
+              if (state is GetMedsLoading) {
+                return const Center(child: CircularProgressIndicator());
+              } else if (state is GetMedsSuccess) {
+                return MedsListView(meds: state.meds);
+              } else if (state is GetMedsFaluire) {
+                return Center(child: Text(state.erMessage));
+              } else {
+                return Center(
+                  child: Image.asset(
+                    ImageController.noMedAddedImage,
+                    width: 250,
+                  ),
+                );
+              }
+            },
+          ),
         ),
       ),
     );

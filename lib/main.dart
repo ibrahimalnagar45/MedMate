@@ -112,23 +112,6 @@ class MyApp extends StatelessWidget {
   }
 }
 
-// ThemeData? _buildDarkTheme() {
-//   return ThemeData(
-//     brightness: Brightness.dark,
-
-//     appBarTheme: AppBarThemes.darkAppBarTheme,
-
-//     scaffoldBackgroundColor: AppColors.scaffoldDarkBgColor,
-//     primaryColor: AppColors.blue,
-//     iconButtonTheme: IconButtonThemes.darkIconButtonTheme,
-//     iconTheme: IconThemes.darkIconTheme,
-//     switchTheme: AppSwitchTheme.darkSwitchTheme,
-
-//     primaryTextTheme: TextThemes.darkTextTheme,
-//     textTheme: TextThemes.darkTextTheme,
-//   );
-// }
-
 ThemeData _buildDarkTheme() {
   final base = ThemeData.dark();
 

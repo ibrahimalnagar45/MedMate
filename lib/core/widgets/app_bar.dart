@@ -5,7 +5,6 @@ import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/chart/presentaion/manager/cubit/logs_cubit.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/settings/presentaion/views/settings_view.dart';
-import 'package:midmate/features/today_meds/presentation/manager/cubit/today_meds_cubit.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/service_locator.dart';
@@ -36,11 +35,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
   final UserCubit userCubit = getIt<UserCubit>();
   final GlobalKey buttonKey = GlobalKey();
   Person? currentUser;
-
+  // late MedsCubit medCubit;
   List<Person> users = [];
   @override
   void initState() {
     _loadData();
+    // medCubit = context.read<MedsCubit>();
 
     super.initState();
   }
@@ -63,7 +63,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
 
           await userCubit.getAllUsers().then((value) {
             users = value;
-            getIt<MedsCubit>().getUserAllMeds();
+            getIt<MedsCubit>().getAllMeds();
           });
 
           setState(() {});
@@ -117,9 +117,8 @@ class _CustomAppBarState extends State<CustomAppBar> {
                                         onPressed: () async {
                                           await userCubit.setCurrentUser(value);
 
-                                          await getIt<MedsCubit>()
-                                              .getUserAllMeds();
-                                          context.pop();
+                                          await getIt<MedsCubit>().getAllMeds();
+                                          Context(context).pop();
                                         },
                                         child: Text(value.name!),
                                       ),
@@ -133,14 +132,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
                     icon: Icon(Icons.keyboard_arrow_down_rounded),
                   ),
                 ]
-                : [
-                  // IconButton(
-                  //   onPressed: () {
-                  //     Navigator.of(context).pop();
-                  //   },
-                  //   icon: Icon(Icons.arrow_forward),
-                  // ),
-                ],
+                : [],
 
         leading:
             widget.autoleading == true
