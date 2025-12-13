@@ -1,4 +1,3 @@
-import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/home/doman/repository/meds_repo.dart';
 import 'package:midmate/utils/models/med_model.dart';

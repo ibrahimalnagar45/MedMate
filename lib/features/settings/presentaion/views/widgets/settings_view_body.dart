@@ -1,5 +1,8 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:jbh_ringtone/jbh_ringtone.dart';
 import 'package:midmate/core/managers/mode_cubit/mode_cubit.dart';
 import 'package:midmate/core/widgets/user_account_image.dart';
 import 'package:midmate/features/home/doman/repository/user_repo.dart';
@@ -122,6 +125,26 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
 
             // add notification sound picker
             SettingItemWidget(
+              onTap: () async {
+                JbhRingtone ringtone = JbhRingtone();
+                List<JbhRingtoneModel> allRingtones =
+                    await ringtone.getRingtones();
+
+                log('Found ${allRingtones.length} ringtones');
+
+                for (var ringtone in allRingtones) {
+                  log('Title: ${ringtone.title}');
+                  log('Display Title: ${ringtone.displayTitle}');
+                  log('File Name: ${ringtone.fileName}');
+                  log('ID: ${ringtone.id}');
+                  log('URI: ${ringtone.uri}');
+                  log('Type: ${ringtone.type.displayName}');
+                  log('Duration: ${ringtone.formattedDuration}');
+                  log('File Size: ${ringtone.formattedFileSize}');
+                  log('Is Default: ${ringtone.isDefault}');
+                  log('---');
+                }
+              },
               icon: IconButton(
                 padding: EdgeInsets.all(0),
                 onPressed: () {},
