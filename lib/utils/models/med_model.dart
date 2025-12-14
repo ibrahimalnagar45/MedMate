@@ -37,7 +37,7 @@ class MedModel {
     if (nextTime == null || nextTime!.isBefore(DateTime.now())) {
       checkMedNextTime(this);
     }
-    return DateFormat('dd/MM-hh:mm a').format(nextTime!);
+    return DateFormat('MM/dd-hh:mm a').format(nextTime!);
   }
 
   void setNextTime() {

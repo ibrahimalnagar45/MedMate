@@ -14,7 +14,11 @@ class TodayMedsViewBody extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       bottomNavigationBar: CustomBottomBar(),
-      appBar: CustomAppBar(screenName: S.current.todayMeds, context: context),
+      appBar: CustomAppBar(
+        screenName: S.current.todayMeds,
+        context: context,
+        autoleading: true,
+      ),
       body: BlocBuilder<TodayMedsCubit, TodayMedsState>(
         builder: (context, state) {
           if (state is GetTodayMedsSuccess) {

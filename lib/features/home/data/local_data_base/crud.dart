@@ -76,7 +76,6 @@ class Crud {
     });
   }
 
-  // Future<List<MedModel>?> getUserTodayMeds({required int userId}) async {}
   Future<List<MedModel>> getTodayMeds({required int userId}) async {
     List<MedModel> todayMeds = [];
     Database db = await SqHelper().getMedsDbInstance();
@@ -86,18 +85,21 @@ class Crud {
       whereArgs: [userId],
     );
 
-    DateTime todayDate = DateTime.now();
-    var todayLogs = await getIt<LogsRepo>().getTodayLogs(userId);
-    for (var med in todayMap) {
-      MedModel temp = MedModel.fromMap(med);
-      if (temp.getNextTime()?.day == todayDate.day) {
-        if (todayLogs.any((l) {
-          if (l.status != StatusValues.taken) {
-            return temp.id == l.medicationId;
+    if (todayMap.isNotEmpty) {
+      DateTime todayDate = DateTime.now();
+
+      var todayLogs = await getIt<LogsRepo>().getTodayLogs(userId);
+      for (var med in todayMap) {
+        MedModel temp = MedModel.fromMap(med);
+        if (temp.getNextTime()?.day == todayDate.day) {
+          if (todayLogs.any((l) {
+            if (l.status != StatusValues.taken) {
+              return temp.id == l.medicationId;
+            }
+            return false;
+          })) {
+            todayMeds.add(temp);
           }
-          return false;
-        })) {
-          todayMeds.add(temp);
         }
       }
     }
@@ -290,10 +292,7 @@ class Crud {
     db.delete(LogsTable.tableName);
   }
 
-  Future<int> deleteMedFrom({
-    required int id,
-    required String tableName,
-  }) async {
+  Future<int> deleteMed({required int id, required String tableName}) async {
     Database db = await SqHelper().getMedsDbInstance();
 
     return await db.delete(

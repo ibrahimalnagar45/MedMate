@@ -8,7 +8,7 @@ class MedsRepoImpl implements MedsRepository {
   MedsRepoImpl({required this.crud});
   @override
   Future<void> deleteMedFrom(int id, String tableName) async {
-    await crud.deleteMedFrom(id: id, tableName: tableName);
+    await crud.deleteMed(id: id, tableName: tableName);
   }
 
   @override

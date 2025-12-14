@@ -5,9 +5,7 @@ import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/core/widgets/bottom_bar.dart';
 import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
 import 'package:midmate/features/home/doman/repository/user_repo.dart';
-import 'package:midmate/features/today_meds/presentation/manager/cubit/today_meds_cubit.dart';
 import 'package:midmate/utils/app_colors.dart';
-import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
 
@@ -19,8 +17,8 @@ class ChartViewBody extends StatefulWidget {
 }
 
 class _ChartViewBodyState extends State<ChartViewBody> {
-  final List<MedModel> today = TodayMedsCubit.todayMeds;
-  final List<MedModel> taken = TodayMedsCubit.takenMeds;
+  // final List<MedModel> today = TodayMedsCubit.todayMeds;
+  // final List<MedModel> taken = TodayMedsCubit.takenMeds;
   List<LogModel> logs = [];
   Map<String, int> takenMap = {
     'Mon': 0,
@@ -131,8 +129,9 @@ class MedsBarChart extends StatelessWidget {
                   showTitles: true,
                   getTitlesWidget: (value, meta) {
                     int index = value.toInt();
-                    if (index < 0 || index >= days.length)
+                    if (index < 0 || index >= days.length) {
                       return const SizedBox();
+                    }
                     return Padding(
                       padding: const EdgeInsets.only(top: 6.0),
                       child: Text(
@@ -150,7 +149,7 @@ class MedsBarChart extends StatelessWidget {
 
             // ✅ Disable touch tooltips if you want a static display
             barTouchData: BarTouchData(enabled: true),
-            backgroundColor: AppColors.grey,
+            backgroundColor: AppColors.scaffoldLightBgColor,
           ),
         ),
       ),

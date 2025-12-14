@@ -1,5 +1,3 @@
-
-
 import 'dart:developer';
 import 'package:midmate/features/home/data/local_data_base/db_constants.dart';
 import 'package:sqflite/sqflite.dart';
@@ -16,7 +14,9 @@ class SqHelper {
   // ✅ MEDS DB
   Future<Database> getMedsDbInstance() async {
     String path = await _getDbPath(MedsTable.path);
-    return openDatabase(
+    Future<Database>? database;
+
+    database ??= openDatabase(
       path,
       version: 5,
       onCreate: (Database db, int version) async {
@@ -58,13 +58,18 @@ CREATE TABLE ${MedsTable.tableName} (
       },
       onOpen: _onOpen,
       onConfigure: _onConfig,
-      );
+    );
+
+    return database;
   }
 
   // ✅ LOGS DB
   Future<Database> getLogsDbInstance() async {
     String path = await _getDbPath(LogsTable.path);
-    return openDatabase(
+
+    Future<Database>? database;
+
+    database ??= openDatabase(
       path,
       version: 5,
       onCreate: (Database db, int version) async {
@@ -101,12 +106,16 @@ CREATE TABLE ${LogsTable.tableName} (
       onOpen: _onOpen,
       onConfigure: _onConfig,
     );
+    return database;
   }
 
   // ✅ USERS DB
   Future<Database> getUsersDbInstance() async {
     String path = await _getDbPath(UsersTable.path);
-    return openDatabase(
+
+    Future<Database>? database;
+
+    database ??= openDatabase(
       path,
       version: 6,
       onCreate: (Database db, int version) async {
@@ -122,6 +131,8 @@ CREATE TABLE ${UsersTable.tableName} (
       onOpen: _onOpen,
       onConfigure: _onConfig,
     );
+
+    return database;
   }
 
   void _onOpen(Database db) => log('Database opened');
