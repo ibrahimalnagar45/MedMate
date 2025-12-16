@@ -69,11 +69,12 @@ CREATE TABLE ${MedsTable.tableName} (
 
     Future<Database>? database;
 
-    database ??= openDatabase(
-      path,
-      version: 5,
-      onCreate: (Database db, int version) async {
-        await db.execute('''
+    database ??=
+        await openDatabase(
+              path,
+              version: 5,
+              onCreate: (Database db, int version) async {
+                await db.execute('''
 CREATE TABLE ${LogsTable.tableName} (
   ${LogsTable.logId} INTEGER PRIMARY KEY AUTOINCREMENT,
   ${LogsTable.logDateTime} TEXT NOT NULL,       -- YYYY-MM-DD
@@ -85,11 +86,13 @@ CREATE TABLE ${LogsTable.tableName} (
   FOREIGN KEY (${MedsTable.medId}) REFERENCES ${MedsTable.tableName} (${MedsTable.medId})
 );
 ''');
-      },
-      onUpgrade: (db, oldVersion, newVersion) async {
-        if (oldVersion < 5) {
-          await db.execute('DROP TABLE IF EXISTS ${LogsTable.tableName}');
-          await db.execute('''
+              },
+              onUpgrade: (db, oldVersion, newVersion) async {
+                if (oldVersion < 5) {
+                  await db.execute(
+                    'DROP TABLE IF EXISTS ${LogsTable.tableName}',
+                  );
+                  await db.execute('''
 CREATE TABLE ${LogsTable.tableName} (
   ${LogsTable.logId} INTEGER PRIMARY KEY AUTOINCREMENT,
   ${LogsTable.logDateTime} TEXT NOT NULL,
@@ -101,11 +104,12 @@ CREATE TABLE ${LogsTable.tableName} (
   FOREIGN KEY (${MedsTable.medId}) REFERENCES ${MedsTable.tableName} (${MedsTable.medId})
 );
 ''');
-        }
-      },
-      onOpen: _onOpen,
-      onConfigure: _onConfig,
-    );
+                }
+              },
+              onOpen: _onOpen,
+              onConfigure: _onConfig,
+            )
+            as Future<Database>;
     return database;
   }
 

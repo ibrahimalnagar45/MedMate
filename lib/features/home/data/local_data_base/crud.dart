@@ -85,6 +85,8 @@ class Crud {
       whereArgs: [userId],
     );
 
+    // List<MedModel> list = await getUserAllMeds(userId: userId);
+
     if (todayMap.isNotEmpty) {
       DateTime todayDate = DateTime.now();
 
@@ -92,12 +94,16 @@ class Crud {
       for (var med in todayMap) {
         MedModel temp = MedModel.fromMap(med);
         if (temp.getNextTime()?.day == todayDate.day) {
-          if (todayLogs.any((l) {
-            if (l.status != StatusValues.taken) {
-              return temp.id == l.medicationId;
+          if (todayLogs.isNotEmpty) {
+            if (todayLogs.any((l) {
+              if (l.status != StatusValues.taken) {
+                return temp.id == l.medicationId;
+              }
+              return false;
+            })) {
+              todayMeds.add(temp);
             }
-            return false;
-          })) {
+          } else {
             todayMeds.add(temp);
           }
         }

@@ -7,7 +7,6 @@ import 'package:midmate/core/themes/app_bar_themes.dart';
 import 'package:midmate/core/themes/icon_button_themes.dart';
 import 'package:midmate/core/themes/icon_themes.dart';
 import 'package:midmate/core/themes/switch_themes.dart';
-import 'package:midmate/core/themes/text_themes.dart';
 import 'package:midmate/custom_bloc_observal.dart';
 import 'package:midmate/features/home/data/local_data_base/crud.dart';
 import 'package:midmate/features/home/doman/repository/user_repo.dart';
