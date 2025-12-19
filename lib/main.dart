@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:midmate/core/managers/mode_cubit/mode_cubit.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
+import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/core/themes/app_bar_themes.dart';
 import 'package:midmate/core/themes/icon_button_themes.dart';
 import 'package:midmate/core/themes/icon_themes.dart';
@@ -22,7 +23,6 @@ import 'utils/app_fonts.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
 
-import 'utils/models/user_model.dart';
 // ignore: depend_on_referenced_packages
 import 'package:flutter_localizations/flutter_localizations.dart';
 
@@ -30,20 +30,46 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 final GlobalKey<ScaffoldMessengerState> scaffoldMessengerKey =
     GlobalKey<ScaffoldMessengerState>();
+@pragma('vm:entry-point')
 void callbackDispatcher() {
   Workmanager().executeTask((task, inputData) async {
     WidgetsFlutterBinding.ensureInitialized();
     await serviceLocatorSetup();
-    Person? currentUser = await getIt<UserRepository>().getCurrentUser();
-    getIt<TodayMedRepo>().getTodayMeds(currentUser!.id!).then((meds) {
-      final now = DateTime.now();
-      for (var med in meds) {
-        if (med.nextTime!.isBefore(now)) {
-          getIt<TodayMedRepo>().updateNextTime(med);
+
+    final user = await getIt<UserRepository>().getCurrentUser();
+    if (user == null) return true;
+
+    final now = DateTime.now();
+
+    switch (task) {
+      // 🔁 Update next medication time
+      case "Update_Med_Dates":
+        final meds = await getIt<TodayMedRepo>().getTodayMeds(user.id!);
+
+        for (var med in meds) {
+          if (med.nextTime!.isBefore(now)) {
+            await getIt<TodayMedRepo>().updateNextTime(med);
+          }
         }
-      }
-    });
-    return Future.value(true);
+        break;
+
+      // ❌ Mark missed doses
+      case "daily_missed_check":
+        final logs = await Crud.instance.getUserLogs(userId: user.id!);
+
+        for (var dose in logs) {
+          if (dose.status == StatusValues.pending &&
+              DateTime.parse(dose.date).isBefore(now)) {
+            await Crud.instance.updateLog(
+              logModel: dose,
+              newStatus: StatusValues.missed,
+            );
+          }
+        }
+        break;
+    }
+
+    return true;
   });
 }
 
@@ -156,7 +182,13 @@ Future<void> _initializeAppServices() async {
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
   SqHelper();
   Workmanager().initialize(callbackDispatcher);
-  Workmanager().registerOneOffTask("firt_task", "Update_Med_Dates");
+  Workmanager().registerOneOffTask("update_times_once", "Update_Med_Dates");
+
+  Workmanager().registerPeriodicTask(
+    "missed_check_daily",
+    "daily_missed_check",
+    frequency: const Duration(hours: 24),
+  );
 
   Bloc.observer = CustomBlocObserval();
 

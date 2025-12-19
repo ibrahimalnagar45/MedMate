@@ -4,8 +4,8 @@ import 'package:midmate/features/today_meds/presentation/manager/cubit/today_med
 import 'package:midmate/utils/service_locator.dart';
 import 'widgets/today_meds_view_body.dart';
 
-class MedsTodayView extends StatelessWidget {
-  const MedsTodayView({super.key});
+class TodayMedsView extends StatelessWidget {
+  const TodayMedsView({super.key});
 
   @override
   Widget build(BuildContext context) {

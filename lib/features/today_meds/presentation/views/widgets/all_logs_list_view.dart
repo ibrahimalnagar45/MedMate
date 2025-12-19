@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
@@ -32,6 +34,12 @@ class _AllLogsListViewState extends State<AllLogsListView> {
     return ListView.builder(
       itemCount: todayLogs.length,
       itemBuilder: (context, index) {
+        if (todayLogs.isEmpty) {
+          return const Center(child: Text('No logs found'));
+        }
+        log(
+          "${todayLogs[index].date} \t ${todayLogs[index].status}  \t ${todayLogs[index].medicationId} ",
+        );
         return Center(
           child: Text(
             "${todayLogs[index].date} \t ${todayLogs[index].status}  \t ${todayLogs[index].medicationId} ",

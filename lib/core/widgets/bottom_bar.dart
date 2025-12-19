@@ -1,4 +1,4 @@
- import 'package:flutter/material.dart';
+import 'package:flutter/material.dart';
 import 'package:midmate/core/models/bottom_bar_icon_model.dart';
 import 'package:midmate/features/chart/presentaion/views/chart_view.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
@@ -21,7 +21,7 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
     ),
     BottomBarIconModel(
       icon: Icon(Icons.today, color: AppColors.blue),
-      widget: MedsTodayView(),
+      widget: TodayMedsView(),
       isSelected: false,
     ),
     BottomBarIconModel(
@@ -53,7 +53,6 @@ class _CustomBottomBarState extends State<CustomBottomBar> {
               icon: bottomBarIcons[index].icon,
               isSelected: false,
               onPressed: () {
-                
                 goTo(context, bottomBarIcons[index].widget);
               },
             ),

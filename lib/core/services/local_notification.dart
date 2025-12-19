@@ -5,8 +5,12 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:midmate/features/notification/presentation/views/alaram_view.dart';
 import 'package:midmate/features/notification/presentation/views/notification_view.dart';
+import 'package:midmate/features/today_meds/presentation/views/today_logs_view.dart';
+import 'package:midmate/features/today_meds/presentation/views/widgets/today_meds_view_body.dart';
 import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:timezone/timezone.dart' as tz;
+
+import '../../features/today_meds/presentation/views/today_meds_view.dart';
 // import 'package:android_intent_plus/android_intent.dart';
 
 class LocalNotification {
@@ -70,6 +74,13 @@ class LocalNotification {
         MaterialPageRoute<void>(
           builder: (context) => AlaramView(payload: payload),
         ),
+      );
+      return;
+    }
+    if (notificationResponse.payload == 'take_user_to_today_med_view') {
+      await Navigator.push(
+        navigatorKey.currentContext!,
+        MaterialPageRoute<void>(builder: (context) => TodayMedsView()),
       );
       return;
     }
@@ -237,7 +248,7 @@ class LocalNotification {
       body,
       Duration(hours: date!),
       platformChannelSpecifics,
-      payload: 'time_to_take_medicine',
+      payload: 'take_user_to_today_med_view',
     );
   }
 
