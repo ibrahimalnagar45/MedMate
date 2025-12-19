@@ -5,6 +5,7 @@ import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:sqflite/sqflite.dart';
 import 'db_constants.dart';
 // ignore: depend_on_referenced_packages
@@ -386,4 +387,16 @@ class Crud {
 
     db.close();
   }
+
+void delelteEverthing() {
+  Crud.instance.deleteAllMeds();
+  Crud.instance.deleteAllusers();
+  Crud.instance.closeMedsDb();
+  Crud.instance.closeUsersDb();
+  Crud.instance.deleteAllLogs();
+  Crud.instance.closeLogsDb();
+  Crud.instance.deleteMedsDatabaseFile();
+  getIt<SharedPreferences>().clear();
+}
+
 }
