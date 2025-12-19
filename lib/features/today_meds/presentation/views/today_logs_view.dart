@@ -13,7 +13,7 @@ class TodayLogsView extends StatelessWidget {
       appBar: CustomAppBar(screenName: S.current.todayLogs, context: context),
       bottomNavigationBar: CustomBottomBar(),
 
-      body: AllLogsListView(),
+      body: TodayLogsListView(),
     );
   }
 }

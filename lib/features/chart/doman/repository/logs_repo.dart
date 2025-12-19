@@ -6,9 +6,13 @@ abstract class LogsRepo {
   Future<void> insertLog(LogModel log);
   Future<List<LogModel>> getAllLogs(int userId);
   Future<List<LogModel>> getTodayLogs(int userId);
+
   Future<LogModel?> getLog({required int logId});
   Future<LogModel?> getlogByMed({required MedModel med});
-  Future<int> updateLog({required LogModel logModel, required String newStatus});
+  Future<int> updateLog({
+    required LogModel logModel,
+    required String newStatus,
+});
   Future<void> deleteLog(int medId);
   Future<void> deleteAllLogs();
 }

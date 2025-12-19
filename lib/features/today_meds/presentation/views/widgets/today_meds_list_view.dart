@@ -16,7 +16,7 @@ import '../../../../../utils/service_locator.dart';
 import 'today_med_list_tile.dart';
 
 class TodayMedsListView extends StatefulWidget {
-  const TodayMedsListView({super.key, required this.meds});
+const TodayMedsListView({super.key, required this.meds});
   final List<MedModel> meds;
 
   @override

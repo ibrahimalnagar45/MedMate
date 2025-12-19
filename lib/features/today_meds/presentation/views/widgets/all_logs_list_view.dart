@@ -9,14 +9,14 @@ import 'package:midmate/utils/models/med_model.dart';
 import 'package:midmate/utils/service_locator.dart';
 import '../../../../../utils/models/user_model.dart';
 
-class AllLogsListView extends StatefulWidget {
-  const AllLogsListView({super.key});
+class TodayLogsListView extends StatefulWidget {
+  const TodayLogsListView({super.key});
 
   @override
-  State<AllLogsListView> createState() => _AllLogsListViewState();
+  State<TodayLogsListView> createState() => _TodayLogsListViewState();
 }
 
-class _AllLogsListViewState extends State<AllLogsListView> {
+class _TodayLogsListViewState extends State<TodayLogsListView> {
   List<LogModel> todayLogs = [];
   List<MedModel> meds = [];
   Person? currentUser;

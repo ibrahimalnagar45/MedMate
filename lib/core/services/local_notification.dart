@@ -5,8 +5,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:midmate/features/notification/presentation/views/alaram_view.dart';
 import 'package:midmate/features/notification/presentation/views/notification_view.dart';
-import 'package:midmate/features/today_meds/presentation/views/today_logs_view.dart';
-import 'package:midmate/features/today_meds/presentation/views/widgets/today_meds_view_body.dart';
 import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:timezone/timezone.dart' as tz;
 
@@ -21,7 +19,7 @@ class LocalNotification {
 
   LocalNotification({required this.navigatorKey});
 
-  initializeDefaultNotificationSetting() async {
+  Future<void> initializeDefaultNotificationSetting() async {
     // initialise the plugin. app_icon needs to be a added as a drawable resource to the Android head project
     const AndroidInitializationSettings initializationSettingsAndroid =
         AndroidInitializationSettings('ic_notification');
@@ -139,7 +137,11 @@ class LocalNotification {
     );
   }
 
-  showSceduledNotification({String? title, String? body, int? date}) async {
+  Future<void> showSceduledNotification({
+    String? title,
+    String? body,
+    int? date,
+  }) async {
     final NotificationDetails notificationDetails = NotificationDetails(
       android: AndroidNotificationDetails(
         'your channel id',
@@ -159,7 +161,7 @@ class LocalNotification {
     );
   }
 
-  showAlarmNotification({String? title, String? body}) async {
+  Future<void> showAlarmNotification({String? title, String? body}) async {
     final ringtoneUri = SharedPrefrenceService.instance.prefs.getString(
       SharedPrefrenceDb.ringtoneUri,
     );
@@ -202,7 +204,7 @@ class LocalNotification {
     );
   }
 
-  showScheduledRepeatedNotification({
+  Future<void> showScheduledRepeatedNotification({
     String? title,
     String? body,
     required int id,
@@ -252,55 +254,7 @@ class LocalNotification {
     );
   }
 
-  // showScheduledRepeatedNotification({
-  //   String? title,
-  //   String? body,
-  //   required int id,
-  //   required int? date,
-  // }) async {
-  //   log('scheduled alarm notification called');
-
-  //   final ringtoneUri = SharedPrefrenceService.instance.prefs.getString(
-  //     SharedPrefrenceDb.ringtoneUri,
-  //   );
-  //   await createAlarmChannelWithSound(ringtoneUri);
-
-  //   final String channelId =
-  //       ringtoneUri != null
-  //           ? 'alarm_channel_${ringtoneUri.hashCode}'
-  //           : 'default_alarm_channel';
-
-  //   AndroidNotificationDetails androidPlatformChannelSpecifics =
-  //       AndroidNotificationDetails(
-  //         channelId,
-  //         'Alarm Notifications',
-  //         channelDescription: 'Channel for alarm notifications',
-  //         importance: Importance.max,
-  //         priority: Priority.high,
-  //         fullScreenIntent: true,
-  //         visibility: NotificationVisibility.public,
-  //         playSound: true,
-  //         enableVibration: true,
-  //         // sound: RawResourceAndroidNotificationSound('alram_sound'),
-  //         icon: 'ic_notification', // your custom icon
-  //         // ticker: 'ticker',
-  //       );
-
-  //   NotificationDetails platformChannelSpecifics = NotificationDetails(
-  //     android: androidPlatformChannelSpecifics,
-  //   );
-
-  //   await flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
-  //     id,
-  //     title,
-  //     body,
-  //     Duration(hours: date!),
-  //     platformChannelSpecifics,
-  //     payload: 'time_to_take_medicine',
-  //   );
-  // }
-
-  showSceduledAlarmNotification({
+  Future<void> showSceduledAlarmNotification({
     String? title,
     String? body,
     required int date,
@@ -340,21 +294,21 @@ class LocalNotification {
     );
   }
 
-  cancleAllNotifications() async {
+  Future<void> cancleAllNotifications() async {
     await flutterLocalNotificationsPlugin.cancelAll();
   }
 
-  cancleNotification({required int id}) async {
+  Future<void> cancleNotification({required int id}) async {
     await flutterLocalNotificationsPlugin.cancel(id);
   }
 
-  getAllActiveNotification() async {
+  Future<void> getAllActiveNotification() async {
     final List<ActiveNotification> pendingNotificationRequests =
         await flutterLocalNotificationsPlugin.getActiveNotifications();
     log('active  notifications: ${pendingNotificationRequests.first.title}');
   }
 
-  getAllScheduledNotification() async {
+  Future<void> getAllScheduledNotification() async {
     final List<PendingNotificationRequest> pendingNotificationRequests =
         await flutterLocalNotificationsPlugin.pendingNotificationRequests();
     log('sheduled notifications:\n');
@@ -366,7 +320,7 @@ class LocalNotification {
   }
 
   // permission for android 13 and above
-  requestNotificationPermission() async {
+  Future<void> requestNotificationPermission() async {
     final bool? permission =
         await flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
@@ -385,7 +339,7 @@ class LocalNotification {
     log('Notification permission granted: $permission');
   }
 
-  requestExactAlarmsPermission() async {
+  Future<void> requestExactAlarmsPermission() async {
     final bool? permission =
         await flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
@@ -413,7 +367,7 @@ class LocalNotification {
     log('Exact alarms permission granted: $permission');
   }
 
-  requestFullScreenIntent() async {
+  Future<void> requestFullScreenIntent() async {
     final bool? permission =
         await flutterLocalNotificationsPlugin
             .resolvePlatformSpecificImplementation<
