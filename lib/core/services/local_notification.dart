@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:midmate/features/notification/presentation/views/alaram_view.dart';
 import 'package:midmate/features/notification/presentation/views/notification_view.dart';
+import 'package:midmate/utils/services/shared_prefrence_service.dart';
 import 'package:timezone/timezone.dart' as tz;
 // import 'package:android_intent_plus/android_intent.dart';
 
@@ -85,9 +86,22 @@ class LocalNotification {
     required String title,
     required String body,
   }) async {
-    const AndroidNotificationDetails androidNotificationDetails =
+    final ringtoneUri = SharedPrefrenceService.instance.prefs.getString(
+      SharedPrefrenceDb.ringtoneUri,
+    );
+
+    // 1️⃣ Create a channel with the saved ringtone sound
+    await createAlarmChannelWithSound(ringtoneUri);
+
+    // 2️⃣ Build a channel ID that matches the channel you just created
+    final String channelId =
+        ringtoneUri != null
+            ? 'alarm_channel_${ringtoneUri.hashCode}'
+            : 'default_alarm_channel';
+
+    AndroidNotificationDetails androidNotificationDetails =
         AndroidNotificationDetails(
-          '...',
+          channelId,
           '...',
           actions: <AndroidNotificationAction>[
             AndroidNotificationAction(
@@ -103,7 +117,7 @@ class LocalNotification {
             AndroidNotificationAction('id_3', 'Action 3'),
           ],
         );
-    const NotificationDetails notificationDetails = NotificationDetails(
+    NotificationDetails notificationDetails = NotificationDetails(
       android: androidNotificationDetails,
     );
     await flutterLocalNotificationsPlugin.show(
@@ -135,9 +149,22 @@ class LocalNotification {
   }
 
   showAlarmNotification({String? title, String? body}) async {
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    final ringtoneUri = SharedPrefrenceService.instance.prefs.getString(
+      SharedPrefrenceDb.ringtoneUri,
+    );
+
+    // 1️⃣ Create a channel with the saved ringtone sound
+    await createAlarmChannelWithSound(ringtoneUri);
+
+    // 2️⃣ Build a channel ID that matches the channel you just created
+    final String channelId =
+        ringtoneUri != null
+            ? 'alarm_channel_${ringtoneUri.hashCode}'
+            : 'default_alarm_channel';
+
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-          'alarm_channel_id',
+          channelId,
           'Alarm Notifications',
           channelDescription: 'Channel for alarm notifications',
           importance: Importance.max,
@@ -146,12 +173,12 @@ class LocalNotification {
           visibility: NotificationVisibility.public,
           playSound: true,
           enableVibration: true,
-          sound: RawResourceAndroidNotificationSound('alram_sound'),
+          // sound: RawResourceAndroidNotificationSound('alram_sound'),
           icon: 'ic_notification', // your custom icon
           // ticker: 'ticker',
         );
 
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+    NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
     );
 
@@ -172,9 +199,23 @@ class LocalNotification {
   }) async {
     log('scheduled alarm notification called');
 
-    const AndroidNotificationDetails androidPlatformChannelSpecifics =
+    final ringtoneUri = SharedPrefrenceService.instance.prefs.getString(
+      SharedPrefrenceDb.ringtoneUri,
+    );
+
+    // 1️⃣ Create a channel with the saved ringtone sound
+    await createAlarmChannelWithSound(ringtoneUri);
+
+    // 2️⃣ Build a channel ID that matches the channel you just created
+    final String channelId =
+        ringtoneUri != null
+            ? 'alarm_channel_${ringtoneUri.hashCode}'
+            : 'default_alarm_channel';
+
+    // 3️⃣ NO sound specified here → sound controlled by channel
+    AndroidNotificationDetails androidPlatformChannelSpecifics =
         AndroidNotificationDetails(
-          'repeated_scheduled_alarm_channel_id',
+          channelId,
           'Alarm Notifications',
           channelDescription: 'Channel for alarm notifications',
           importance: Importance.max,
@@ -183,12 +224,10 @@ class LocalNotification {
           visibility: NotificationVisibility.public,
           playSound: true,
           enableVibration: true,
-          sound: RawResourceAndroidNotificationSound('alram_sound'),
-          icon: 'ic_notification', // your custom icon
-          // ticker: 'ticker',
+          icon: 'ic_notification',
         );
 
-    const NotificationDetails platformChannelSpecifics = NotificationDetails(
+    NotificationDetails platformChannelSpecifics = NotificationDetails(
       android: androidPlatformChannelSpecifics,
     );
 
@@ -201,6 +240,54 @@ class LocalNotification {
       payload: 'time_to_take_medicine',
     );
   }
+
+  // showScheduledRepeatedNotification({
+  //   String? title,
+  //   String? body,
+  //   required int id,
+  //   required int? date,
+  // }) async {
+  //   log('scheduled alarm notification called');
+
+  //   final ringtoneUri = SharedPrefrenceService.instance.prefs.getString(
+  //     SharedPrefrenceDb.ringtoneUri,
+  //   );
+  //   await createAlarmChannelWithSound(ringtoneUri);
+
+  //   final String channelId =
+  //       ringtoneUri != null
+  //           ? 'alarm_channel_${ringtoneUri.hashCode}'
+  //           : 'default_alarm_channel';
+
+  //   AndroidNotificationDetails androidPlatformChannelSpecifics =
+  //       AndroidNotificationDetails(
+  //         channelId,
+  //         'Alarm Notifications',
+  //         channelDescription: 'Channel for alarm notifications',
+  //         importance: Importance.max,
+  //         priority: Priority.high,
+  //         fullScreenIntent: true,
+  //         visibility: NotificationVisibility.public,
+  //         playSound: true,
+  //         enableVibration: true,
+  //         // sound: RawResourceAndroidNotificationSound('alram_sound'),
+  //         icon: 'ic_notification', // your custom icon
+  //         // ticker: 'ticker',
+  //       );
+
+  //   NotificationDetails platformChannelSpecifics = NotificationDetails(
+  //     android: androidPlatformChannelSpecifics,
+  //   );
+
+  //   await flutterLocalNotificationsPlugin.periodicallyShowWithDuration(
+  //     id,
+  //     title,
+  //     body,
+  //     Duration(hours: date!),
+  //     platformChannelSpecifics,
+  //     payload: 'time_to_take_medicine',
+  //   );
+  // }
 
   showSceduledAlarmNotification({
     String? title,
@@ -331,5 +418,31 @@ class LocalNotification {
           .requestFullScreenIntentPermission();
     }
     log('Full screen intent permission granted: $permission');
+  }
+
+  Future<void> createAlarmChannelWithSound(String? uri) async {
+    final flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+
+    final androidPlugin =
+        flutterLocalNotificationsPlugin
+            .resolvePlatformSpecificImplementation<
+              AndroidFlutterLocalNotificationsPlugin
+            >();
+
+    if (androidPlugin == null) return;
+
+    final soundUri = uri != null ? Uri.parse(uri) : null;
+
+    final AndroidNotificationChannel channel = AndroidNotificationChannel(
+      'alarm_channel_${uri.hashCode}', // UNIQUE per sound
+      'Alarm Notifications',
+      description: 'Channel for alarm notifications',
+      importance: Importance.max,
+      sound: UriAndroidNotificationSound("$soundUri"),
+      playSound: true,
+      enableVibration: true,
+    );
+
+    await androidPlugin.createNotificationChannel(channel);
   }
 }
