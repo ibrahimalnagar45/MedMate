@@ -3,9 +3,9 @@ import 'package:midmate/features/chart/data/repos/logs_repo_impl.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:workmanager/workmanager.dart';
 
-import '../features/home/doman/repository/user_repo.dart';
-import '../features/today_meds/doman/today_meds_repo.dart';
-import 'models/logs_model.dart';
+import '../../features/home/doman/repository/user_repo.dart';
+import '../../features/today_meds/doman/today_meds_repo.dart';
+import '../models/logs_model.dart';
 
 @pragma('vm:entry-point')
 void callbackDispatcher() {

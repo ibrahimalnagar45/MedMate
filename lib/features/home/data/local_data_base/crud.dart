@@ -156,14 +156,16 @@ class Crud {
   }
 
   Future<LogModel?> getLogByMed({required MedModel med}) async {
-    Person? user = await getCurrentUser();
+    Person? user  = await getCurrentUser();
     List<LogModel> logs = await getUserLogs(userId: user!.id!);
-
-    LogModel log = logs.firstWhere(
-      (log) =>
-          log.medicationId == med.id &&
-          DateTime.parse(log.date).isBefore(med.nextTime!),
-    );
+    LogModel? log;
+    if (logs.isNotEmpty) {
+      log = logs.firstWhere(
+        (log) =>
+            log.medicationId == med.id &&
+            DateTime.parse(log.date).isBefore(med.nextTime!),
+      );
+    }
     return log;
   }
 
@@ -388,15 +390,14 @@ class Crud {
     db.close();
   }
 
-void delelteEverthing() {
-  Crud.instance.deleteAllMeds();
-  Crud.instance.deleteAllusers();
-  Crud.instance.closeMedsDb();
-  Crud.instance.closeUsersDb();
-  Crud.instance.deleteAllLogs();
-  Crud.instance.closeLogsDb();
-  Crud.instance.deleteMedsDatabaseFile();
-  getIt<SharedPreferences>().clear();
-}
-
+  void delelteEverthing() {
+    Crud.instance.deleteAllMeds();
+    Crud.instance.deleteAllusers();
+    Crud.instance.closeMedsDb();
+    Crud.instance.closeUsersDb();
+    Crud.instance.deleteAllLogs();
+    Crud.instance.closeLogsDb();
+    Crud.instance.deleteMedsDatabaseFile();
+    getIt<SharedPreferences>().clear();
+  }
 }

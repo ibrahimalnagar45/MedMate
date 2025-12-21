@@ -16,7 +16,7 @@ import '../../../../../utils/service_locator.dart';
 import 'today_med_list_tile.dart';
 
 class TodayMedsListView extends StatefulWidget {
-const TodayMedsListView({super.key, required this.meds});
+  const TodayMedsListView({super.key, required this.meds});
   final List<MedModel> meds;
 
   @override
@@ -45,12 +45,12 @@ class _TodayMedListState extends State<TodayMedList> {
   late List<MedModel> todayMeds;
   late List<MedModel> takenMeds;
   // final List<LogModel> logs= [];
-  late final TodayMedsCubit medsCubit;
+  late final TodayMedsCubit todayMedsCubit;
 
   @override
   void initState() {
     super.initState();
-    medsCubit = context.read<TodayMedsCubit>();
+    todayMedsCubit = context.read<TodayMedsCubit>();
     Future.sync(() async {
       currentUser = await userRepo.getCurrentUser();
     });
@@ -60,35 +60,6 @@ class _TodayMedListState extends State<TodayMedList> {
 
     log('today meds length: ${todayMeds.length}');
     log('taken meds length: ${takenMeds.length}');
-  }
-
-  Future<void> markAsTaken(MedModel med) async {
-    LogModel? logModel = await logRepo.getlogByMed(med: med);
-    log('log id: ${logModel?.id}');
-    await logRepo.updateLog(
-      logModel: logModel!,
-      newStatus: StatusValues.taken,
-    );
-    setState(() {
-      todayMeds.remove(med);
-      takenMeds.add(med);
-      TodayMedsCubit.todayMeds = List.from(todayMeds);
-      TodayMedsCubit.takenMeds = List.from(takenMeds);
-    });
-  }
-
-  Future<void> undoTaken(MedModel med) async {
-    LogModel? logModel = await logRepo.getlogByMed(med: med);
-    await logRepo.updateLog(
-      logModel: logModel !,
-      newStatus: StatusValues.pending,
-    );
-    setState(() {
-      takenMeds.remove(med);
-      todayMeds.add(med);
-      TodayMedsCubit.todayMeds = List.from(todayMeds);
-      TodayMedsCubit.takenMeds = List.from(takenMeds);
-    });
   }
 
   @override
@@ -108,7 +79,7 @@ class _TodayMedListState extends State<TodayMedList> {
             final med = todayMeds[index];
             return CheckboxListTile(
               value: false,
-              onChanged: (_) => markAsTaken(med),
+              onChanged: (_) => todayMedsCubit.markAsTaken(med),
               contentPadding: EdgeInsets.zero,
               checkboxShape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(5),
@@ -117,7 +88,7 @@ class _TodayMedListState extends State<TodayMedList> {
             );
           },
         ),
-        if (takenMeds.isEmpty) ...[
+        if (todayMedsCubit.getTakenMeds().isEmpty) ...[
           Center(
             child: TextButton(
               onPressed: () {
@@ -128,7 +99,7 @@ class _TodayMedListState extends State<TodayMedList> {
             ),
           ),
         ],
-        if (takenMeds.isNotEmpty) ...[
+        if (todayMedsCubit.getTakenMeds().isNotEmpty) ...[
           const SizedBox(height: 10),
           Row(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -144,7 +115,7 @@ class _TodayMedListState extends State<TodayMedList> {
           ListView.builder(
             shrinkWrap: true,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: takenMeds.length,
+            itemCount: todayMedsCubit.getTakenMeds().length,
             itemBuilder: (context, index) {
               final med = takenMeds[index];
               return Container(
@@ -163,7 +134,7 @@ class _TodayMedListState extends State<TodayMedList> {
                     const Spacer(),
                     IconButton(
                       tooltip: "Undo taken",
-                      onPressed: () => undoTaken(med),
+                      onPressed: () => todayMedsCubit.undoTaken(med),
                       icon: Icon(Icons.redo, color: AppColors.green),
                     ),
                   ],

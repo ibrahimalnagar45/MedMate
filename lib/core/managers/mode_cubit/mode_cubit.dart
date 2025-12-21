@@ -3,7 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-import '../../models/mode_manager.dart';
+import '../../helpers/mode_manager.dart';
 
 part 'mode_state.dart';
 
