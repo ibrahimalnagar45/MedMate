@@ -43,7 +43,7 @@ Future<void> serviceLocatorSetup() async {
   getIt.registerFactory<TodayMedsCubit>(
     () => TodayMedsCubit(
       logRepo: getIt<LogsRepo>(),
-      medsRepo: getIt<TodayMedRepo>(),
+      todayMedsRepo: getIt<TodayMedRepo>(),
       userRepo: getIt<UserRepository>(),
     ),
   );

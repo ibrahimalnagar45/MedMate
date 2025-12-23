@@ -20,6 +20,7 @@ import 'package:midmate/utils/text_styles.dart';
 import 'package:intl/intl.dart';
 
 import '../../../../../core/functions/check_med_next_time.dart';
+import '../../../../today_meds/presentation/manager/cubit/today_meds_cubit.dart';
 import 'med_info.dart';
 
 class CustomMedListTile extends StatefulWidget {
@@ -33,6 +34,7 @@ class CustomMedListTile extends StatefulWidget {
 class _CustomMedListTileState extends State<CustomMedListTile> {
   // Person currentUser =Person();
   final medsCubit = getIt<MedsCubit>();
+  final todayMedsCubit = getIt<TodayMedsCubit>();
   @override
   void initState() {
     checkMedNextTime(widget.medModel);
@@ -56,7 +58,7 @@ class _CustomMedListTileState extends State<CustomMedListTile> {
         medsCubit.deleteAMed(widget.medModel.id!, MedsTable.tableName);
         medsCubit.getAllMeds();
         getIt<LogsRepo>().deleteLog(widget.medModel.id!);
-        TodayMedsCubit.takenMeds.remove(widget.medModel);
+        todayMedsCubit.removeMedFromTaken(widget.medModel);
         LocalNotification(
           navigatorKey: navigatorKey,
         ).cancleNotification(id: widget.medModel.id!);

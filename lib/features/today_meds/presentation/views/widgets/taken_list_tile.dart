@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:midmate/features/today_meds/presentation/manager/cubit/today_meds_cubit.dart';
 import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/models/med_model.dart';
+import 'package:midmate/utils/service_locator.dart';
 import 'today_med_list_tile.dart';
 
 class TakenListTile extends StatefulWidget {
@@ -14,7 +15,7 @@ class TakenListTile extends StatefulWidget {
 
 class _TakenListTileState extends State<TakenListTile> {
   // bool checked = false;
-
+  final todayMedsCubit = getIt<TodayMedsCubit>();
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -33,8 +34,9 @@ class _TakenListTileState extends State<TakenListTile> {
           Spacer(),
           IconButton(
             onPressed: () {
-              TodayMedsCubit.todayMeds.add(widget.medModel);
-              TodayMedsCubit.takenMeds.remove(widget.medModel);
+              todayMedsCubit.addMedToTodayMeds(widget.medModel);
+              todayMedsCubit.removeMedFromTaken(widget.medModel);
+
               setState(() {});
             },
             icon: Icon(Icons.check, color: AppColors.green),

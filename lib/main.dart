@@ -10,6 +10,7 @@ import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:workmanager/workmanager.dart';
 import 'core/services/background_service.dart';
+import 'features/home/data/local_data_base/crud.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -104,5 +105,5 @@ Future<void> _initializeAppServices() async {
 
   Bloc.observer = CustomBlocObserval();
 
-  // Crud.instance.delelteEverthing();
+  Crud.instance.delelteEverthing();
 }

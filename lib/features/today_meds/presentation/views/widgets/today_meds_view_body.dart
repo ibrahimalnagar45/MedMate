@@ -24,7 +24,7 @@ class TodayMedsViewBody extends StatelessWidget {
           if (state is GetTodayMedsSuccess) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
-              child: TodayMedsListView(meds: state.meds),
+              child: TodayMedsListView(),
             );
           } else if (state is GetTodayMedsFaluire) {
             return Center(child: Text(state.erMessage));
