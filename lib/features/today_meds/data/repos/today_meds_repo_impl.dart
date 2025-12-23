@@ -17,7 +17,7 @@ class TodayMedsRepoImpl extends TodayMedRepo {
       LogsRepoImpl(crud: crud).insertLog(
         LogModel(
           medicationId: med.id!,
-          date: DateTime.now().toString(),
+          date: med.nextTime.toString(),
           status: StatusValues.pending,
         ),
       );

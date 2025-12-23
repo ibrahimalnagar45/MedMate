@@ -36,9 +36,7 @@ class _TodayLogsListViewState extends State<TodayLogsListView> {
         if (todayLogs.isEmpty) {
           return const Center(child: Text('No logs found'));
         }
-        log(
-          "${todayLogs[index].date} \t ${todayLogs[index].status}  \t ${todayLogs[index].medicationId} ",
-        );
+
         return Center(
           child: Text(
             "${todayLogs[index].date} \t ${todayLogs[index].status}  \t ${todayLogs[index].medicationId} ",

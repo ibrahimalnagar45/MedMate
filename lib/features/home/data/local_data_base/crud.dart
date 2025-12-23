@@ -119,15 +119,17 @@ class Crud {
     final List<Map<String, dynamic>> isExist = await db.query(
       LogsTable.tableName,
       where:
-          '${UsersTable.userId} = ? AND  ${LogsTable.logId} = ? AND ${MedsTable.medId} = ? AND ${LogsTable.logDateTime} = ?',
+          '${UsersTable.userId} = ? OR  ${LogsTable.logId} = ? AND ${MedsTable.medId} = ? AND ${LogsTable.logDateTime} = ?',
       whereArgs: [userId, medLog.id, medLog.medicationId, medLog.date],
     );
     Map<String, dynamic> medMap = medLog.toMap();
     medMap[UsersTable.userId] = userId;
     if (isExist.isEmpty) {
       await db.insert(LogsTable.tableName, medMap);
+      log('Inserted log: ${medLog.toMap()}');
+    } else {
+      log("this log is already exists");
     }
-    log('Inserted log: ${medLog.toMap()}');
   }
 
   Future<List<LogModel>> getUserLogs({required int userId}) async {
@@ -156,7 +158,7 @@ class Crud {
   }
 
   Future<LogModel?> getLogByMed({required MedModel med}) async {
-    Person? user  = await getCurrentUser();
+    Person? user = await getCurrentUser();
     List<LogModel> logs = await getUserLogs(userId: user!.id!);
     LogModel? log;
     if (logs.isNotEmpty) {
