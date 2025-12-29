@@ -165,7 +165,7 @@ class Crud {
       log = logs.firstWhere(
         (log) =>
             log.medicationId == med.id &&
-            DateTime.parse(log.date).isBefore(med.nextTime!),
+            DateTime.parse(log.date) == (med.nextTime!),
       );
     }
     return log;

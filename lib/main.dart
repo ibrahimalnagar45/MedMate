@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:midmate/core/managers/language_cubit/language_cubit.dart';
 import 'package:midmate/core/managers/mode_cubit/mode_cubit.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/core/themes/app_theme.dart';
@@ -10,7 +11,6 @@ import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:workmanager/workmanager.dart';
 import 'core/services/background_service.dart';
-import 'features/home/data/local_data_base/crud.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -29,6 +29,7 @@ void main() async {
       providers: [
         BlocProvider(create: (context) => ModeCubit()..getMode()),
         BlocProvider(create: (context) => getIt<UserCubit>()),
+        BlocProvider(create: (context) => getIt<LanguageCubit>()),
       ],
       child: const MyApp(),
     ),
@@ -42,31 +43,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return BlocBuilder<ModeCubit, ModeState>(
       builder: (context, state) {
-        if (state is Modechanged) {
-          return MaterialApp(
-            locale: const Locale('ar'),
-            localizationsDelegates: const [
-              S.delegate,
-              GlobalMaterialLocalizations.delegate,
-              GlobalWidgetsLocalizations.delegate,
-              GlobalCupertinoLocalizations.delegate,
-            ],
-            supportedLocales: S.delegate.supportedLocales,
-            scaffoldMessengerKey: scaffoldMessengerKey,
-            navigatorKey: navigatorKey,
-            debugShowCheckedModeBanner: false,
-            title: 'Remind Me',
-            theme:
-                state.mode == 'light'
-                    ? AppTheme.buildLightTheme()
-                    : AppTheme.buildDarkTheme(),
-            darkTheme: AppTheme.buildDarkTheme(),
-            themeMode: state.mode == 'light' ? ThemeMode.light : ThemeMode.dark,
-            home: SplashView(),
-          );
-        }
         return MaterialApp(
-          locale: const Locale('ar'),
+          locale: Locale('ar'),
           localizationsDelegates: const [
             S.delegate,
             GlobalMaterialLocalizations.delegate,
@@ -78,8 +56,15 @@ class MyApp extends StatelessWidget {
           navigatorKey: navigatorKey,
           debugShowCheckedModeBanner: false,
           title: 'Remind Me',
-          theme: AppTheme.buildLightTheme(),
-          themeMode: ThemeMode.light,
+          theme:
+              state is Modechanged && state.mode == 'light'
+                  ? AppTheme.buildLightTheme()
+                  : AppTheme.buildDarkTheme(),
+          darkTheme: AppTheme.buildDarkTheme(),
+          themeMode:
+              state is Modechanged && state.mode == 'light'
+                  ? ThemeMode.light
+                  : ThemeMode.dark,
           home: SplashView(),
         );
       },
@@ -91,6 +76,7 @@ Future<void> _initializeAppServices() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterLocalization.instance.ensureInitialized();
   await serviceLocatorSetup();
+
   tz.initializeTimeZones();
   tz.setLocalLocation(tz.getLocation('Africa/Cairo'));
   SqHelper();

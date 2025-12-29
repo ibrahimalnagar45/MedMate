@@ -143,7 +143,7 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                                   children: [
                                     Text(
                                       dateOfBirth == null
-                                          ? S.of(context).userAge
+                                          ? S.of(context).birthOfDate
                                           : dateOfBirth!,
                                       style: TextStyles.hintTextStyle,
                                     ),

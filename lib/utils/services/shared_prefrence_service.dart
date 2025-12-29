@@ -17,6 +17,6 @@ class SharedPrefrenceDb {
   static const String userId = 'userId';
   static const String userAge = 'userAge';
   static const String users = 'users';
-
+  static const String language = 'language';
   static const String ringtoneUri = 'ringtoneUri';
 }

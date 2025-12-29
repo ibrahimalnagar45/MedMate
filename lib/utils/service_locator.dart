@@ -1,4 +1,5 @@
 import 'package:get_it/get_it.dart';
+import 'package:midmate/core/managers/language_cubit/language_cubit.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
 import 'package:midmate/features/chart/data/repos/logs_repo_impl.dart';
 import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
@@ -33,6 +34,9 @@ Future<void> serviceLocatorSetup() async {
   // cubits
   getIt.registerLazySingleton<UserCubit>(
     () => UserCubit(userRepo: getIt<UserRepository>()),
+  );
+  getIt.registerLazySingleton<LanguageCubit>(
+    () => LanguageCubit(prefs: getIt<SharedPreferences>()),
   );
   getIt.registerFactory<MedsCubit>(
     () => MedsCubit(

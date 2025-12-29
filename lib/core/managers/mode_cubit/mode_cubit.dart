@@ -23,9 +23,9 @@ class ModeCubit extends Cubit<ModeState> {
       newMode = await ModeManager.getMode() == 'light' ? 'dark' : 'light';
       await ModeManager.setMode(newMode);
       log(newMode);
+      emit(Modechanged(mode: newMode));
     } catch (e) {
       throw Exception(e.toString());
     }
-    emit(Modechanged(mode: newMode));
   }
 }
