@@ -87,11 +87,11 @@ class Crud {
     );
 
     // List<MedModel> list = await getUserAllMeds(userId: userId);
+    var todayLogs = await getIt<LogsRepo>().getTodayLogs(userId);
 
     if (todayMap.isNotEmpty) {
       DateTime todayDate = DateTime.now();
 
-      var todayLogs = await getIt<LogsRepo>().getTodayLogs(userId);
       for (var med in todayMap) {
         MedModel temp = MedModel.fromMap(med);
         if (temp.getNextTime()?.day == todayDate.day) {
@@ -119,8 +119,8 @@ class Crud {
     final List<Map<String, dynamic>> isExist = await db.query(
       LogsTable.tableName,
       where:
-          '${UsersTable.userId} = ? OR  ${LogsTable.logId} = ? AND ${MedsTable.medId} = ? AND ${LogsTable.logDateTime} = ?',
-      whereArgs: [userId, medLog.id, medLog.medicationId, medLog.date],
+          ' ${LogsTable.logId} = ? AND ${MedsTable.medId} = ? AND ${LogsTable.logDateTime} = ?',
+      whereArgs: [medLog.id, medLog.medicationId, medLog.date],
     );
     Map<String, dynamic> medMap = medLog.toMap();
     medMap[UsersTable.userId] = userId;

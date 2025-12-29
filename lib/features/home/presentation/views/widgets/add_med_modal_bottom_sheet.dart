@@ -191,13 +191,13 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                       Future.sync(() async {
                         await medsCubit.insertMed(med, currentUser!.id!);
 
-                        await getIt<LogsRepo>().insertLog(
-                          LogModel(
-                            medicationId: med.id!,
-                            date: med.nextTime.toString(),
-                            status: StatusValues.pending,
-                          ),
-                        );
+                        // await getIt<LogsRepo>().insertLog(
+                        //   LogModel(
+                        //     medicationId: med.id!,
+                        //     date: med.nextTime.toString(),
+                        //     status: StatusValues.pending,
+                        //   ),
+                        // );
                         await medsCubit.getAllMeds();
 
                         await LocalNotification(
