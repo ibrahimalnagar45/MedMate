@@ -11,6 +11,7 @@ import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
 import 'package:workmanager/workmanager.dart';
 import 'core/services/background_service.dart';
+import 'features/home/data/local_data_base/crud.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -41,33 +42,28 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<ModeCubit, ModeState>(
-      builder: (context, state) {
-        return MaterialApp(
-          locale: Locale('ar'),
-          localizationsDelegates: const [
-            S.delegate,
-            GlobalMaterialLocalizations.delegate,
-            GlobalWidgetsLocalizations.delegate,
-            GlobalCupertinoLocalizations.delegate,
-          ],
-          supportedLocales: S.delegate.supportedLocales,
-          scaffoldMessengerKey: scaffoldMessengerKey,
-          navigatorKey: navigatorKey,
-          debugShowCheckedModeBanner: false,
-          title: 'Remind Me',
-          theme:
-              state is Modechanged && state.mode == 'light'
-                  ? AppTheme.buildLightTheme()
-                  : AppTheme.buildDarkTheme(),
-          darkTheme: AppTheme.buildDarkTheme(),
-          themeMode:
-              state is Modechanged && state.mode == 'light'
-                  ? ThemeMode.light
-                  : ThemeMode.dark,
-          home: SplashView(),
-        );
-      },
+    final theme = context.watch<ModeCubit>().state;
+    final locale = context.watch<LanguageCubit>().state;
+    // final isArabic =
+    //     locale is LanguageChanged && locale.languageCode == 'ar' ? 'ar' : 'en';
+
+    return MaterialApp(
+      locale: locale,
+      localizationsDelegates: const [
+        S.delegate,
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: S.delegate.supportedLocales,
+      scaffoldMessengerKey: scaffoldMessengerKey,
+      navigatorKey: navigatorKey,
+      debugShowCheckedModeBanner: false,
+      title: 'Remind Me',
+      theme: theme,
+      darkTheme: AppTheme.buildDarkTheme(),
+      themeMode: theme == ThemeData.light() ? ThemeMode.light : ThemeMode.dark,
+      home: SplashView(),
     );
   }
 }
@@ -91,5 +87,5 @@ Future<void> _initializeAppServices() async {
 
   Bloc.observer = CustomBlocObserval();
 
-  // Crud.instance.delelteEverthing();
+  Crud.instance.delelteEverthing();
 }

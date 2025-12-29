@@ -116,15 +116,10 @@ class Crud {
 
   Future<void> insertLog(LogModel medLog, int userId) async {
     final db = await SqHelper().getLogsDbInstance();
-    final List<Map<String, dynamic>> isExist = await db.query(
-      LogsTable.tableName,
-      where:
-          ' ${LogsTable.logId} = ? AND ${MedsTable.medId} = ? AND ${LogsTable.logDateTime} = ?',
-      whereArgs: [medLog.id, medLog.medicationId, medLog.date],
-    );
+    final LogModel? isExist = await getLog(logId: 1);
     Map<String, dynamic> medMap = medLog.toMap();
     medMap[UsersTable.userId] = userId;
-    if (isExist.isEmpty) {
+    if (isExist == null) {
       await db.insert(LogsTable.tableName, medMap);
       log('Inserted log: ${medLog.toMap()}');
     } else {

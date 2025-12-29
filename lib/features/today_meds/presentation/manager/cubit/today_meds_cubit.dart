@@ -162,19 +162,19 @@ class TodayMedsCubit extends Cubit<TodayMedsState> {
     }
   }
 
-  removeMedFromTaken(MedModel med) {
+ void  removeMedFromTaken(MedModel med) {
     takenMeds.remove(med);
   }
 
-  addMedTotaken(MedModel med) {
+ void addMedTotaken(MedModel med) {
     takenMeds.add(med);
   }
 
-  addMedToTodayMeds(MedModel med) {
+void  addMedToTodayMeds(MedModel med) {
     todayMeds.add(med);
   }
 
-  removeMedFromTodayMeds(MedModel med) {
+void  removeMedFromTodayMeds(MedModel med) {
     todayMeds.remove(med);
   }
 }

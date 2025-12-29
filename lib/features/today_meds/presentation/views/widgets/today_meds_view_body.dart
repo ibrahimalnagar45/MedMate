@@ -20,6 +20,9 @@ class TodayMedsViewBody extends StatelessWidget {
         autoleading: true,
       ),
       body: BlocBuilder<TodayMedsCubit, TodayMedsState>(
+        buildWhen: (previous, current) {
+          return previous != current;
+        },
         builder: (context, state) {
           if (state is GetTodayMedsSuccess) {
             return Padding(
