@@ -106,14 +106,30 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
                     onPressed: () {
                       languageCubit.changeLanguage('ar');
                     },
-                    child: Text(S.of(context).Arabic),
+                    child: Text(
+                      S.of(context).Arabic,
+                      style: TextStyle(
+                        color:
+                            languageCubit.getLocal().toString() == 'ar'
+                                ? AppColors.blue
+                                : AppColors.teal,
+                      ),
+                    ),
                   ),
                   Spacer(),
                   TextButton(
                     onPressed: () {
                       languageCubit.changeLanguage('en');
                     },
-                    child: Text(S.of(context).English),
+                    child: Text(
+                      S.of(context).English,
+                      style: TextStyle(
+                        color:
+                            languageCubit.getLocal().toString() == 'ar'
+                                ? AppColors.teal
+                                : AppColors.blue,
+                      ),
+                    ),
                   ),
                   Spacer(),
                 ],

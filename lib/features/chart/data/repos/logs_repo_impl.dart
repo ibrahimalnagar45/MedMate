@@ -57,8 +57,8 @@ class LogsRepoImpl extends LogsRepo {
   }
 
   @override
-  Future<LogModel?> getlogByMed({required MedModel med}) async {
-    LogModel? log = await crud.getLogByMed(med: med);
+  Future<LogModel?> getlogByMed({MedModel? med}) async {
+    LogModel? log = await crud.getLogByMed(medId: med!.id!, med: med);
     return log;
   }
 }

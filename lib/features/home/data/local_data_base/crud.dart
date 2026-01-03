@@ -1,4 +1,5 @@
 import 'dart:developer';
+import 'package:flutter/rendering.dart';
 import 'package:midmate/core/models/logs_model.dart';
 import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
@@ -116,7 +117,7 @@ class Crud {
 
   Future<void> insertLog(LogModel medLog, int userId) async {
     final db = await SqHelper().getLogsDbInstance();
-    final LogModel? isExist = await getLog(logId: 1);
+    final LogModel? isExist = await getLogByMed(medId: medLog.medicationId);
     Map<String, dynamic> medMap = medLog.toMap();
     medMap[UsersTable.userId] = userId;
     if (isExist == null) {
@@ -146,22 +147,21 @@ class Crud {
 
   Future<LogModel?> getLog({required int logId}) async {
     Person? user = await getCurrentUser();
+    debugPrint(logId.toString());
     List<LogModel> logs = await getUserLogs(userId: user!.id!);
-
-    LogModel log = logs.firstWhere((log) => log.id == logId);
+    LogModel? log;
+    if (logs.isNotEmpty) {
+      log = logs.firstWhere((log) => log.id == logId);
+    }
     return log;
   }
 
-  Future<LogModel?> getLogByMed({required MedModel med}) async {
+  Future<LogModel?> getLogByMed({required int medId, MedModel? med}) async {
     Person? user = await getCurrentUser();
     List<LogModel> logs = await getUserLogs(userId: user!.id!);
     LogModel? log;
     if (logs.isNotEmpty) {
-      log = logs.firstWhere(
-        (log) =>
-            log.medicationId == med.id &&
-            DateTime.parse(log.date) == (med.nextTime!),
-      );
+      log = logs.firstWhere((log) => log.medicationId == medId);
     }
     return log;
   }

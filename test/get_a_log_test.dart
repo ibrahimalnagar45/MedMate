@@ -49,7 +49,6 @@ void main() {
       createdAt: DateTime.now(),
       frequency: 6,
       startDate: DateTime.now(),
-      
     );
     await Crud.instance.insertLog(
       LogModel(
@@ -63,7 +62,7 @@ void main() {
       8,
     );
 
-    final result = await Crud.instance.getLogByMed(med: med);
+    final result = await Crud.instance.getLogByMed(medId: med.id!, med: med);
 
     expect(result?.id, 2);
     expect(result?.medicationId, 1);
