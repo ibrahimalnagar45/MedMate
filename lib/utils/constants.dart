@@ -1,23 +1,22 @@
 import 'package:flutter/material.dart';
 
 import '../features/onboarding/data/models/onboarding_model.dart';
+import '../generated/l10n.dart';
 import 'image_controller.dart';
 
 class OnBoardingConstants {
   OnBoardingConstants._();
   static List<OnboardingModel> onBoardings(BuildContext context) => [
     OnboardingModel(
-      text: 'جدول وقم بإدارة أدويتك بسهولة باستخدام تقويم بسيط وسهل الاستخدام',
+      text: S.of(context).onboaringText1,
       image: ImageController.onBoardingImage1,
     ),
     OnboardingModel(
-      text:
-          'لا تنسى أدويتك مرة أخرى! احصل على تذكيرات في الوقت المحدد للبقاء على المسار الصحيح مع صحتك.',
+      text: S.of(context).onboaringText2,
       image: ImageController.onBoardingImage2,
     ),
     OnboardingModel(
-      text:
-          'تناول أدويتك في الوقت المحدد يساعدك على الشعور بأفضل حال. سنساعدك على البقاء ملتزمًا!',
+      text: S.of(context).onboaringText3,
       image: ImageController.onBoardingImage3,
     ),
   ];
@@ -154,9 +153,8 @@ Thank you for using RemindMe.
 """;
 }
 
-class AboutMe{
-
-   static const String aboutAppAr = """
+class AboutMe {
+  static const String aboutAppAr = """
 عن تطبيق RemindMe
 
 تطبيق RemindMe هو تطبيق مخصص لمساعدتك على تذكر مواعيد أدويتك. يقوم التطبيق بإرسال إشعارات في الوقت المحدد لكل جرعة حتى لا تفوت تناول أي دواء.
@@ -169,7 +167,7 @@ class AboutMe{
 
 تطبيق RemindMe هو أداة مساعدة ولا يغني عن استشارة الطبيب. يرجى دائمًا اتباع تعليمات طبيبك.
 """;
- static const  String aboutAppEn = """
+  static const String aboutAppEn = """
 About RemindMe
 
 RemindMe is a mobile application designed to help you remember your medication schedule. The app sends timely notifications for each dose so you never miss your medications. 
@@ -182,5 +180,4 @@ Features:
 
 RemindMe is a support tool and does not replace professional medical advice. Always follow your doctor's instructions.
 """;
-
 }

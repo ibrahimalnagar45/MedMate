@@ -13,15 +13,7 @@ class TodayMedsRepoImpl extends TodayMedRepo {
   @override
   Future<List<MedModel>> getTodayMeds(int userId) async {
     var todayMeds = await crud.getTodayMeds(userId: userId);
-    for (MedModel med in todayMeds) {
-      LogsRepoImpl(crud: crud).insertLog(
-        LogModel(
-          medicationId: med.id!,
-          date: med.nextTime.toString(),
-          status: StatusValues.pending,
-        ),
-      );
-    }
+  
     return todayMeds;
   }
 

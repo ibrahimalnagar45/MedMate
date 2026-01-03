@@ -350,6 +350,36 @@ class S {
     return Intl.message('English', name: 'English', desc: '', args: []);
   }
 
+  /// `Schedule and manage your medications easily with a simple, easy-to-use calendar.`
+  String get onboaringText1 {
+    return Intl.message(
+      'Schedule and manage your medications easily with a simple, easy-to-use calendar.',
+      name: 'onboaringText1',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Never forget your medications again! Get timely reminders to stay on track with your health.`
+  String get onboaringText2 {
+    return Intl.message(
+      'Never forget your medications again! Get timely reminders to stay on track with your health.',
+      name: 'onboaringText2',
+      desc: '',
+      args: [],
+    );
+  }
+
+  /// `Taking your medications on time helps you feel your best. We’ll help you stay committed!`
+  String get onboaringText3 {
+    return Intl.message(
+      'Taking your medications on time helps you feel your best. We’ll help you stay committed!',
+      name: 'onboaringText3',
+      desc: '',
+      args: [],
+    );
+  }
+
   /// `ml`
   String get ml {
     return Intl.message('ml', name: 'ml', desc: '', args: []);

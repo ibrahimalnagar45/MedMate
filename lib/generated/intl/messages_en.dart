@@ -110,6 +110,15 @@ class MessageLookup extends MessageLookupByLibrary {
     "onBoardingText3": MessageLookupByLibrary.simpleMessage(
       "Taking your medications on time helps you feel your best. We’ll help you stay committed!",
     ),
+    "onboaringText1": MessageLookupByLibrary.simpleMessage(
+      "Schedule and manage your medications easily with a simple, easy-to-use calendar.",
+    ),
+    "onboaringText2": MessageLookupByLibrary.simpleMessage(
+      "Never forget your medications again! Get timely reminders to stay on track with your health.",
+    ),
+    "onboaringText3": MessageLookupByLibrary.simpleMessage(
+      "Taking your medications on time helps you feel your best. We’ll help you stay committed!",
+    ),
     "pill": MessageLookupByLibrary.simpleMessage("pill"),
     "pleaseAddAllInfo": MessageLookupByLibrary.simpleMessage(
       "Please add all the info",

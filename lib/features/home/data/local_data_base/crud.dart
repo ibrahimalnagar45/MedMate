@@ -117,13 +117,23 @@ class Crud {
 
   Future<void> insertLog(LogModel medLog, int userId) async {
     final db = await SqHelper().getLogsDbInstance();
-    final LogModel? isExist = await getLogByMed(medId: medLog.medicationId);
+    final List<LogModel> isExist = await getUserLogs(userId: userId);
     Map<String, dynamic> medMap = medLog.toMap();
     medMap[UsersTable.userId] = userId;
-    if (isExist == null) {
+    if (isExist.isEmpty) {
       await db.insert(LogsTable.tableName, medMap);
       log('Inserted log: ${medLog.toMap()}');
     } else {
+      for (var logItem in isExist) {
+        if (logItem.medicationId == medLog.medicationId &&
+            logItem.date == medLog.date) {
+          log('this log is already exists');
+        } else {
+          await db.insert(LogsTable.tableName, medMap);
+          log('Inserted log: ${medLog.toMap()}');
+          return;
+        }
+      }
       log("this log is already exists");
     }
   }

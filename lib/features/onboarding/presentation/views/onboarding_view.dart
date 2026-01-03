@@ -1,6 +1,5 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
-import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
+import 'package:flutter/material.dart'; 
 import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/features/home/presentation/views/home_view.dart';
 import 'package:midmate/utils/constants.dart';
@@ -8,8 +7,7 @@ import 'package:midmate/utils/extension_fun.dart';
 import 'package:midmate/utils/models/user_model.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/utils/services/shared_prefrence_service.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import '../../../../utils/app_colors.dart';
+import 'package:shared_preferences/shared_preferences.dart'; 
 import '../../../user_data/presentation/views/user_data_view.dart';
 import 'widgets/custom_skip_icon.dart';
 import 'widgets/onboarding_widget.dart';

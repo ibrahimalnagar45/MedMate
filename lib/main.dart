@@ -93,5 +93,5 @@ Future<void> _initializeAppServices() async {
 
   Bloc.observer = CustomBlocObserval();
 
-  // Crud.instance.delelteEverthing();
+  Crud.instance.delelteEverthing();
 }

@@ -179,7 +179,7 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                       }
                       MedModel med = MedModel(
                         name: medName,
-                        description: description ?? S.current.unSpecified,
+                        description: description ?? S.of(context).unSpecified,
                         type: medType,
                         dose: medDose,
                         frequency: medFrequency,
@@ -191,13 +191,14 @@ class _AddMedModalBottomSheetState extends State<AddMedModalBottomSheet> {
                       Future.sync(() async {
                         await medsCubit.insertMed(med, currentUser!.id!);
 
-                        // await getIt<LogsRepo>().insertLog(
-                        //   LogModel(
-                        //     medicationId: med.id!,
-                        //     date: med.nextTime.toString(),
-                        //     status: StatusValues.pending,
-                        //   ),
-                        // );
+                        await getIt<LogsRepo>().insertLog(
+                          LogModel(
+                            medicationId: med.id!,
+                            date: med.nextTime.toString(),
+                            status: StatusValues.pending,
+                          ),
+                        );
+
                         await medsCubit.getAllMeds();
 
                         await LocalNotification(
