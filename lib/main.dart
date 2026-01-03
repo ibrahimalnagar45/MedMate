@@ -60,9 +60,12 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       debugShowCheckedModeBanner: false,
       title: 'Remind Me',
-      theme: theme,
+      theme:
+          theme == AppThemeMode.light
+              ? AppTheme.buildLightTheme()
+              : AppTheme.buildDarkTheme(),
       darkTheme: AppTheme.buildDarkTheme(),
-      themeMode: theme == ThemeData.light() ? ThemeMode.light : ThemeMode.dark,
+      themeMode: theme == AppThemeMode.light ? ThemeMode.light : ThemeMode.dark,
       home: SplashView(),
     );
   }

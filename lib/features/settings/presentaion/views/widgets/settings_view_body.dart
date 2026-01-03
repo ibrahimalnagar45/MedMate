@@ -1,35 +1,21 @@
-import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:jbh_ringtone/jbh_ringtone.dart';
-import 'package:midmate/core/managers/mode_cubit/mode_cubit.dart';
-import 'package:midmate/core/services/local_notification.dart';
-import 'package:midmate/core/widgets/user_account_image.dart';
-import 'package:midmate/features/home/doman/repository/user_repo.dart';
-import 'package:midmate/features/settings/presentaion/views/widgets/setting_item_widget.dart';
-import 'package:midmate/features/settings/presentaion/views/widgets/terms_view.dart';
-import 'package:midmate/main.dart';
-import 'package:midmate/utils/app_colors.dart';
 import 'package:midmate/utils/extension_fun.dart';
-import 'package:midmate/utils/models/user_model.dart';
-import 'package:midmate/utils/service_locator.dart';
+
+import '../../../../../core/managers/mode_cubit/mode_cubit.dart';
+import '../../../../../core/services/local_notification.dart';
+import '../../../../../core/widgets/user_account_image.dart';
 import '../../../../../generated/l10n.dart';
+import '../../../../../main.dart';
+import '../../../../../utils/app_colors.dart';
+import '../../../../../utils/models/user_model.dart';
+import '../../../../../utils/service_locator.dart';
+import '../../../../home/doman/repository/user_repo.dart';
 import '../ringtone_picker_view.dart';
 import 'about_me_view.dart';
+import 'setting_item_widget.dart';
+import 'terms_view.dart';
 
-/*
- User info (photo, name, birthday, edit)       Done 
-
-Display settings (theme, font, colors)
-
-Language & region (Arabic/English toggle)
-
-Reminders & notifications (sound, snooze, toggle)
-
-Privacy & data (reset, clear data)
-
-About app (version, developer info)
- */
 class SettingsViewBody extends StatefulWidget {
   const SettingsViewBody({super.key});
 
@@ -39,93 +25,74 @@ class SettingsViewBody extends StatefulWidget {
 
 class _SettingsViewBodyState extends State<SettingsViewBody> {
   Person? currentUser;
-  bool isDarkMode = false;
-
-  @override
-  void initState() {
-    _getCurrentUser();
-    super.initState();
-  }
-
   bool focused = false;
 
   @override
+  void initState() {
+    super.initState();
+    _getCurrentUser();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    var size = MediaQuery.sizeOf(context);
-    return BlocBuilder<ModeCubit, ModeState>(
-      builder: (context, state) {
-        final isDarkMode = (state is Modechanged && state.mode == 'dark');
+    final size = MediaQuery.sizeOf(context);
+
+    return BlocBuilder<ModeCubit, AppThemeMode>(
+      builder: (context, themeMode) {
+        final isDarkMode = themeMode == AppThemeMode.dark;
 
         return Column(
-          mainAxisSize: MainAxisSize.max,
           children: [
             UserAccountImage(
               currentUser: currentUser,
               radius: size.height * .05,
             ),
+
             SizedBox(height: size.height * .04),
 
-            // name and birthday section
+            /// 👤 Name & birthday
             ListTile(
+              leading: IconButton(
+                padding: EdgeInsets.zero,
+                icon: Icon(Icons.edit, color: AppColors.blue),
+                onPressed: () {
+                  setState(() => focused = true);
+                },
+              ),
               title: Center(
                 child: TextField(
-                  canRequestFocus: focused,
                   autofocus: focused,
+                  canRequestFocus: focused,
                   selectAllOnFocus: focused,
                   decoration: InputDecoration(
-                    border: OutlineInputBorder(borderSide: BorderSide.none),
-                    fillColor: AppColors.white,
-                    focusColor: AppColors.white,
-                    hoverColor: AppColors.white,
-                    hint: Text(
-                      '${currentUser?.name ?? 'No User'}\t\t\t\t\t\t${currentUser?.birthDayDate ?? ''} ',
-                      textAlign: TextAlign.center,
-                      style: TextStyle(color: Colors.black),
-                    ),
+                    border: InputBorder.none,
+                    hintText:
+                        '${currentUser?.name ?? 'No User'}   ${currentUser?.birthDayDate ?? ''}',
+                    hintStyle: const TextStyle(color: Colors.black),
                   ),
+                  textAlign: TextAlign.center,
                 ),
-              ),
-              leading: IconButton(
-                padding: EdgeInsets.all(0),
-
-                onPressed: () {
-                  setState(() {
-                    focused = true;
-                  });
-                },
-                icon: Icon(Icons.edit, color: AppColors.blue),
               ),
             ),
 
-            // ListTile(
-            //   title: SettingItemWidget(
-            //     child: Text(
-            //       '${currentUser?.name ?? 'No User'}\t\t\t\t\t\t${currentUser?.birthDayDate ?? ''} ',
-            //       textAlign: TextAlign.center,
-            //     ),
-            //   ),
-            //   leading: IconButton(
-            //     padding: EdgeInsets.all(0),
-            //     onPressed: () {},
-            //     icon: Icon(Icons.edit),
-            //   ),
-            // ),
-            Divider(endIndent: 20, indent: 20, color: Colors.black),
-            // theme toggel
+            const Divider(indent: 20, endIndent: 20),
+
+            /// 🌙 Theme toggle (CLEAN)
             SettingItemWidget(
               icon: Switch(
-                activeThumbColor: AppColors.teal,
                 value: isDarkMode,
-                onChanged: (_) => context.read<ModeCubit>().toggleMode(),
+                activeThumbColor: AppColors.teal,
+                onChanged: (_) {
+                  context.read<ModeCubit>().toggleMode();
+                },
               ),
               child: Text(
                 S.current.theme,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
             ),
 
-            //✅ add notification sound picker
+            /// 🔔 Notification sound
             SettingItemWidget(
               onTap: () async {
                 await LocalNotification(
@@ -133,86 +100,42 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
                 ).showAlarmNotification();
                 Context(context).goTo(const RingtonePickerView());
               },
-
-              icon: IconButton(
-                padding: EdgeInsets.all(0),
-                onPressed: () {},
-                icon: Icon(Icons.queue_music, color: AppColors.blue),
-              ),
+              icon: Icon(Icons.queue_music, color: AppColors.blue),
               child: Text(
                 S.current.NotificationSound,
-                textAlign: TextAlign.center,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
               ),
             ),
 
-            Divider(endIndent: 20, indent: 20, color: Colors.black),
+            const Divider(indent: 20, endIndent: 20),
 
-            // terms and policy
+            /// 📜 Terms
             SettingItemWidget(
               onTap: () => Context(context).goTo(TermView()),
               icon: Icon(Icons.list_alt_rounded, color: AppColors.blue),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-                child: Text(
-                  S.current.TermsAndPolicySection,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.black),
-                ),
+              child: Text(
+                S.current.TermsAndPolicySection,
+                style: const TextStyle(color: Colors.black),
               ),
             ),
 
-            // about section
+            /// ℹ️ About
             SettingItemWidget(
               onTap: () => Context(context).goTo(AboutMeView()),
               icon: Icon(Icons.info_outline_rounded, color: AppColors.blue),
-              child: Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 10.0),
-
-                child: Text(
-                  S.current.AboutSection,
-                  textAlign: TextAlign.left,
-                  style: TextStyle(color: Colors.black),
-                ),
+              child: Text(
+                S.current.AboutSection,
+                style: const TextStyle(color: Colors.black),
               ),
             ),
-            //
           ],
         );
       },
     );
-
-    return Column(
-      // mainAxisAlignment: ma,
-      children: [
-        UserAccountImage(currentUser: currentUser),
-
-        SettingItemWidget(
-          child: Text(
-            '${currentUser?.name ?? 'No User'}\t\t\t\t\t\t${currentUser?.birthDayDate ?? ''} ',
-            textAlign: TextAlign.center,
-          ),
-        ),
-        Divider(endIndent: 20, indent: 20, color: AppColors.white),
-        SettingItemWidget(child: Text('Theme', textAlign: TextAlign.left)),
-
-        SwitchListTile(
-          activeThumbColor: AppColors.blue,
-
-          title: Text('Theme', textAlign: TextAlign.left),
-          value: isDarkMode,
-          onChanged: (value) {
-            isDarkMode = value;
-            setState(() {});
-            context.read<ModeCubit>().toggleMode();
-          },
-        ),
-      ],
-    );
   }
 
-  void _getCurrentUser() async {
-    currentUser = await getIt<UserRepository>().getCurrentUser();
-    setState(() {});
+  Future<void> _getCurrentUser() async {
+    final user = await getIt<UserRepository>().getCurrentUser();
+    setState(() => currentUser = user);
   }
 }
