@@ -27,7 +27,9 @@
 
   "every": "كل",
   "everyDay": "كل يوم",
-  
+  "language": "اللغة",
+  "English": "الانجليزية",
+  "Arabic": "العربية",
   "now": "الان",
   "every6Hours": "كل 6 ساعات",
   "every8Hours": "كل 8 ساعات",

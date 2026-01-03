@@ -39,7 +39,9 @@
   "after8Hours": "After 8 Hours",
   "after12Hours": "After 12 Hours",
   "afterADay": "After a Day",
-
+"language": "Language",
+"Arabic": "Arabic",
+"English": "English",
 
   "ml": "ml",
 

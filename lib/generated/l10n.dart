@@ -335,6 +335,21 @@ class S {
     return Intl.message('After a Day', name: 'afterADay', desc: '', args: []);
   }
 
+  /// `Language`
+  String get language {
+    return Intl.message('Language', name: 'language', desc: '', args: []);
+  }
+
+  /// `Arabic`
+  String get Arabic {
+    return Intl.message('Arabic', name: 'Arabic', desc: '', args: []);
+  }
+
+  /// `English`
+  String get English {
+    return Intl.message('English', name: 'English', desc: '', args: []);
+  }
+
   /// `ml`
   String get ml {
     return Intl.message('ml', name: 'ml', desc: '', args: []);

@@ -47,6 +47,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "AboutSection": MessageLookupByLibrary.simpleMessage("حول التطبيق"),
     "Add": MessageLookupByLibrary.simpleMessage("اضافة"),
     "AddMedicine": MessageLookupByLibrary.simpleMessage("اضافة الدواء"),
+    "Arabic": MessageLookupByLibrary.simpleMessage("العربية"),
+    "English": MessageLookupByLibrary.simpleMessage("الانجليزية"),
     "NoDescription": MessageLookupByLibrary.simpleMessage("لا يوجد وصف"),
     "NotificationSound": MessageLookupByLibrary.simpleMessage(" صوت الاشعارات"),
     "TermsAndPolicySection": MessageLookupByLibrary.simpleMessage(
@@ -78,6 +80,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "home": MessageLookupByLibrary.simpleMessage("الرئيسية"),
     "inhaler": MessageLookupByLibrary.simpleMessage("بخاخ"),
     "injection": MessageLookupByLibrary.simpleMessage("حقنة"),
+    "language": MessageLookupByLibrary.simpleMessage("اللغة"),
     "medCreatedAt": m3,
     "medDescription": m4,
     "medDescriptionExample": MessageLookupByLibrary.simpleMessage(

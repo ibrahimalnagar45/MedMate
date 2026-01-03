@@ -73,7 +73,7 @@ class _CustomAppBarState extends State<CustomAppBar> {
         // backgroundColor: AppColors.grey,
         // backgroundColor: Colors.transparent,
         title: Text(
-          S.current.appBarTitle(widget.screenName),
+          S.of(context).appBarTitle(widget.screenName),
           style: TextStyle(color: Colors.black),
         ),
         centerTitle: true,
@@ -135,13 +135,12 @@ class _CustomAppBarState extends State<CustomAppBar> {
                 : [],
 
         leading:
-            widget.autoleading  == true
+            widget.autoleading == true
                 ? null
                 : Padding(
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: GestureDetector(
                     onTap: () async {
-                    
                       Context(context).goTo(SettingsView());
                     },
                     child: UserAccountImage(currentUser: currentUser),

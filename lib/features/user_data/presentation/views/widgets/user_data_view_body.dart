@@ -90,10 +90,12 @@ class _UserDataViewBodyState extends State<UserDataViewBody> {
                                 }
                                 return null;
                               },
+                              
                               onSubmitted: (value) {
                                 if (_formKey.currentState!.validate()) {
                                   userName = value;
                                   setState(() {});
+                                  
                                 }
                               },
                             ),

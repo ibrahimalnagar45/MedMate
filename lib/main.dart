@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
@@ -44,6 +46,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     final theme = context.watch<ModeCubit>().state;
     final locale = context.watch<LanguageCubit>().state;
+    log(locale.toString());
     // final isArabic =
     //     locale is LanguageChanged && locale.languageCode == 'ar' ? 'ar' : 'en';
 
@@ -90,5 +93,5 @@ Future<void> _initializeAppServices() async {
 
   Bloc.observer = CustomBlocObserval();
 
-  Crud.instance.delelteEverthing();
+  // Crud.instance.delelteEverthing();
 }

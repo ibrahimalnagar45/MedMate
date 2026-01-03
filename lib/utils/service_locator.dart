@@ -36,7 +36,7 @@ Future<void> serviceLocatorSetup() async {
     () => UserCubit(userRepo: getIt<UserRepository>()),
   );
   getIt.registerLazySingleton<LanguageCubit>(
-    () => LanguageCubit(prefs: getIt<SharedPreferences>()),
+    () => LanguageCubit.create(getIt<SharedPreferences>()),
   );
   getIt.registerFactory<MedsCubit>(
     () => MedsCubit(

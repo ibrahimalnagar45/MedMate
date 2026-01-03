@@ -47,6 +47,8 @@ class MessageLookup extends MessageLookupByLibrary {
     "AboutSection": MessageLookupByLibrary.simpleMessage("About the App"),
     "Add": MessageLookupByLibrary.simpleMessage("Add"),
     "AddMedicine": MessageLookupByLibrary.simpleMessage("Add Medicine"),
+    "Arabic": MessageLookupByLibrary.simpleMessage("Arabic"),
+    "English": MessageLookupByLibrary.simpleMessage("English"),
     "NoDescription": MessageLookupByLibrary.simpleMessage("No description"),
     "NotificationSound": MessageLookupByLibrary.simpleMessage(
       "Notification Sound",
@@ -80,6 +82,7 @@ class MessageLookup extends MessageLookupByLibrary {
     "home": MessageLookupByLibrary.simpleMessage("Home"),
     "inhaler": MessageLookupByLibrary.simpleMessage("inhaler"),
     "injection": MessageLookupByLibrary.simpleMessage("injection"),
+    "language": MessageLookupByLibrary.simpleMessage("Language"),
     "medCreatedAt": m3,
     "medDescription": m4,
     "medDescriptionExample": MessageLookupByLibrary.simpleMessage(

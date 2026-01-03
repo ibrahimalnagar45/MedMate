@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:midmate/core/managers/language_cubit/language_cubit.dart';
 import 'package:midmate/utils/extension_fun.dart';
 
 import '../../../../../core/managers/mode_cubit/mode_cubit.dart';
@@ -36,7 +37,8 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.sizeOf(context);
-
+    final ModeCubit modeCubit = context.read<ModeCubit>();
+    final LanguageCubit languageCubit = context.read<LanguageCubit>();
     return BlocBuilder<ModeCubit, AppThemeMode>(
       builder: (context, themeMode) {
         final isDarkMode = themeMode == AppThemeMode.dark;
@@ -83,12 +85,38 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
                 value: isDarkMode,
                 activeThumbColor: AppColors.teal,
                 onChanged: (_) {
-                  context.read<ModeCubit>().toggleMode();
+                  modeCubit.toggleMode();
                 },
               ),
               child: Text(
-                S.current.theme,
+                S.of(context).theme,
                 style: const TextStyle(color: Colors.black),
+              ),
+            ),
+            SettingItemWidget(
+              child: Row(
+                children: [
+                  Text(
+                    S.of(context).language,
+                    style: const TextStyle(color: Colors.black),
+                  ),
+                  Spacer(),
+
+                  TextButton(
+                    onPressed: () {
+                      languageCubit.changeLanguage('ar');
+                    },
+                    child: Text(S.of(context).Arabic),
+                  ),
+                  Spacer(),
+                  TextButton(
+                    onPressed: () {
+                      languageCubit.changeLanguage('en');
+                    },
+                    child: Text(S.of(context).English),
+                  ),
+                  Spacer(),
+                ],
               ),
             ),
 
@@ -102,7 +130,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
               },
               icon: Icon(Icons.queue_music, color: AppColors.blue),
               child: Text(
-                S.current.NotificationSound,
+                S.of(context).NotificationSound,
                 style: const TextStyle(color: Colors.black),
               ),
             ),
@@ -114,7 +142,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
               onTap: () => Context(context).goTo(TermView()),
               icon: Icon(Icons.list_alt_rounded, color: AppColors.blue),
               child: Text(
-                S.current.TermsAndPolicySection,
+                S.of(context).TermsAndPolicySection,
                 style: const TextStyle(color: Colors.black),
               ),
             ),
@@ -124,7 +152,7 @@ class _SettingsViewBodyState extends State<SettingsViewBody> {
               onTap: () => Context(context).goTo(AboutMeView()),
               icon: Icon(Icons.info_outline_rounded, color: AppColors.blue),
               child: Text(
-                S.current.AboutSection,
+                S.of(context).AboutSection,
                 style: const TextStyle(color: Colors.black),
               ),
             ),
