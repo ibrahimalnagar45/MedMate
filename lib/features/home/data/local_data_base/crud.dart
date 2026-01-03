@@ -181,7 +181,7 @@ class Crud {
     required String newStatus,
   }) async {
     final db = await SqHelper().getLogsDbInstance();
-    log('the log is passed is $logModel');
+    log('the log is updated is $logModel');
     int done;
 
     done = await db.update(

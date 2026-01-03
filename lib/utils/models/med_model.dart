@@ -115,6 +115,59 @@ class MedModel {
       return MedType.pill;
     }
   }
+
+  factory MedModel.fromJson(Map<String, dynamic> map) {
+    return MedModel(
+        id: map[MedsTable.medId],
+        name: map[MedsTable.medName],
+        description: map[MedsTable.medDescription],
+        type: MedModel.newMed().getType(map[MedsTable.medType]),
+        dose: map[MedsTable.medAmount]?.toDouble(),
+        frequency: map[MedsTable.medFrequency],
+        startDate:
+            map[MedsTable.medStartDate] != null
+                ? DateTime.parse(map[MedsTable.medStartDate])
+                : null,
+        createdAt:
+            map[MedsTable.medCreatedAt] != null
+                ? DateTime.parse(map[MedsTable.medCreatedAt])
+                : null,
+      )
+      ..nextTime =
+          map['nextTime'] != null ? DateTime.parse(map['nextTime']) : null
+      ..logs =
+          map['logs'] != null
+              ? List<String>.from(
+                map['logs'],
+              ).map((e) => DateTime.parse(e)).toList()
+              : [];
+  }
+
+  Map<String, dynamic> toJson() {
+    return {
+      MedsTable.medId: id,
+      MedsTable.medName: name,
+      MedsTable.medDescription: description,
+      MedsTable.medType: type?.toString(),
+      MedsTable.medAmount: dose,
+      MedsTable.medFrequency: frequency,
+      MedsTable.medStartDate: startDate?.toIso8601String(),
+      MedsTable.medCreatedAt: createdAt?.toIso8601String(),
+      'nextTime': nextTime?.toIso8601String(),
+      'logs': logs.map((e) => e.toIso8601String()).toList(),
+    };
+  }
+
+  // fromJson(Map<String, dynamic> json) {
+  //   id = json[MedsTable.medId];
+  //   name = json[MedsTable.medName];
+  //   description = json[MedsTable.medDescription];
+  //   type = getType(json[MedsTable.medType]);
+  //   dose = json[MedsTable.medAmount];
+  //   frequency = json[MedsTable.medFrequency];
+  //   startDate = DateTime.parse(json[MedsTable.medStartDate]);
+  //   createdAt = DateTime.parse(json[MedsTable.medCreatedAt]);
+  // }
 }
 
 enum MedType { pill, powder, syrup, drop, cream, injection, inhaler }

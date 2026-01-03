@@ -83,6 +83,7 @@
 
 import 'dart:developer';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
 import 'package:midmate/features/home/doman/repository/user_repo.dart';
 import 'package:midmate/features/today_meds/doman/today_meds_repo.dart';
@@ -92,89 +93,196 @@ import '../../../../../utils/models/user_model.dart';
 
 part 'today_meds_state.dart';
 
-class TodayMedsCubit extends Cubit<TodayMedsState> {
+class TodayMedsCubit extends HydratedCubit<TodayMedsState> {
   TodayMedsCubit({
     required this.todayMedsRepo,
     required this.userRepo,
     required this.logRepo,
-  }) : super(TodayMedsInitial());
+  }) : super(TodayMedsState.initial());
 
   final TodayMedRepo todayMedsRepo;
   final LogsRepo logRepo;
   final UserRepository userRepo;
 
-  List<MedModel> todayMeds = [];
-  List<MedModel> takenMeds = [];
+  static List<MedModel> todayMeds = [];
+  static List<MedModel> takenMeds = [];
 
+  // Future<void> getTodayMeds() async {
+  //   emit(GetTodayMedsLoading());
+  //   try {
+  //     final Person? currentUser = await userRepo.getCurrentUser();
+  //     if (currentUser == null) throw Exception("No current user found");
+  //     todayMeds = await todayMedsRepo.getTodayMeds(currentUser.id!);
+  //     takenMeds = []; // reset taken meds for today
+  //     log('Today meds: $todayMeds');
+  //     emit(GetTodayMedsSuccess(meds: todayMeds));
+  //   } catch (e) {
+  //     log('Error getting today meds: $e');
+  //     emit(GetTodayMedsFaluire(erMessage: e.toString()));
+  //   }
+  // }
   Future<void> getTodayMeds() async {
-    emit(GetTodayMedsLoading());
-    try {
-      final Person? currentUser = await userRepo.getCurrentUser();
-      if (currentUser == null) throw Exception("No current user found");
+    emit(state.copyWith(status: TodayMedsStatus.loading));
 
-      todayMeds = await todayMedsRepo.getTodayMeds(currentUser.id!);
-      takenMeds = []; // reset taken meds for today
-      log('Today meds: $todayMeds');
-      emit(GetTodayMedsSuccess(meds: todayMeds));
+    try {
+      final user = await userRepo.getCurrentUser();
+      if (user == null) throw Exception('No user');
+
+      final meds = await todayMedsRepo.getTodayMeds(user.id!);
+
+      emit(
+        state.copyWith(
+          status: TodayMedsStatus.success,
+          todayMeds: meds,
+
+          errorMessage: null,
+        ),
+      );
     } catch (e) {
-      log('Error getting today meds: $e');
-      emit(GetTodayMedsFaluire(erMessage: e.toString()));
+      emit(
+        state.copyWith(
+          status: TodayMedsStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
+
+  // Future<void> markAsTaken(MedModel med) async {
+  //   try {
+  //     if (todayMeds.contains(med) && !takenMeds.contains(med)) {
+  //       final LogModel? logModel = await logRepo.getlogByMed(med: med);
+  //       if (logModel != null) {
+  //         await logRepo.updateLog(
+  //           logModel: logModel,
+  //           newStatus: StatusValues.taken,
+  //         );
+  //         todayMeds.remove(med);
+  //         takenMeds.add(med);
+  //         emit(
+  //           MarkMedAsTakenSuccess(todayMeds: todayMeds, takenMeds: takenMeds),
+  //         );
+  //       }
+  //     }
+  //   } catch (e) {
+  //     emit(MarkMedAsTakenFailure(erMessage: e.toString()));
+  //   }
+  // }
 
   Future<void> markAsTaken(MedModel med) async {
     try {
-      if (todayMeds.contains(med) && !takenMeds.contains(med)) {
-        final LogModel? logModel = await logRepo.getlogByMed(med: med);
-        if (logModel != null) {
-          await logRepo.updateLog(
-            logModel: logModel,
-            newStatus: StatusValues.taken,
-          );
-          todayMeds.remove(med);
-          takenMeds.add(med);
-          emit(
-            MarkMedAsTakenSuccess(todayMeds: todayMeds, takenMeds: takenMeds),
-          );
-        }
-      }
+      final log = await logRepo.getlogByMed(med: med);
+      if (log == null) return;
+
+      await logRepo.updateLog(logModel: log, newStatus: StatusValues.taken);
+
+      emit(
+        state.copyWith(
+          todayMeds: List.from(state.todayMeds)..remove(med),
+          takenMeds: List.from(state.takenMeds)..add(med),
+        ),
+      );
     } catch (e) {
-      emit(MarkMedAsTakenFailure(erMessage: e.toString()));
+      emit(
+        state.copyWith(
+          status: TodayMedsStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
+
+  // Future<void> undoTaken(MedModel med) async {
+  //   try {
+  //     if (takenMeds.contains(med) && !todayMeds.contains(med)) {
+  //       final LogModel? logModel = await logRepo.getlogByMed(med: med);
+  //       if (logModel != null) {
+  //         await logRepo.updateLog(
+  //           logModel: logModel,
+  //           newStatus: StatusValues.pending,
+  //         );
+  //         takenMeds.remove(med);
+  //         todayMeds.add(med);
+  //         emit(UndoMedTakenSuccess(todayMeds: todayMeds, takenMeds: takenMeds));
+  //       }
+  //     }
+  //   } catch (e) {
+  //     emit(UndoMedTakenFailure(erMessage: e.toString()));
+  //   }
+  // }
 
   Future<void> undoTaken(MedModel med) async {
     try {
-      if (takenMeds.contains(med) && !todayMeds.contains(med)) {
-        final LogModel? logModel = await logRepo.getlogByMed(med: med);
-        if (logModel != null) {
-          await logRepo.updateLog(
-            logModel: logModel,
-            newStatus: StatusValues.pending,
-          );
-          takenMeds.remove(med);
-          todayMeds.add(med);
-          emit(UndoMedTakenSuccess(todayMeds: todayMeds, takenMeds: takenMeds));
-        }
-      }
+      final log = await logRepo.getlogByMed(med: med);
+      if (log == null) return;
+
+      await logRepo.updateLog(logModel: log, newStatus: StatusValues.pending);
+
+      emit(
+        state.copyWith(
+          todayMeds: List.from(state.todayMeds)..add(med),
+          takenMeds: List.from(state.takenMeds)..remove(med),
+        ),
+      );
     } catch (e) {
-      emit(UndoMedTakenFailure(erMessage: e.toString()));
+      emit(
+        state.copyWith(
+          status: TodayMedsStatus.failure,
+          errorMessage: e.toString(),
+        ),
+      );
     }
   }
 
- void  removeMedFromTaken(MedModel med) {
+  void removeMedFromTaken(MedModel med) {
     takenMeds.remove(med);
   }
 
- void addMedTotaken(MedModel med) {
+  void addMedTotaken(MedModel med) {
     takenMeds.add(med);
   }
 
-void  addMedToTodayMeds(MedModel med) {
+  void addMedToTodayMeds(MedModel med) {
     todayMeds.add(med);
   }
 
-void  removeMedFromTodayMeds(MedModel med) {
+  void removeMedFromTodayMeds(MedModel med) {
     todayMeds.remove(med);
+  }
+
+  List<MedModel> todaymedsList() {
+    return todayMeds;
+  }
+
+  List<MedModel> takenMedsList() {
+    return takenMeds;
+  }
+
+  @override
+  TodayMedsState? fromJson(Map<String, dynamic> json) {
+    try {
+      return TodayMedsState(
+        status: TodayMedsStatus.success,
+        todayMeds:
+            (json['todayMeds'] as List)
+                .map((e) => MedModel.fromJson(e))
+                .toList(),
+        takenMeds:
+            (json['takenMeds'] as List)
+                .map((e) => MedModel.fromJson(e))
+                .toList(),
+        errorMessage: null,
+      );
+    } catch (_) {
+      return null;
+    }
+  }
+
+  @override
+  Map<String, dynamic>? toJson(TodayMedsState state) {
+    return {
+      'todayMeds': state.todayMeds.map((e) => e.toJson()).toList(),
+      'takenMeds': state.takenMeds.map((e) => e.toJson()).toList(),
+    };
   }
 }

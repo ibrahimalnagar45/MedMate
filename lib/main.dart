@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:hydrated_bloc/hydrated_bloc.dart';
 import 'package:midmate/core/managers/language_cubit/language_cubit.dart';
 import 'package:midmate/core/managers/mode_cubit/mode_cubit.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
@@ -11,9 +12,9 @@ import 'package:midmate/custom_bloc_observal.dart';
 import 'package:midmate/generated/l10n.dart';
 import 'package:midmate/utils/service_locator.dart';
 import 'package:midmate/features/home/data/local_data_base/sq_helper.dart';
+import 'package:path_provider/path_provider.dart';
 import 'package:workmanager/workmanager.dart';
 import 'core/services/background_service.dart';
-import 'features/home/data/local_data_base/crud.dart';
 import 'features/splash/presentation/views/splash_view.dart';
 import 'package:timezone/data/latest_all.dart' as tz;
 import 'package:timezone/timezone.dart' as tz;
@@ -91,7 +92,13 @@ Future<void> _initializeAppServices() async {
     frequency: const Duration(hours: 24),
   );
 
+  final dir = await getApplicationDocumentsDirectory();
+
+  HydratedBloc.storage = await HydratedStorage.build(
+    storageDirectory: HydratedStorageDirectory(dir.path),
+  );
+
   Bloc.observer = CustomBlocObserval();
 
-  Crud.instance.delelteEverthing();
+  // Crud.instance.delelteEverthing();
 }

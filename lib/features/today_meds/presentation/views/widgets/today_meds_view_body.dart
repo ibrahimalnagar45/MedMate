@@ -24,14 +24,14 @@ class TodayMedsViewBody extends StatelessWidget {
           return previous != current;
         },
         builder: (context, state) {
-          if (state is GetTodayMedsSuccess) {
+          if (state.status == TodayMedsStatus.success) {
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 10.0),
               child: TodayMedsListView(),
             );
-          } else if (state is GetTodayMedsFaluire) {
-            return Center(child: Text(state.erMessage));
-          } else if (state is GetTodayMedsLoading) {
+          } else if (state.status == TodayMedsStatus.failure) {
+            return Center(child: Text(state.errorMessage ?? ''));
+          } else if (state.status == TodayMedsStatus.loading) {
             return const Center(child: CircularProgressIndicator());
           } else {
             return Center(

@@ -1,39 +1,119 @@
+// // part of 'today_meds_cubit.dart';
+
+// // sealed class TodayMedsState {}
+
+// // final class TodayMedsInitial extends TodayMedsState {}
+
+// // final class GetTodayMedsLoading extends TodayMedsState {}
+
+// // final class GetTodayMedsSuccess extends TodayMedsState {
+// //   final List<MedModel> meds;
+// //   GetTodayMedsSuccess({required this.meds});
+// // }
+
+// // final class GetTodayMedsFaluire extends TodayMedsState {
+// //   final String erMessage;
+// //   GetTodayMedsFaluire({required this.erMessage});
+// // }
+
+// // final class MarkMedAsTakenSuccess extends TodayMedsState {
+// //   final List<MedModel> todayMeds, takenMeds;
+
+// //   MarkMedAsTakenSuccess({required this.todayMeds, required this.takenMeds});
+// // }
+
+// // final class MarkMedAsTakenFailure extends TodayMedsState {
+// //   final String erMessage;
+// //   MarkMedAsTakenFailure({required this.erMessage});
+// // }
+
+// // final class UndoMedTakenSuccess extends TodayMedsState {
+// //   final List<MedModel> todayMeds, takenMeds;
+
+// //   UndoMedTakenSuccess({required this.todayMeds, required this.takenMeds});
+// // }
+
+// // final class UndoMedTakenFailure extends TodayMedsState {
+// //   final String erMessage;
+// //   UndoMedTakenFailure({required this.erMessage});
+// // }
+
+// part of 'today_meds_cubit.dart';
+
+// enum TodayMedsStatus { initial, loading, success, failure }
+
+// class TodayMedsState {
+//   final TodayMedsStatus status;
+//   final List<MedModel> todayMeds;
+//   final List<MedModel> takenMeds;
+//   final String? errorMessage;
+
+//   const TodayMedsState({
+//     required this.status,
+//     required this.todayMeds,
+//     required this.takenMeds,
+//     this.errorMessage,
+//   });
+
+//   factory TodayMedsState.initial() {
+//     return const TodayMedsState(
+//       status: TodayMedsStatus.initial,
+//       todayMeds: [],
+//       takenMeds: [],
+//     );
+//   }
+
+//   TodayMedsState copyWith({
+//     TodayMedsStatus? status,
+//     List<MedModel>? todayMeds,
+//     List<MedModel>? takenMeds,
+//     String? errorMessage,
+//   }) {
+//     return TodayMedsState(
+//       status: status ?? this.status,
+//       todayMeds: todayMeds ?? this.todayMeds,
+//       takenMeds: takenMeds ?? this.takenMeds,
+//       errorMessage: errorMessage,
+//     );
+//   }
+// }
+
 part of 'today_meds_cubit.dart';
 
-sealed class TodayMedsState {}
+enum TodayMedsStatus { initial, loading, success, failure }
 
-final class TodayMedsInitial extends TodayMedsState {}
+class TodayMedsState {
+  final TodayMedsStatus status;
+  final List<MedModel> todayMeds;
+  final List<MedModel> takenMeds;
+  final String? errorMessage;
 
-final class GetTodayMedsLoading extends TodayMedsState {}
+  const TodayMedsState({
+    required this.status,
+    required this.todayMeds,
+    required this.takenMeds,
+    this.errorMessage,
+  });
 
-final class GetTodayMedsSuccess extends TodayMedsState {
-  final List<MedModel> meds;
-  GetTodayMedsSuccess({required this.meds});
-}
+  factory TodayMedsState.initial() {
+    return const TodayMedsState(
+      status: TodayMedsStatus.initial,
+      todayMeds: [],
+      takenMeds: [],
+    );
+  }
 
-final class GetTodayMedsFaluire extends TodayMedsState {
-  final String erMessage;
-  GetTodayMedsFaluire({required this.erMessage});
-}
-
-final class MarkMedAsTakenSuccess extends TodayMedsState {
-  final List<MedModel> todayMeds, takenMeds;
-
-  MarkMedAsTakenSuccess({required this.todayMeds, required this.takenMeds});
-}
-
-final class MarkMedAsTakenFailure extends TodayMedsState {
-  final String erMessage;
-  MarkMedAsTakenFailure({required this.erMessage});
-}
-
-final class UndoMedTakenSuccess extends TodayMedsState {
-  final List<MedModel> todayMeds, takenMeds;
-
-  UndoMedTakenSuccess({required this.todayMeds, required this.takenMeds});
-}
-
-final class UndoMedTakenFailure extends TodayMedsState {
-  final String erMessage;
-  UndoMedTakenFailure({required this.erMessage});
+  TodayMedsState copyWith({
+    TodayMedsStatus? status,
+    List<MedModel>? todayMeds,
+    List<MedModel>? takenMeds,
+    String? errorMessage,
+  }) {
+    return TodayMedsState(
+      status: status ?? this.status,
+      todayMeds: todayMeds ?? this.todayMeds,
+      takenMeds: takenMeds ?? this.takenMeds,
+      errorMessage: errorMessage,
+    );
+  }
 }

@@ -2,6 +2,7 @@ import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:midmate/core/managers/user_cubit/user_cubit.dart';
+import 'package:midmate/features/chart/doman/repository/logs_repo.dart';
 import 'package:midmate/features/chart/presentaion/manager/cubit/logs_cubit.dart';
 import 'package:midmate/features/home/presentation/manager/cubit/meds_cubit.dart';
 import 'package:midmate/features/settings/presentaion/views/settings_view.dart';
@@ -141,6 +142,11 @@ class _CustomAppBarState extends State<CustomAppBar> {
                   padding: const EdgeInsets.symmetric(vertical: 5),
                   child: GestureDetector(
                     onTap: () async {
+                      final list = await getIt<LogsRepo>().getAllLogs(
+                        currentUser!.id!,
+                      );
+
+                      log(list.toString());
                       Context(context).goTo(SettingsView());
                     },
                     child: UserAccountImage(currentUser: currentUser),

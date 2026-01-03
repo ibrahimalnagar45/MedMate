@@ -42,7 +42,7 @@
 //   Person? currentUser;
 
 //   List<MedModel> todayMeds = [];
-//   List<MedModel> takenMeds = [];
+//   List<MedModel> takenMeds= [];
 //   // final List<LogModel> logs= [];
 //   late final TodayMedsCubit todayMedsCubit;
 
@@ -59,7 +59,7 @@
 
 //   @override
 //   Widget build(BuildContext context) {
-//     if (TodayMedsCubit.todayMeds.isEmpty && TodayMedsCubit.takenMeds.isEmpty) {
+//     if (TodayMedsCubit.todayMeds.isEmpty && TodayMedsCubit.takenMedsisEmpty) {
 //       return const Center(child: Text('No doses for today'));
 //     }
 
@@ -67,7 +67,7 @@
 //       listener: (context, state) {
 //         setState(() {
 //           todayMeds = TodayMedsCubit.todayMeds;
-//           takenMeds = TodayMedsCubit.takenMeds;
+//           takenMeds= TodayMedsCubit.takenMeds
 //         });
 //       },
 //       child: Column(
@@ -80,7 +80,7 @@
 //             itemBuilder: (context, index) {
 //               final med = todayMeds[index];
 //               return CheckboxListTile(
-//                 value: takenMeds.contains(med),
+//                 value: takenMedscontains(med),
 //                 onChanged: (_) {
 //                   todayMedsCubit.markAsTaken(med);
 
@@ -93,7 +93,7 @@
 //               );
 //             },
 //           ),
-//           if (takenMeds.isEmpty) ...[
+//           if (takenMedsisEmpty) ...[
 //             Center(
 //               child: TextButton(
 //                 onPressed: () {
@@ -104,7 +104,7 @@
 //               ),
 //             ),
 //           ],
-//           if (takenMeds.isNotEmpty) ...[
+//           if (takenMedsisNotEmpty) ...[
 //             const SizedBox(height: 10),
 //             Row(
 //               mainAxisAlignment: MainAxisAlignment.center,
@@ -120,9 +120,9 @@
 //             ListView.builder(
 //               shrinkWrap: true,
 //               physics: const NeverScrollableScrollPhysics(),
-//               itemCount: takenMeds.length,
+//               itemCount: takenMedslength,
 //               itemBuilder: (context, index) {
-//                 final med = takenMeds[index];
+//                 final med = takenMedsindex];
 //                 return Container(
 //                   height: 60,
 //                   decoration: BoxDecoration(
@@ -171,106 +171,188 @@ class TodayMedsListView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocBuilder<TodayMedsCubit, TodayMedsState>(
-      builder: (context, state) {
-        List<MedModel> todayMeds = [];
-        List<MedModel> takenMeds = [];
-
-        if (state is GetTodayMedsSuccess) {
-          todayMeds = state.meds;
-        } else if (state is MarkMedAsTakenSuccess) {
-          todayMeds = state.todayMeds;
-          takenMeds = state.takenMeds;
-        } else if (state is UndoMedTakenSuccess) {
-          todayMeds = state.todayMeds;
-          takenMeds = state.takenMeds;
-        }
-
-        if (todayMeds.isEmpty && takenMeds.isEmpty) {
-          return const Center(child: Text('No doses for today'));
-        }
-
-        return Column(
-          children: [
-            // Today meds
-            if (todayMeds.isNotEmpty)
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: todayMeds.length,
-                itemBuilder: (context, index) {
-                  final med = todayMeds[index];
-                  return CheckboxListTile(
-                    value: false,
-                    onChanged:
-                        (_) => context.read<TodayMedsCubit>().markAsTaken(med),
-                    contentPadding: EdgeInsets.zero,
-                    checkboxShape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(5),
-                    ),
-                    title: TodayMedListTile(medModel: med),
-                  );
-                },
-              ),
-            // Taken meds
-            if (takenMeds.isNotEmpty) ...[
-              const SizedBox(height: 10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  const Expanded(child: Divider(endIndent: 5)),
-                  Text('Taken', style: TextStyles.regBlackTextStyle),
-                  const Expanded(child: Divider(indent: 5)),
-                ],
-              ),
-              const SizedBox(height: 10),
-              ListView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                itemCount: takenMeds.length,
-                itemBuilder: (context, index) {
-                  final med = takenMeds[index];
-                  return Container(
-                    height: 60,
-                    decoration: BoxDecoration(
-                      color: AppColors.blue.withOpacity(0.6),
-                      borderRadius: BorderRadius.circular(10),
-                    ),
-                    margin: const EdgeInsets.only(bottom: 10),
-                    padding: const EdgeInsets.symmetric(horizontal: 8),
-                    child: Row(
-                      children: [
-                        MedIcon(medType: med.type!),
-                        const SizedBox(width: 10),
-                        MedInfoText(medModel: med),
-                        const Spacer(),
-                        IconButton(
-                          tooltip: "Undo taken",
-                          onPressed:
-                              () =>
-                                  context.read<TodayMedsCubit>().undoTaken(med),
-                          icon: Icon(Icons.redo, color: AppColors.green),
-                        ),
-                      ],
-                    ),
-                  );
-                },
-              ),
-            ],
-            if (takenMeds.isEmpty)
-              Center(
-                child: TextButton(
-                  onPressed:
-                      () => Navigator.push(
-                        context,
-                        MaterialPageRoute(builder: (_) => TodayLogsView()),
-                      ),
-                  child: Text('See Today\'s Logs'),
+    final todayMedCubit = context.watch<TodayMedsCubit>();
+    final todayMeds = todayMedCubit.todaymedsList();
+    final takenMeds = todayMedCubit.takenMedsList();
+    return Column(
+      children: [
+        // Today meds
+        if (todayMeds.isNotEmpty)
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: todayMeds.length,
+            itemBuilder: (context, index) {
+              final med = todayMeds[index];
+              return CheckboxListTile(
+                value: false,
+                onChanged: (_) => todayMedCubit.markAsTaken(med),
+                contentPadding: EdgeInsets.zero,
+                checkboxShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
                 ),
-              ),
-          ],
-        );
-      },
+                title: TodayMedListTile(medModel: med),
+              );
+            },
+          ),
+        // Taken meds
+        if (takenMeds.isNotEmpty) ...[
+          const SizedBox(height: 10),
+          Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              const Expanded(child: Divider(endIndent: 5)),
+              Text('Taken', style: TextStyles.regBlackTextStyle),
+              const Expanded(child: Divider(indent: 5)),
+            ],
+          ),
+          const SizedBox(height: 10),
+          ListView.builder(
+            shrinkWrap: true,
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: takenMeds.length,
+            itemBuilder: (context, index) {
+              final med = takenMeds[index];
+              return Container(
+                height: 60,
+                decoration: BoxDecoration(
+                  color: AppColors.blue.withOpacity(0.6),
+                  borderRadius: BorderRadius.circular(10),
+                ),
+                margin: const EdgeInsets.only(bottom: 10),
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: Row(
+                  children: [
+                    MedIcon(medType: med.type!),
+                    const SizedBox(width: 10),
+                    MedInfoText(medModel: med),
+                    const Spacer(),
+                    IconButton(
+                      tooltip: "Undo taken",
+                      onPressed:
+                          () => context.read<TodayMedsCubit>().undoTaken(med),
+                      icon: Icon(Icons.redo, color: AppColors.green),
+                    ),
+                  ],
+                ),
+              );
+            },
+          ),
+        ],
+        if (takenMeds.isEmpty)
+          Center(
+            child: TextButton(
+              onPressed:
+                  () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => TodayLogsView()),
+                  ),
+              child: Text('See Today\'s Logs'),
+            ),
+          ),
+      ],
     );
+
+    // return BlocBuilder<TodayMedsCubit, TodayMedsState>(
+    //   builder: (context, state) {
+    //     List<MedModel> todayMeds = [];
+    //     List<MedModel> takenMeds= [];
+
+    //     if (state is GetTodayMedsSuccess) {
+    //       todayMeds = state.meds;
+    //     } else if (state is MarkMedAsTakenSuccess) {
+    //       todayMeds = state.todayMeds;
+    //       takenMeds= state.takenMeds
+    //     } else if (state is UndoMedTakenSuccess) {
+    //       todayMeds = state.todayMeds;
+    //       takenMeds= state.takenMeds
+    //     }
+
+    //     if (todayMeds.isEmpty && takenMedsisEmpty) {
+    //       return const Center(child: Text('No doses for today'));
+    //     }
+
+    //     return Column(
+    //       children: [
+    //         // Today meds
+    //         if (todayMeds.isNotEmpty)
+    //           ListView.builder(
+    //             shrinkWrap: true,
+    //             physics: const NeverScrollableScrollPhysics(),
+    //             itemCount: todayMeds.length,
+    //             itemBuilder: (context, index) {
+    //               final med = todayMeds[index];
+    //               return CheckboxListTile(
+    //                 value: false,
+    //                 onChanged:
+    //                     (_) => context.read<TodayMedsCubit>().markAsTaken(med),
+    //                 contentPadding: EdgeInsets.zero,
+    //                 checkboxShape: RoundedRectangleBorder(
+    //                   borderRadius: BorderRadius.circular(5),
+    //                 ),
+    //                 title: TodayMedListTile(medModel: med),
+    //               );
+    //             },
+    //           ),
+    //         // Taken meds
+    //         if (takenMedsisNotEmpty) ...[
+    //           const SizedBox(height: 10),
+    //           Row(
+    //             mainAxisAlignment: MainAxisAlignment.center,
+    //             children: [
+    //               const Expanded(child: Divider(endIndent: 5)),
+    //               Text('Taken', style: TextStyles.regBlackTextStyle),
+    //               const Expanded(child: Divider(indent: 5)),
+    //             ],
+    //           ),
+    //           const SizedBox(height: 10),
+    //           ListView.builder(
+    //             shrinkWrap: true,
+    //             physics: const NeverScrollableScrollPhysics(),
+    //             itemCount: takenMedslength,
+    //             itemBuilder: (context, index) {
+    //               final med = takenMedsindex];
+    //               return Container(
+    //                 height: 60,
+    //                 decoration: BoxDecoration(
+    //                   color: AppColors.blue.withOpacity(0.6),
+    //                   borderRadius: BorderRadius.circular(10),
+    //                 ),
+    //                 margin: const EdgeInsets.only(bottom: 10),
+    //                 padding: const EdgeInsets.symmetric(horizontal: 8),
+    //                 child: Row(
+    //                   children: [
+    //                     MedIcon(medType: med.type!),
+    //                     const SizedBox(width: 10),
+    //                     MedInfoText(medModel: med),
+    //                     const Spacer(),
+    //                     IconButton(
+    //                       tooltip: "Undo taken",
+    //                       onPressed:
+    //                           () =>
+    //                               context.read<TodayMedsCubit>().undoTaken(med),
+    //                       icon: Icon(Icons.redo, color: AppColors.green),
+    //                     ),
+    //                   ],
+    //                 ),
+    //               );
+    //             },
+    //           ),
+    //         ],
+    //         if (takenMedsisEmpty)
+    //           Center(
+    //             child: TextButton(
+    //               onPressed:
+    //                   () => Navigator.push(
+    //                     context,
+    //                     MaterialPageRoute(builder: (_) => TodayLogsView()),
+    //                   ),
+    //               child: Text('See Today\'s Logs'),
+    //             ),
+    //           ),
+    //       ],
+    //     );
+    //   },
+    // );
   }
 }
